@@ -16,7 +16,7 @@ class User(db.Model, SerializerMixin):
     name = db.Column(db.String)
     email = db.Column(db.String, unique=True, nullable=False)
     _password_hash = db.Column(db.String, nullable=False)
-    pfp_image = db.Column(db.String, nullable=False)
+    pfp_image = db.Column(db.String)
     bio = db.Column(db.String)
     created_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
@@ -168,7 +168,7 @@ class Community(db.Model, SerializerMixin):
     users = db.relationship("User", back_populates="community")
 
     serialize_rules = ("-games.community", "-users.community")
-    
+
 
 
 
