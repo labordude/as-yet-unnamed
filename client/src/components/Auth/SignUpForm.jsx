@@ -33,12 +33,19 @@ const checkUsername = username => {
       return data.length === 0;
     });
 };
-export default function SignUpForm() {
+export default function SignUpForm({onLogin}) {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const [success, setSuccess] = useState(false);
-  function handleNewProfileSubmit(values) {
-    setSuccess(prevSuccess => !prevSuccess);
+  function handleSubmit(values) {
+    fetch(`/signup`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(values),
+    })
+      .then(response => response.json())
+      .then(newUser => console.log(newUser));
+    
     // // POST fetch to dispatch
     // fetch(`/new_user`, {
     //   method: "POST",
@@ -66,7 +73,7 @@ export default function SignUpForm() {
       pfp_image: "",
     },
     validationSchema: ProfileSchema,
-    onSubmit: values => handleNewProfileSubmit(values),
+    onSubmit: values => handleSubmit(values),
   });
   return (
     <>
