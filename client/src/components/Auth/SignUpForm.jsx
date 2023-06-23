@@ -74,7 +74,7 @@ export default function SignUpForm() {
         <form
           onSubmit={formik.handleSubmit}
           className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">
-          <div className="mb-4">
+          <div className="mb-2">
             <label
               htmlFor="firstName"
               className="block text-gray-700 text-sm font-bold mb-2">
@@ -90,7 +90,7 @@ export default function SignUpForm() {
             />
             {formik.errors.name ? <div>{formik.errors.name}</div> : null}
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label
               htmlFor="email"
               className="block text-gray-700 text-sm font-bold mb-2">
@@ -106,7 +106,7 @@ export default function SignUpForm() {
             />
             {formik.errors.email ? <div>{formik.errors.email}</div> : null}
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label
               htmlFor="username"
               className="block text-gray-700 text-sm font-bold mb-2">
@@ -125,7 +125,7 @@ export default function SignUpForm() {
               <div>{formik.errors.username}</div>
             ) : null}
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label
               htmlFor="password"
               className="block text-gray-700 text-sm font-bold mb-2">
@@ -152,13 +152,13 @@ export default function SignUpForm() {
               <div>{formik.errors.password}</div>
             ) : null}
           </div>
-          <div className="mb-4">
+          <div className="mb-2">
             <label
               htmlFor="pfp_image"
               className="block text-gray-700 text-sm font-bold mb-2">
               Image
             </label>
-            <Input
+            <input
               id="pfp_image"
               name="pfp_image"
               type="file"
@@ -168,14 +168,18 @@ export default function SignUpForm() {
                   URL.createObjectURL(event.currentTarget.files[0]),
                 )
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+              className="block w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg file:mr-4 file:py-2 file:px-4 file:bg-slate-600 file:text-white file:rounded-md"
             />
             {formik.errors.pfp_image ? (
               <div>{formik.errors.pfp_image}</div>
             ) : null}
           </div>
-          <div className="mb-4">
-            <Text mb="8px">Bio:</Text>
+          <div className="mb-2">
+            <label
+              htmlFor="bio"
+              className="block text-gray-700 text-sm font-bold mb-2">
+              Bio
+            </label>
             <Textarea
               name="bio"
               value={formik.values.bio}

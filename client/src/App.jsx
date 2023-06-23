@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Home from "./components/Home";
 import "./index.css";
 import SignUpForm from "./components/Auth/SignUpForm";
+import Login from "./components/Auth/Login";
 function App() {
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -16,6 +17,9 @@ function App() {
       })
       .catch(error => console.log(error));
   }, []);
+
+  if (!user) return <Login onLogin={setUser} />;
+
   return (
     <>
       <main>

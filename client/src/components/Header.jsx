@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Link} from "react-router-dom";
 export default function Header() {
   const [loggedIn, setLoggedIn] = useState(false);
-  function handleLoginClick() {
+  function handleLogin() {
     // POST fetch to dispatch
     fetch(`/login`, {
       method: "POST",
@@ -17,7 +17,7 @@ export default function Header() {
       })
       .catch(error => console.log("error", error.message));
   }
-  function handleLogoutClick() {
+  function handleLogout() {
     // POST fetch to dispatch
     fetch(`/logout`, {
       method: "DELETE",
@@ -96,8 +96,10 @@ export default function Header() {
             ) : null}
           </li>
           {!loggedIn ? (
-            <li onClick={handleLoginClick}>
-              <a className="text-xl text-white">Login</a>
+            <li>
+              <Link to="/login" className="text-xl text-white">
+                Login
+              </Link>
             </li>
           ) : (
             <li onClick={handleLogoutClick}>

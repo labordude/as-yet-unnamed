@@ -15,7 +15,7 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.String, unique=True, nullable=False)
     name = db.Column(db.String)
     email = db.Column(db.String, unique=True, nullable=False)
-    _password_hash = db.Column(db.String, nullable=False)
+    _password_hash = db.Column(db.String)
     pfp_image = db.Column(db.String)
     bio = db.Column(db.String)
     created_at = db.Column(
