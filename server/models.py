@@ -7,18 +7,6 @@ from sqlalchemy.orm import validates
 from config import db, bcrypt
 import datetime
 
-convention = {
-    "ix": "ix_%(column_0label)s",
-    "uq": "uq%(tablename)s%(column_0name)s",
-    "ck": "ck%(tablename)s%(constraintname)s",
-    "fk": "fk%(tablename)s%(column_0name)s%(referred_tablename)s",
-    "pk": "pk%(table_name)s",
-}
-
-metadata = MetaData(naming_convention=convention)
-
-db = SQLAlchemy(metadata=metadata)
-
 
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
@@ -37,7 +25,9 @@ class User(db.Model, SerializerMixin):
     reviews = db.relationship('Review', back_populates='user', cascade='all,delete-orphan')
     games = association_proxy('reviews', 'game')
 
-    serialize_rules = ("-password_hash","-created_at","-updated_at", "-reviews.user")
+    community = db.relationship("Platform", back_populates='users')
+
+    serialize_rules = ("-password_hash","-created_at","-updated_at", "-reviews.user", "-community.users")
 
     @validates("username")
     def validate_username(self, key, username):
@@ -90,7 +80,9 @@ class Game(db.Model, SerializerMixin):
     reviews = db.relationship('Review', back_populates="game", cascade='all,delete-orphan')
     users = association_proxy('reviews', 'user')
 
-    serialize_rules = ("-reviews.game","-updated_at")
+    community = db.relationship('Platform', back_populates="games")
+
+    serialize_rules = ("-reviews.game","-updated_at", "-community.games")
 
     @validates('title')
     def validate_title(self, key, title):
@@ -164,5 +156,20 @@ class Review(db.Model, SerializerMixin):
         if not rating or not isinstance(rating, int) or 0 <= rating <= 10:
             raise ValueError("Rating must be value between 0 and 10")
         return rating
-            
+    
+
+class Community(db.Model, SerializerMixin):
+    __tablename__ = 'communities'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+
+    games = db.relationship("Game", back_populates="community")
+    users = db.relationship("User", back_populates="community")
+
+    serialize_rules = ("-games.community", "-users.community")
+    
+
+
+
    
