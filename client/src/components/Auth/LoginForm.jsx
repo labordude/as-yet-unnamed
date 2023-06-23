@@ -18,7 +18,7 @@ const LoginSchema = Yup.object().shape({
   username: Yup.string().min(6, "Too short").required("Required"),
 });
 
-export default function LoginForm() {
+export default function LoginForm({onLogin}) {
   const [formData, setFormData] = useState({username: "", password: ""});
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);

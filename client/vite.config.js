@@ -17,6 +17,11 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      "/signup": {
+        target: "http://127.0.0.1:5555",
+        changeOrigin: true,
+        secure: false,
+      },
       "/login": {
         target: "http://127.0.0.1:5555",
         changeOrigin: true,
