@@ -46,9 +46,17 @@ class Signup(Resource):
         data = request.get_json()
         username = data.get("username")
         password = data.get("password")
-        image_url = data.get("image_url")
+        pfp_image = data.get("pf_image")
+        name = data.get("name")
+        email = data.get("email")
         bio = data.get("bio")
-        new_user = User(username=username, image_url=image_url, bio=bio)
+        new_user = User(
+            username=username,
+            name=name,
+            email=email,
+            pfp_image=pfp_image,
+            bio=bio,
+        )
         new_user.password_hash = password
         try:
             db.session.add(new_user)
@@ -61,15 +69,11 @@ class Signup(Resource):
 
 class CheckSession(Resource):
     def get(self):
-        if session.get("user_id"):
-            user = (
-                User.query.filter(User.id == session.get("user_id"))
-                .first()
-                .to_dict()
-            )
-            return user, 200
-
-        return ({"error": "unauthorized"}, 401)
+        try:
+            user = User.query.filter(User.id == session.get("user_id")).first()
+            return user.to_dict(), 200
+        except:
+            return ({"error": "unauthorized"}, 401)
 
     pass
 
