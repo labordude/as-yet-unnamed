@@ -29,14 +29,14 @@ class User(db.Model, SerializerMixin):
     )
     games = association_proxy("reviews", "game")
 
-    community = db.relationship("Community", back_populates="users")
+    communities = db.relationship("CommunityUser", back_populates="user")
 
     serialize_rules = (
         "-password_hash",
         "-created_at",
         "-updated_at",
         "-reviews.user",
-        "-community.users",
+        "-communities.user",
     )
 
     @validates("username")
@@ -92,9 +92,7 @@ class Game(db.Model, SerializerMixin):
     )
     users = association_proxy("reviews", "user")
 
-    community = db.relationship("Community", back_populates="games")
-
-    serialize_rules = ("-reviews.game", "-updated_at", "-community.games")
+    serialize_rules = ("-reviews.game", "-updated_at")
 
     @validates("title")
     def validate_title(self, key, title):
@@ -180,12 +178,22 @@ class Community(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
 
-    games = db.relationship("Game", back_populates="community")
-    users = db.relationship("User", back_populates="community")
+    # games = db.relationship("Game", back_populates="community")
+    community_users = db.relationship("CommunityUser", back_populates="community")
+    users = association_proxy("community_users", "user")
 
-    serialize_rules = ("-games.community", "-users.community")
+    serialize_rules = ("-community_users.community",)
     
 
+class CommunityUser(db.Model, SerializerMixin):
+    __tablename__ = 'community_users'
 
+    id = db.Column(db.Integer, primary_key=True)
 
-   
+    community_id = db.Column(db.Integer, db.ForeignKey("communities.id"))
+    community = db.relationship("Community", back_populates="community_users")
+
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user = db.relationship("User", back_populates="communities")
+
+    serialize_rules = ("-user.communities", "community.community_users")
