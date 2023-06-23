@@ -8,13 +8,11 @@ import {
   InputGroup,
   InputRightElement,
   Textarea,
+  Text,
 } from "@chakra-ui/react";
 YupPassword(Yup);
 const ProfileSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
+  name: Yup.string().min(2, "Too Short!").max(50, "Too Long!"),
   email: Yup.string().email().required("Required"),
   password: Yup.string()
     .password()
@@ -28,7 +26,7 @@ const ProfileSchema = Yup.object().shape({
     .required("Required"),
 });
 const checkUsername = username => {
-  return fetch(`http://localhost:4000/username/${username}/available`)
+  return fetch(`/check_username/${username}`)
     .then(response => response.json())
     .then(data => {
       return data.length === 0;
@@ -62,7 +60,7 @@ export default function SignUpForm() {
       password: "",
       email: "",
       bio: "",
-      profile_pic: "",
+      pfp_image: "",
     },
     validationSchema: ProfileSchema,
     onSubmit: values => handleNewProfileSubmit(values),
@@ -160,7 +158,16 @@ export default function SignUpForm() {
           <div>{formik.errors.profile_pic}</div>
         ) : null} */}
       </div>
-
+      <div className="mb-4">
+        <Text mb="8px">Bio:</Text>
+        <Textarea
+          name="bio"
+          value={formik.values.bio}
+          onChange={formik.handleChange}
+          placeholder="Tell us about yourself"
+          size="sm"
+        />
+      </div>
       <div className="flex justify-around">
         <button
           className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300"

@@ -18,16 +18,26 @@ class User(db.Model, SerializerMixin):
     _password_hash = db.Column(db.String, nullable=False)
     pfp_image = db.Column(db.String)
     bio = db.Column(db.String)
-    created_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
+    created_at = db.Column(
+        db.DateTime, server_default=db.func.now(), nullable=False
+    )
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
     active = db.Column(db.Boolean, default=False)
 
-    reviews = db.relationship('Review', back_populates='user', cascade='all,delete-orphan')
-    games = association_proxy('reviews', 'game')
+    reviews = db.relationship(
+        "Review", back_populates="user", cascade="all,delete-orphan"
+    )
+    games = association_proxy("reviews", "game")
 
-    community = db.relationship("Platform", back_populates='users')
+    community = db.relationship("Platform", back_populates="users")
 
-    serialize_rules = ("-password_hash","-created_at","-updated_at", "-reviews.user", "-community.users")
+    serialize_rules = (
+        "-password_hash",
+        "-created_at",
+        "-updated_at",
+        "-reviews.user",
+        "-community.users",
+    )
 
     @validates("username")
     def validate_username(self, key, username):
@@ -35,13 +45,13 @@ class User(db.Model, SerializerMixin):
             raise ValueError("User must have a username")
         return username
 
-    @validates('name')
+    @validates("name")
     def validate_name(self, key, name):
         if len(name) < 1:
             raise ValueError("Name must be at least 1 character")
         return name
-    
-    @validates('email')
+
+    @validates("email")
     def validate_email(self, key, email):
         if not email or "@" not in email:
             raise ValueError("Email must be a valid email address")
@@ -66,7 +76,7 @@ class User(db.Model, SerializerMixin):
 
 
 class Game(db.Model, SerializerMixin):
-    __tablename__ = 'games'
+    __tablename__ = "games"
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, unique=True, nullable=False)
@@ -77,89 +87,95 @@ class Game(db.Model, SerializerMixin):
     release_date = db.Column(db.Date, nullable=False)
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-    reviews = db.relationship('Review', back_populates="game", cascade='all,delete-orphan')
-    users = association_proxy('reviews', 'user')
+    reviews = db.relationship(
+        "Review", back_populates="game", cascade="all,delete-orphan"
+    )
+    users = association_proxy("reviews", "user")
 
-    community = db.relationship('Platform', back_populates="games")
+    community = db.relationship("Platform", back_populates="games")
 
-    serialize_rules = ("-reviews.game","-updated_at", "-community.games")
+    serialize_rules = ("-reviews.game", "-updated_at", "-community.games")
 
-    @validates('title')
+    @validates("title")
     def validate_title(self, key, title):
-        if not title or title in ('games.title') or len(title) < 1:
+        if not title or title in ("games.title") or len(title) < 1:
             raise ValueError("Invalid title")
         return title
-    
-    @validates('description')
+
+    @validates("description")
     def validate_description(self, key, description):
         if not description or len(description) < 1:
             raise ValueError("Invalid description")
         return description
-    
-    @validates('background_image')
+
+    @validates("background_image")
     def validate_cover_image(self, key, cover_image):
         if not cover_image:
             raise ValueError("Missing cover image")
         return cover_image
-    
-    @validates('release_date')
+
+    @validates("release_date")
     def validate_release_date(self, key, release_date):
         if not release_date or not isinstance(release_date, datetime.date):
             raise ValueError("Game release date must be a date")
         return release_date
 
     def __repr__(self):
-        return f"<Game {self.title}" 
+        return f"<Game {self.title}"
 
 
 class Review(db.Model, SerializerMixin):
-    __tablename__ = 'reviews'
-    __table_args__ = (
-        UniqueConstraint("user_id", "game_id"),
-    )
+    __tablename__ = "reviews"
+    __table_args__ = (UniqueConstraint("user_id", "game_id"),)
 
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
+    created_at = db.Column(
+        db.DateTime, server_default=db.func.now(), nullable=False
+    )
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    user = db.relationship('User', back_populates='reviews')
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    user = db.relationship("User", back_populates="reviews")
 
-    game_id = db.Column(db.Integer, db.ForeignKey('games.id'), nullable=False)
-    game = db.relationship('Game', back_populates='reviews')
+    game_id = db.Column(db.Integer, db.ForeignKey("games.id"), nullable=False)
+    game = db.relationship("Game", back_populates="reviews")
 
-    serialize_rules = ("-created_at", "-updated_at", "-user.reviews", "-game.reviews")
+    serialize_rules = (
+        "-created_at",
+        "-updated_at",
+        "-user.reviews",
+        "-game.reviews",
+    )
 
-
-    @validates('user_id')
+    @validates("user_id")
     def validate_user(self, key, user_id):
         if not user_id or not isinstance(user_id, int):
             raise ValueError("Invalid user_id")
         return user_id
-    
-    @validates('game_id')
+
+    @validates("game_id")
     def validate_game(self, key, game_id):
         if not game_id or not isinstance(game_id, int):
             raise ValueError("Invalid game_id")
         return game_id
-    
-    @validates('body')
+
+    @validates("body")
     def validate_body(self, key, body):
         if not body or 1 <= len(body) <= 250:
             raise ValueError("Length of review must be at least 1 character")
         return body
-    
-    @validates('rating')
+
+    @validates("rating")
     def validate_rating(self, key, rating):
         if not rating or not isinstance(rating, int) or 0 <= rating <= 10:
             raise ValueError("Rating must be value between 0 and 10")
         return rating
-    
+
 
 class Community(db.Model, SerializerMixin):
-    __tablename__ = 'communities'
+    __tablename__ = "communities"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -168,7 +184,7 @@ class Community(db.Model, SerializerMixin):
     users = db.relationship("User", back_populates="community")
 
     serialize_rules = ("-games.community", "-users.community")
-
+    
 
 
 
