@@ -1,5 +1,5 @@
 {
-  "name": "vite-flask",
+  "name": "gamexperience",
   "private": true,
   "proxy": "http://127.0.0.1:5555",
   "version": "0.0.0",
