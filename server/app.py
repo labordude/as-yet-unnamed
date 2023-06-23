@@ -136,7 +136,7 @@ class GamesById(Resource):
             )
             return game, 200
         except:
-            {"error": "404: Game not found"}, 404
+            return {"error": "404: Game not found"}, 404
     
     def patch(self, id):
         data = request.get_json()
@@ -168,7 +168,13 @@ class GamesById(Resource):
         db.session.commit()
         return {}, 204
 
-class ReviewsByGameId(Resource):
+
+class Reviews(Resource):
+    def get(self):
+        reviews = [r.to_dict(only=("body", "rating", "created_at", "user_id", "game_id")) 
+                   for r in Review.query.all()]
+        return reviews, 200
+    
     def post(self):
         data = request.get_json()
         try:
@@ -184,13 +190,9 @@ class ReviewsByGameId(Resource):
 
             return new_review.to_dict(only=("id", "body", "rating", "user_id", "game_id", "created_at")), 201
         except:
-            {"error": "Unable to post review"}, 400
+            return {"error": "Unable to post review"}, 400
 
-    def get(self, game_id):
-        reviews = [r.to_dict(only=("body", "rating", "created_at", "user_id", "game_id")) 
-                   for r in Review.query.filter(Game.id == game_id).all()]
-        return reviews, 200
-    
+   
 class ReviewsById(Resource):
     def patch(self, id):
         data = request.get_json()
@@ -221,14 +223,57 @@ class ReviewsById(Resource):
         db.session.delete(review)
         db.session.commit()
         return {}, 204
-        
-#def post(self, id)
-#posts a reply to a specific review
+    
+
+class Users(Resource):
+    def get(self):
+        try:
+            users = [u.to_dict(only=("id", "username", "pfp_image", "active")) for u in User.query.all()]
+            return users, 200
+        except:
+            return {"error": "Bad request"}, 400
+
+
+class UsersById(Resource):
+    def get(self, id):
+        try:
+            user = (
+                User.query.filter(User.id == id)
+                .first().to_dict(only=("id", "username", "name", "email","pfp_image", "bio","active"))
+            )
+            return user, 200
+        except:
+            return {"error": "404: User not found"}, 404
+    
+    def patch(self, id):
+        data = request.get_json()
+        user = User.query.filter(User.id == id).first()
+        if not user:
+            return {"error": "404: User not found"}, 404
+        for attr in data:
+            setattr(user, attr, data.get(attr))
+        try:
+            db.session.add(user)
+            db.session.commit()
+            return user.to_dict(), 201
+        except:
+            return {"error": "Unable to update user"}, 400
+    
+    def delete(self, id):
+        user = User.query.filter(User.id == id).first()
+        if not user:
+            return {"error": "404: User not found"}, 404
+        db.session.delete(user)
+        db.session.commit()
+        return {}, 204
+
 
 api.add_resource(Games, "/games")
 api.add_resource(GamesById, "/games/<int:id>")
-api.add_resource(ReviewsByGameId, "/games/<int:id>")
-api.add_resource(ReviewsById, "/games/<int:game_id>/<int:id>")
+api.add_resource(Reviews, "/reviews")
+api.add_resource(ReviewsById, "/reviews/<int:id>")
+api.add_resource(Users, "/users")
+api.add_resource(UsersById, "/users/<int:id>")
 api.add_resource(Home, "/", endpoint="home")
 api.add_resource(Signup, "/signup", endpoint="signup")
 api.add_resource(CheckSession, "/check_session", endpoint="check_session")

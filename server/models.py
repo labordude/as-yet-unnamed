@@ -29,7 +29,7 @@ class User(db.Model, SerializerMixin):
     )
     games = association_proxy("reviews", "game")
 
-    community = db.relationship("Platform", back_populates="users")
+    community = db.relationship("Community", back_populates="users")
 
     serialize_rules = (
         "-password_hash",
@@ -82,7 +82,7 @@ class Game(db.Model, SerializerMixin):
     title = db.Column(db.String, unique=True, nullable=False)
     description = db.Column(db.String, nullable=False)
     platform = db.Column(db.String, nullable=False)
-    page_image = db.Column(db.String)
+    page_banner = db.Column(db.String)
     background_image = db.Column(db.String, nullable=False)
     release_date = db.Column(db.Date, nullable=False)
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
@@ -92,7 +92,7 @@ class Game(db.Model, SerializerMixin):
     )
     users = association_proxy("reviews", "user")
 
-    community = db.relationship("Platform", back_populates="games")
+    community = db.relationship("Community", back_populates="games")
 
     serialize_rules = ("-reviews.game", "-updated_at", "-community.games")
 
