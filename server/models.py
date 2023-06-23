@@ -15,10 +15,10 @@ class User(db.Model, SerializerMixin):
     _password_hash = db.Column(db.String, nullable=False)
     image_url = db.Column(db.String)
     bio = db.Column(db.String)
-    created_at = db.Column(created_at=db.Date, nullable=False)
-    updated_at = db.Column(updated_at=db.Date)
+    created_at = db.Column(server_default=db.func.now(), nullable=False)
+    updated_at = db.Column(on_update=db.func.now())
 
-    reviews = db.relationship('Review', back_populates='user')
+    reviews = db.relationship('Review', back_populates='user', cascade='all,delete-orphan')
     games = association_proxy('reviews', 'game')
 
     serialize_rules = ("-password_hash","-created_at","-updated_at")
@@ -59,7 +59,7 @@ class Game(db.Model, SerializerMixin):
     cover_image = db.Column(db.String, nullable=False)
     release_date = db.Column(db.Date, nullable=False)
 
-    reviews = db.relationship('Review', back_populates="game")
+    reviews = db.relationship('Review', back_populates="game", cascade='all,delete-orphan')
     users = association_proxy('reviews', 'user')
 
     def __repr__(self):
@@ -72,8 +72,8 @@ class Review(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(created_at=db.Date, nullable=False)
-    updated_at = db.Column(updated_at=db.Date)
+    created_at = db.Column(server_default=db.func.now(), nullable=False)
+    updated_at = db.Column(on_update=db.func.now())
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', back_populates='reviews')
