@@ -176,7 +176,7 @@ class GamesById(Resource):
 class Reviews(Resource):
     def get(self):
         reviews = [r.to_dict(only=("body", "rating", "created_at", "user_id", "game_id")) 
-                   for r in Review.query.all()]
+                    for r in Review.query.all()]
         return reviews, 200
     
     def post(self):
@@ -198,6 +198,10 @@ class Reviews(Resource):
 
    
 class ReviewsById(Resource):
+    def get(self, id):
+        review = Review.query.filter_by(id=id).first().to_dict(only=("id", "body", "rating", "user_id", "game_id"))
+        return review, 200
+        
     def patch(self, id):
         data = request.get_json()
         review = Review.query.filter(Review.id == id).first()
