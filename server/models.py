@@ -184,3 +184,8 @@ class Community(db.Model, SerializerMixin):
     users = db.relationship("User", back_populates="community")
 
     serialize_rules = ("-games.community", "-users.community")
+    
+
+
+
+   
