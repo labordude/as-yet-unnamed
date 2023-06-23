@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-
+import {Link} from "react-router-dom";
 export default function Header() {
   const [loggedIn, setLoggedIn] = useState(false);
   function handleLoginClick() {
@@ -71,12 +71,14 @@ export default function Header() {
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-3xl">Fucking Awesome</a>
+        <a className="btn btn-ghost normal-case text-3xl text-white">
+          GameXperience
+        </a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a className="text-xl">Home</a>
+            <a className="text-xl text-white">Home</a>
           </li>
           <li tabIndex={0}>
             {loggedIn ? (
@@ -84,10 +86,10 @@ export default function Header() {
                 <summary className="text-xl">Menu</summary>
                 <ul className="p-2">
                   <li>
-                    <a>Submenu 1</a>
+                    <a className="text-xl text-white">Submenu 1</a>
                   </li>
                   <li>
-                    <a>Submenu 2</a>
+                    <a className="text-xl text-white">Submenu 2</a>
                   </li>
                 </ul>
               </details>
@@ -95,13 +97,18 @@ export default function Header() {
           </li>
           {!loggedIn ? (
             <li onClick={handleLoginClick}>
-              <a className="text-xl">Login</a>
+              <a className="text-xl text-white">Login</a>
             </li>
           ) : (
             <li onClick={handleLogoutClick}>
-              <a className="text-xl">Logout</a>
+              <a className="text-xl text-white">Logout</a>
             </li>
           )}
+          <li>
+            <Link to="/signup" className="text-xl text-white">
+              Signup
+            </Link>
+          </li>
         </ul>
       </div>
 
