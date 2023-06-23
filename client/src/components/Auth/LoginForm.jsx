@@ -28,7 +28,7 @@ export default function LoginForm() {
 
     setFormData({...formData, [name]: value});
   }
-  function handleLogin(event) {}
+  function handleSubmit(event) {}
   // // POST fetch to dispatch
   // fetch(`/new_user`, {
   //   method: "POST",
