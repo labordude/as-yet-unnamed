@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-from flask import Flask, request, session
+from flask import Flask, request, session, abort
 from flask_migrate import Migrate
 from flask_restful import Resource
 from flask_cors import CORS
@@ -80,18 +80,18 @@ class CheckSession(Resource):
 
 class Login(Resource):
     def post(self):
-        session["user_id"] = 1
-        return {"message": ["successful login", session]}, 200
-        # username = request.get_json()["username"]
-        # password = request.get_json()["password"]
+        # session["user_id"] = 1
+        # return {"message": ["successful login", session]}, 200
+        username = request.get_json()["username"]
+        password = request.get_json()["password"]
 
-        # user = User.query.filter(User.username == username).first()
-        # if user:
-        #     if user.authenticate(password):
-        #         session["user_id"] = user.id
-        #         return user.to_dict(), 200
+        user = User.query.filter(User.username == username).first()
+        if user:
+            if user.authenticate(password):
+                session["user_id"] = user.id
+                return user.to_dict(), 200
 
-        # return ({"error": "invalid login"}, 401)
+        return ({"error": "invalid login"}, 401)
 
     pass
 

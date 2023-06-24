@@ -10,8 +10,7 @@ import {
   Textarea,
   Text,
 } from "@chakra-ui/react";
-import bcrypt from "bcryptjs";
-const salt = bcrypt.genSaltSync(10);
+
 YupPassword(Yup);
 const LoginSchema = Yup.object().shape({
   password: Yup.string().password().required(),
@@ -20,6 +19,7 @@ const LoginSchema = Yup.object().shape({
 
 export default function LoginForm({onLogin}) {
   const [formData, setFormData] = useState({username: "", password: ""});
+  const [errors, setErrors] = useState([]);
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   function handleChange(event) {
@@ -28,20 +28,22 @@ export default function LoginForm({onLogin}) {
 
     setFormData({...formData, [name]: value});
   }
-  function handleSubmit(event) {}
-  // // POST fetch to dispatch
-  // fetch(`/new_user`, {
-  //   method: "POST",
-  //   headers: {"Content-Type": "application/json"},
-  //   body: JSON.stringify(values),
-  // })
-  //   .then(resp => resp.json())
-  //   .then(newProfile => {
-  //     console.log(newProfile.id);
-  //     // ensure we update the local cookie before sending off other data
-  //   })
-  //   .catch(error => console.log("error", error.message));
-
+  function handleSubmit(event) {
+    event.preventDefault();
+    // // POST fetch to dispatch
+    fetch(`/login`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(formData),
+    })
+      .then(resp => resp.json())
+      .then(user => {
+        onLogin(user);
+        console.log("logged in");
+        // ensure we update the local cookie before sending off other data
+      })
+      .catch(error => setErrors(error.errors));
+  }
   // Pass the useFormik() hook initial form values, a validate function that will be called when
   // form values change or fields are blurred, and a submit function that will
   // be called when the form is submitted

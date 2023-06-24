@@ -10,8 +10,8 @@ import {
   Textarea,
   Text,
 } from "@chakra-ui/react";
-import bcrypt from "bcryptjs";
-const salt = bcrypt.genSaltSync(10);
+// import bcrypt from "bcryptjs";
+// const salt = bcrypt.genSaltSync(10);
 YupPassword(Yup);
 const ProfileSchema = Yup.object().shape({
   name: Yup.string().min(2, "Too Short!").max(50, "Too Long!"),
@@ -219,7 +219,7 @@ export default function SignUpForm({onLogin}) {
 }
 function Success({newUser}) {
   const {name, username, password, email, bio, pfp_image} = newUser;
-  const hashBrowns = bcrypt.hashSync(password, salt);
+  // const hashBrowns = bcrypt.hashSync(password, salt);
   return (
     <div>
       Successfully created:
