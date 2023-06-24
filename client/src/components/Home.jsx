@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 
 import Login from "./Auth/Login";
+import Feed from "./Feed";
 import {useOutletContext} from "react-router-dom";
 function Home() {
   const [message, setMessage] = useState({});
@@ -12,8 +13,7 @@ function Home() {
         <Login onLogin={setUser} />
       ) : (
         <>
-          Home<p>{errors || message.message} This text comes from the API.</p>
-          <h1 className="text-3xl font-bold underline">Hello world!</h1>
+          <Feed />
         </>
       )}
 

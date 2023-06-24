@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
-export default function Header({onLogout,user}) {
+export default function Header({onLogout, user}) {
   function handleLogoutClick() {
     // POST fetch to dispatch
     fetch(`/logout`, {
@@ -80,21 +80,23 @@ export default function Header({onLogout,user}) {
             ) : null}
           </li>
           {!user ? (
-            <li>
-              <Link to="/login" className="text-xl text-white">
-                Login
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link to="/login" className="text-xl text-white">
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link to="/signup" className="text-xl text-white">
+                  Signup
+                </Link>
+              </li>
+            </>
           ) : (
             <li onClick={handleLogoutClick}>
               <a className="text-xl text-white">Logout</a>
             </li>
           )}
-          <li>
-            <Link to="/signup" className="text-xl text-white">
-              Signup
-            </Link>
-          </li>
         </ul>
       </div>
       {user ? (

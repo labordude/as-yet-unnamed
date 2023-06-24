@@ -10,7 +10,7 @@ function App() {
     fetch("/check_session")
       .then(response => {
         if (response.ok) {
-          // response.text().then(text => console.log(text));
+          // console.log(response.text());
           response.json().then(user => setUser(user));
         }
       })

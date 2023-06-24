@@ -219,7 +219,7 @@ export default function SignUpForm({onLogin}) {
 }
 function Success({newUser}) {
   const {name, username, password, email, bio, pfp_image} = newUser;
-  // const hashBrowns = bcrypt.hashSync(password, salt);
+  
   return (
     <div>
       Successfully created:

@@ -1,4 +1,4 @@
-// React 
+// React
 import React from "react";
 // React DOM
 import ReactDOM from "react-dom/client";
@@ -20,6 +20,7 @@ import "vite/modulepreload-polyfill";
 import Home from "./components/Home.jsx";
 import SignUpForm from "./components/Auth/SignUpForm.jsx";
 import Login from "./components/Auth/Login.jsx";
+import Feed from "./components/Feed.jsx";
 // React Router
 const router = createBrowserRouter([
   {
@@ -36,6 +37,11 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+        errorElement: <div>Whoops!</div>,
+      },
+      {
+        path: "/feed",
+        element: <Feed />,
         errorElement: <div>Whoops!</div>,
       },
     ],

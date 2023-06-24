@@ -71,6 +71,7 @@ class CheckSession(Resource):
     def get(self):
         try:
             user = User.query.filter(User.id == session.get("user_id")).first()
+            print(f'Current user is: {session.get("user_id")}')
             return user.to_dict(), 200
         except:
             return ({"error": "unauthorized"}, 401)
@@ -112,36 +113,57 @@ class Games(Resource):
             "https://api.rawg.io/api/games?key=3eba459197494e8993ce88773ab7736c"
         )
         return (response.json(), 200)
-    
+
     def post(self):
         data = request.get_json()
         try:
             new_game = Game(
-                name = data.get('name'),
-                description = data.get('description'),
-                platform = data.get('platform'),
-                background_image = data.get('background_image'),
-                release_date = data.get('release_date')
+                name=data.get("name"),
+                description=data.get("description"),
+                platform=data.get("platform"),
+                background_image=data.get("background_image"),
+                release_date=data.get("release_date"),
             )
             db.session.add(new_game)
             db.session.commit()
 
-            return new_game.to_dict(only=("name", "description", "platform", "background_image", "release_date")), 201
+            return (
+                new_game.to_dict(
+                    only=(
+                        "name",
+                        "description",
+                        "platform",
+                        "background_image",
+                        "release_date",
+                    )
+                ),
+                201,
+            )
         except:
             return {"error": "400: Validation error"}, 400
-    
+
 
 class GamesById(Resource):
     def get(self, id):
         try:
             game = (
-                Game.query.filter(Game.id == id).first()
-                .to_dict(only=("id", "name", "description", "platform", "background_image","release_date"))
+                Game.query.filter(Game.id == id)
+                .first()
+                .to_dict(
+                    only=(
+                        "id",
+                        "name",
+                        "description",
+                        "platform",
+                        "background_image",
+                        "release_date",
+                    )
+                )
             )
             return game, 200
         except:
             return {"error": "404: Game not found"}, 404
-    
+
     def patch(self, id):
         data = request.get_json()
         game = Game.query.filter(Game.id == id).first()
@@ -150,17 +172,30 @@ class GamesById(Resource):
         for attr in data:
             if attr == "release_date":
                 setattr(
-                    game, 
+                    game,
                     attr,
                     datetime.datetime.strptime(
-                    data.get('release_date'), '%Y-%m-%d').date(),
+                        data.get("release_date"), "%Y-%m-%d"
+                    ).date(),
                 )
             else:
                 setattr(game, attr, data.get(attr))
         try:
             db.session.add(game)
             db.session.commit()
-            return game.to_dict(only=("id", "name", "description", "platform", "background_image","release_date")), 201
+            return (
+                game.to_dict(
+                    only=(
+                        "id",
+                        "name",
+                        "description",
+                        "platform",
+                        "background_image",
+                        "release_date",
+                    )
+                ),
+                201,
+            )
         except:
             return {"error": "Unable to update game"}, 400
 
@@ -175,55 +210,81 @@ class GamesById(Resource):
 
 class Reviews(Resource):
     def get(self):
-        reviews = [r.to_dict(only=("body", "rating", "created_at", "user_id", "game_id")) 
-                    for r in Review.query.all()]
+        reviews = [
+            r.to_dict(
+                only=("body", "rating", "created_at", "user_id", "game_id")
+            )
+            for r in Review.query.all()
+        ]
         return reviews, 200
-    
+
     def post(self):
         data = request.get_json()
         try:
             new_review = Review(
-                body = data.get('review'),
-                rating = data.get('rating'),
-                user_id = data.get('user_id'),
-                game_id = data.get('game_id'),
-                created_at = data.get('created_at'),
+                body=data.get("review"),
+                rating=data.get("rating"),
+                user_id=data.get("user_id"),
+                game_id=data.get("game_id"),
+                created_at=data.get("created_at"),
             )
             db.session.add(new_review)
             db.session.commit()
 
-            return new_review.to_dict(only=("id", "body", "rating", "user_id", "game_id", "created_at")), 201
+            return (
+                new_review.to_dict(
+                    only=(
+                        "id",
+                        "body",
+                        "rating",
+                        "user_id",
+                        "game_id",
+                        "created_at",
+                    )
+                ),
+                201,
+            )
         except:
             return {"error": "Unable to post review"}, 400
 
-   
+
 class ReviewsById(Resource):
     def get(self, id):
-        review = Review.query.filter_by(id=id).first().to_dict(only=("id", "body", "rating", "user_id", "game_id"))
+        review = (
+            Review.query.filter_by(id=id)
+            .first()
+            .to_dict(only=("id", "body", "rating", "user_id", "game_id"))
+        )
         return review, 200
-        
+
     def patch(self, id):
         data = request.get_json()
         review = Review.query.filter(Review.id == id).first()
-        if not review: 
+        if not review:
             return {"error": "404: Review not found"}, 404
         for attr in data:
             if attr == "updated_at":
                 setattr(
-                    review, 
-                    attr, 
+                    review,
+                    attr,
                     datetime.datetime.strptime(
-                    data.get("updated_at"), "%Y-%m-%d").date(),
+                        data.get("updated_at"), "%Y-%m-%d"
+                    ).date(),
                 )
             else:
                 setattr(review, attr, data.get(attr))
         try:
             db.session.add(review)
             db.session.commit()
-            return review.to_dict(only=("body", "rating", "updated_at", "user_id", "game_id")), 201
+            return (
+                review.to_dict(
+                    only=("body", "rating", "updated_at", "user_id", "game_id")
+                ),
+                201,
+            )
         except:
             return {"error": "Unable to update review"}, 400
-        
+
     def delete(self, id):
         review = Review.query.filter(Review.id == id).first()
         if not review:
@@ -231,12 +292,15 @@ class ReviewsById(Resource):
         db.session.delete(review)
         db.session.commit()
         return {}, 204
-    
+
 
 class Users(Resource):
     def get(self):
         try:
-            users = [u.to_dict(only=("id", "username", "pfp_image", "active")) for u in User.query.all()]
+            users = [
+                u.to_dict(only=("id", "username", "pfp_image", "active"))
+                for u in User.query.all()
+            ]
             return users, 200
         except:
             return {"error": "Bad request"}, 400
@@ -247,12 +311,23 @@ class UsersById(Resource):
         try:
             user = (
                 User.query.filter(User.id == id)
-                .first().to_dict(only=("id", "username", "name", "email","pfp_image", "bio","active"))
+                .first()
+                .to_dict(
+                    only=(
+                        "id",
+                        "username",
+                        "name",
+                        "email",
+                        "pfp_image",
+                        "bio",
+                        "active",
+                    )
+                )
             )
             return user, 200
         except:
             return {"error": "404: User not found"}, 404
-    
+
     def patch(self, id):
         data = request.get_json()
         user = User.query.filter(User.id == id).first()
@@ -266,7 +341,7 @@ class UsersById(Resource):
             return user.to_dict(), 201
         except:
             return {"error": "Unable to update user"}, 400
-    
+
     def delete(self, id):
         user = User.query.filter(User.id == id).first()
         if not user:
