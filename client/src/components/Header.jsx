@@ -1,23 +1,7 @@
 import React, {useState} from "react";
 import {Link} from "react-router-dom";
-export default function Header() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  function handleLogin() {
-    // POST fetch to dispatch
-    fetch(`/login`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-    })
-      .then(resp => resp.json())
-      .then(newstring => {
-        console.log(newstring);
-        if (newstring.message[0] === "successful login") {
-          setLoggedIn(prevLoggedIn => !prevLoggedIn);
-        }
-      })
-      .catch(error => console.log("error", error.message));
-  }
-  function handleLogout() {
+export default function Header({onLogout,user}) {
+  function handleLogoutClick() {
     // POST fetch to dispatch
     fetch(`/logout`, {
       method: "DELETE",
@@ -25,7 +9,7 @@ export default function Header() {
     })
       .then(resp => {
         if (resp.ok) {
-          setLoggedIn(prevLoggedIn => !prevLoggedIn);
+          onLogout(null);
         }
       })
       .catch(error => console.log("error", error.message));
@@ -81,7 +65,7 @@ export default function Header() {
             <a className="text-xl text-white">Home</a>
           </li>
           <li tabIndex={0}>
-            {loggedIn ? (
+            {user ? (
               <details>
                 <summary className="text-xl">Menu</summary>
                 <ul className="p-2">
@@ -95,7 +79,7 @@ export default function Header() {
               </details>
             ) : null}
           </li>
-          {!loggedIn ? (
+          {!user ? (
             <li>
               <Link to="/login" className="text-xl text-white">
                 Login
@@ -113,40 +97,43 @@ export default function Header() {
           </li>
         </ul>
       </div>
+      {user ? (
+        <div className="navbar navbar-end">
+          <div className="form-control">
+            <input
+              type="text"
+              placeholder="Search"
+              className="input input-bordered w-24 md:w-auto"
+            />
+          </div>
 
-      <div className="navbar navbar-end">
-        <div className="form-control">
-          <input
-            type="text"
-            placeholder="Search"
-            className="input input-bordered w-24 md:w-auto"
-          />
+          <div className="dropdown dropdown-end mx-4">
+            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+              <div className="w-16 rounded-full">
+                <img src="https://placekitten.com/100/100" />
+              </div>
+            </label>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+              <li>
+                <a className="justify-between" href="/profile">
+                  Profile
+                  <span className="badge">New</span>
+                </a>
+              </li>
+              <li>
+                <a>Settings</a>
+              </li>
+              <li>
+                <a>Logout</a>
+              </li>
+            </ul>
+          </div>
         </div>
-
-        <div className="dropdown dropdown-end mx-4">
-          <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-            <div className="w-16 rounded-full">
-              <img src="https://placekitten.com/100/100" />
-            </div>
-          </label>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-            <li>
-              <a className="justify-between" href="/profile">
-                Profile
-                <span className="badge">New</span>
-              </a>
-            </li>
-            <li>
-              <a>Settings</a>
-            </li>
-            <li>
-              <a>Logout</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 }

@@ -10,16 +10,19 @@ function App() {
     fetch("/check_session")
       .then(response => {
         if (response.ok) {
+          // response.text().then(text => console.log(text));
           response.json().then(user => setUser(user));
         }
       })
       .catch(error => console.log(error));
   }, []);
-
+  function onLogout(loggedOut) {
+    setUser(loggedOut);
+  }
   return (
     <>
       <main>
-        <Header />
+        <Header user={user} onLogout={onLogout} />
         <Outlet context={[user, setUser]} />
       </main>
     </>
