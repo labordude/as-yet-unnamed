@@ -1,17 +1,26 @@
+// React 
 import React from "react";
+// React DOM
 import ReactDOM from "react-dom/client";
+// React
 import App from "./App.jsx";
+// chakra UI
 import {ChakraProvider} from "@chakra-ui/react";
+// tailwind
 import "./index.css";
+// React Router
 import {
   BrowserRouter,
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
+// vite
 import "vite/modulepreload-polyfill";
+// componenets and endpoints
 import Home from "./components/Home.jsx";
 import SignUpForm from "./components/Auth/SignUpForm.jsx";
 import Login from "./components/Auth/Login.jsx";
+// React Router
 const router = createBrowserRouter([
   {
     path: "/",
