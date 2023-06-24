@@ -1,7 +1,5 @@
 import React, {useState} from "react";
-import {useFormik} from "formik";
-import * as Yup from "yup";
-import YupPassword from "yup-password";
+
 import {
   Input,
   Button,
@@ -10,12 +8,6 @@ import {
   Textarea,
   Text,
 } from "@chakra-ui/react";
-
-YupPassword(Yup);
-const LoginSchema = Yup.object().shape({
-  password: Yup.string().password().required(),
-  username: Yup.string().min(6, "Too short").required("Required"),
-});
 
 export default function LoginForm({onLogin}) {
   const [formData, setFormData] = useState({username: "", password: ""});
@@ -44,9 +36,6 @@ export default function LoginForm({onLogin}) {
       })
       .catch(error => setErrors(error.errors));
   }
-  // Pass the useFormik() hook initial form values, a validate function that will be called when
-  // form values change or fields are blurred, and a submit function that will
-  // be called when the form is submitted
 
   return (
     <form

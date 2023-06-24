@@ -6,21 +6,6 @@ function Home() {
   const [message, setMessage] = useState({});
   const [errors, setErrors] = useState([]);
   const [user, setUser] = useOutletContext();
-  // useEffect(() => {
-  //   fetch("/home")
-  //     .then(response => {
-  //       if (response.ok) {
-  //         return response.json();
-  //       } else {
-  //         throw response.statusText;
-  //       }
-  //     })
-  //     .then(message => {
-  //       setMessage(message);
-  //       console.log(message.message);
-  //     })
-  //     .catch(error => setErrors(error));
-  // }, []);
   return (
     <div className="px-4">
       {!user ? (
