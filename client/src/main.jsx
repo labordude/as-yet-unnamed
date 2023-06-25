@@ -22,6 +22,7 @@ import Home from "./pages/home";
 import SignUpForm from "./components/Auth/SignUpForm.jsx";
 import Login from "./pages/login";
 import Feed from "./components/Feed.jsx";
+import Communities from "./pages/communities.jsx";
 // React Router
 const router = createBrowserRouter([
   {
@@ -41,8 +42,8 @@ const router = createBrowserRouter([
         errorElement: <div>Whoops!</div>,
       },
       {
-        path: "/feed",
-        element: <Feed />,
+        path: "/communities",
+        element: <Communities />,
         errorElement: <div>Whoops!</div>,
       },
     ],

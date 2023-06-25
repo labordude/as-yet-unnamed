@@ -1,6 +1,11 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
+import {getCommunities} from "../features/ui/helpers";
 export default function Header({onLogout, user}) {
+  const [communities, setCommunities] = useState([]);
+  useEffect(() => {
+    getCommunities().then(data => setCommunities(data));
+  }, []);
   function handleLogoutClick() {
     // POST fetch to dispatch
     fetch(`/logout`, {
@@ -41,17 +46,11 @@ export default function Header({onLogout, user}) {
             </li>
             <li>
               <a>Games</a>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
             </li>
             <li>
-              <a>Social</a>
+              <Link to="/communities" className="text-xl text-white">
+                Communities
+              </Link>
             </li>
             <li>
               <a>Threads</a>
@@ -69,21 +68,13 @@ export default function Header({onLogout, user}) {
           </li>
           {user ? (
             <>
-              <li tabIndex={0}>
-                <details>
-                  <summary className="text-xl text-white">Games</summary>
-                  <ul className="p-2">
-                    <li>
-                      <a className="text-xl">Platforms</a>
-                    </li>
-                    <li>
-                      <a className="text-xl">Recent Releases</a>
-                    </li>
-                  </ul>
-                </details>
-              </li>{" "}
               <li>
-                <a className="text-xl text-white">Social</a>
+                <a className="text-xl text-white">Games</a>
+              </li>
+              <li>
+                <Link to="/communities" className="text-xl text-white">
+                  Communities
+                </Link>
               </li>
               <li>
                 <a className="text-xl text-white">Threads</a>

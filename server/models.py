@@ -184,7 +184,7 @@ class Community(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-
+    image = db.Column(db.String)
     # games = db.relationship("Game", back_populates="community")
     community_users = db.relationship(
         "CommunityUser",
