@@ -40,7 +40,7 @@ export default function Header({onLogout, user}) {
               <a className="text-xl">Home</a>
             </li>
             <li>
-              <a>Menu</a>
+              <a>Games</a>
               <ul className="p-2">
                 <li>
                   <a>Submenu 1</a>
@@ -51,7 +51,10 @@ export default function Header({onLogout, user}) {
               </ul>
             </li>
             <li>
-              <a>Item 3</a>
+              <a>Social</a>
+            </li>
+            <li>
+              <a>Threads</a>
             </li>
           </ul>
         </div>
@@ -64,21 +67,29 @@ export default function Header({onLogout, user}) {
           <li>
             <a className="text-xl text-white">Home</a>
           </li>
-          <li tabIndex={0}>
-            {user ? (
-              <details>
-                <summary className="text-xl">Menu</summary>
-                <ul className="p-2">
-                  <li>
-                    <a className="text-xl text-white">Submenu 1</a>
-                  </li>
-                  <li>
-                    <a className="text-xl text-white">Submenu 2</a>
-                  </li>
-                </ul>
-              </details>
-            ) : null}
-          </li>
+          {user ? (
+            <>
+              <li tabIndex={0}>
+                <details>
+                  <summary className="text-xl text-white">Games</summary>
+                  <ul className="p-2">
+                    <li>
+                      <a className="text-xl">Platforms</a>
+                    </li>
+                    <li>
+                      <a className="text-xl">Recent Releases</a>
+                    </li>
+                  </ul>
+                </details>
+              </li>{" "}
+              <li>
+                <a className="text-xl text-white">Social</a>
+              </li>
+              <li>
+                <a className="text-xl text-white">Threads</a>
+              </li>
+            </>
+          ) : null}
           {!user ? (
             <>
               <li>

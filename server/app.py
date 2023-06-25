@@ -89,7 +89,9 @@ class Login(Resource):
         user = User.query.filter(User.username == username).first()
         if user:
             if user.authenticate(password):
+                print("successful login")
                 session["user_id"] = user.id
+                print(f"successfully logged in: {user.id}")
                 return user.to_dict(), 200
 
         return ({"error": "invalid login"}, 401)

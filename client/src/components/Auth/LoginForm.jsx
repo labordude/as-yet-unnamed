@@ -8,7 +8,7 @@ import {
   Textarea,
   Text,
 } from "@chakra-ui/react";
-import { redirect } from "react-router-dom";
+import {redirect} from "react-router-dom";
 
 export default function LoginForm({onLogin}) {
   const [formData, setFormData] = useState({username: "", password: ""});
@@ -29,12 +29,15 @@ export default function LoginForm({onLogin}) {
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(formData),
     })
-      .then(resp => resp.json())
-      .then(user => {
-        onLogin(user);
-          console.log("logged in");
-          redirect('/feed')
-        // ensure we update the local cookie before sending off other data
+      .then(resp => {
+        console.log(resp);
+        if (resp.status === 200) {
+          resp.json().then(user => {
+            onLogin(user);
+            redirect("/feed");
+            // ensure we update the local cookie before sending off other data
+          });
+        }
       })
       .catch(error => setErrors(error.errors));
   }

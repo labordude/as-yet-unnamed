@@ -17,9 +17,9 @@ import {
 // vite
 import "vite/modulepreload-polyfill";
 // componenets and endpoints
-import Home from "./components/Home.jsx";
+import Home from "./pages/home";
 import SignUpForm from "./components/Auth/SignUpForm.jsx";
-import Login from "./components/Auth/Login.jsx";
+import Login from "./pages/login";
 import Feed from "./components/Feed.jsx";
 // React Router
 const router = createBrowserRouter([

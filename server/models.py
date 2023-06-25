@@ -164,13 +164,17 @@ class Review(db.Model, SerializerMixin):
 
     @validates("body")
     def validate_body(self, key, body):
-        if not body or 1 <= len(body) <= 250:
+        if not body or len(body) < 1:
             raise ValueError("Length of review must be at least 1 character")
         return body
 
     @validates("rating")
     def validate_rating(self, key, rating):
-        if not rating or not isinstance(rating, int) or 0 <= rating <= 10:
+        if (
+            not rating
+            or not isinstance(rating, int)
+            or not (0 <= rating <= 10)
+        ):
             raise ValueError("Rating must be value between 0 and 10")
         return rating
 
