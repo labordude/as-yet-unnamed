@@ -16,6 +16,7 @@ import {
 } from "react-router-dom";
 // vite
 import "vite/modulepreload-polyfill";
+// clean up and bakc fill anything that is old code
 // componenets and endpoints
 import Home from "./components/Home.jsx";
 import SignUpForm from "./components/Auth/SignUpForm.jsx";
