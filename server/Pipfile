@@ -21,6 +21,7 @@ bcrypt = "*"
 flask-bcrypt = "*"
 email-validator = "*"
 requests = "*"
+igdb-api-v4 = "*"
 
 [dev-packages]
 

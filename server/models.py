@@ -82,7 +82,7 @@ class Game(db.Model, SerializerMixin):
     __tablename__ = "games"
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, unique=True, nullable=False)
+    title = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
     platform = db.Column(db.String, nullable=False)
     page_banner = db.Column(db.String)
@@ -206,3 +206,17 @@ class CommunityUser(db.Model, SerializerMixin):
     user = db.relationship("User", back_populates="community_users")
 
     serialize_rules = ("-user.community_users", "community.community_users")
+
+
+class Platform(db.Model, SerializerMixin):
+    __tablename__ = "platforms"
+    id = db.Column(db.Integer, primary_key=True)
+    platform_id = db.Column(db.Integer, unique=True, nullable=False)
+    name = db.Column(db.String, nullable=False)
+    alternative_name = db.Column(db.String)
+    platform_logo = db.Column(db.String)
+    slug = db.Column(db.String)
+    url = db.Column(db.String)
+    generation = db.Column(db.Integer)
+    platform_family = db.Column(db.Integer)
+    abbreviation = db.Column(db.String)
