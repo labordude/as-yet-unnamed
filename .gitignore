@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 .env-old
+server/config.yml
+.gitignore
+server/gameload.py
