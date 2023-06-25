@@ -1,5 +1,6 @@
 import {defineConfig} from "vite";
 import react from "@vitejs/plugin-react";
+// proxy and api routes need to go/ live 
 
 // https://vitejs.dev/config/
 export default defineConfig({
