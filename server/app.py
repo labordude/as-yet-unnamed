@@ -111,10 +111,11 @@ class Logout(Resource):
 
 class Games(Resource):
     def get(self):
-        response = requests.get(
-            "https://api.rawg.io/api/games?key=3eba459197494e8993ce88773ab7736c"
-        )
-        return (response.json(), 200)
+        # response = requests.get(
+        #     "https://api.rawg.io/api/games?key=3eba459197494e8993ce88773ab7736c"
+        # )
+        games = [game.to_dict() for game in Game.query.all()]
+        return (games, 200)
 
     def post(self):
         data = request.get_json()
@@ -210,6 +211,12 @@ class GamesById(Resource):
         return {}, 204
 
 
+class NewestGames(Resource):
+    def get(self):
+        newest_games = [game.to_dict() for game in Game.query.limit(10).all()]
+        return newest_games, 200
+
+
 class Reviews(Resource):
     def get(self):
         reviews = [
@@ -296,6 +303,14 @@ class ReviewsById(Resource):
         return {}, 204
 
 
+class NewestReviews(Resource):
+    def get(self):
+        newest_reviews = [
+            review.to_dict() for review in Review.query.limit(10).all()
+        ]
+        return newest_reviews, 200
+
+
 class Users(Resource):
     def get(self):
         try:
@@ -353,17 +368,38 @@ class UsersById(Resource):
         return {}, 204
 
 
+# adding Communities and CommunitiesByID endpoint
+class Communities(Resource):
+    def get(self):
+        communities = [
+            community.to_dict() for community in Community.query.all()
+        ]
+        return communities, 200
+
+
+class CommunitiesByID(Resource):
+    def get(self, id):
+        community = Community.query.filter(Community.id == id).first()
+        if not community:
+            return ({"error": "Community not found"}, 404)
+        return community.to_dict(), 200
+
+
+api.add_resource(Communities, "/api/communities")
+api.add_resource(CommunitiesByID, "/communities/<int:id>")
 api.add_resource(Games, "/games")
 api.add_resource(GamesById, "/games/<int:id>")
+api.add_resource(NewestGames, "/newest_games")
 api.add_resource(Reviews, "/reviews")
 api.add_resource(ReviewsById, "/reviews/<int:id>")
+api.add_resource(NewestReviews, "/newest_reviews")
 api.add_resource(Users, "/users")
 api.add_resource(UsersById, "/users/<int:id>")
 api.add_resource(Home, "/", endpoint="home")
 api.add_resource(Signup, "/signup", endpoint="signup")
-api.add_resource(CheckSession, "/check_session", endpoint="check_session")
-api.add_resource(Login, "/login", endpoint="login")
-api.add_resource(Logout, "/logout", endpoint="logout")
+api.add_resource(CheckSession, "/api/check_session", endpoint="check_session")
+api.add_resource(Login, "/api/login", endpoint="login")
+api.add_resource(Logout, "/api/logout", endpoint="logout")
 
 
 if __name__ == "__main__":

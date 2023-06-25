@@ -6,6 +6,12 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
+      "/api": {
+        target: "http://127.0.0.1:5555",
+        changeOrigin: true,
+        secure: false,
+        rewrite: path => path.replace(/^\//, ""),
+      },
       "/home": {
         target: "http://127.0.0.1:5555",
         changeOrigin: true,
@@ -41,6 +47,18 @@ export default defineConfig({
         rewrite: path => path.replace(/^\//, ""),
       },
       "/check_session": {
+        target: "http://127.0.0.1:5555",
+        changeOrigin: true,
+        secure: false,
+        rewrite: path => path.replace(/^\//, ""),
+      },
+      "/newest_reviews": {
+        target: "http://127.0.0.1:5555",
+        changeOrigin: true,
+        secure: false,
+        rewrite: path => path.replace(/^\//, ""),
+      },
+      "/newest_games": {
         target: "http://127.0.0.1:5555",
         changeOrigin: true,
         secure: false,

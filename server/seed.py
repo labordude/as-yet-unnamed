@@ -8,66 +8,79 @@ from faker import Faker
 # db.init_app(app)
 fake = Faker()
 
-# with app.app_context():
-# print("Deleting existing platforms...")
-# Platform.query.delete()
-# print("Deleting existing games...")
-# Game.query.delete()
+with app.app_context():
+    # print("Deleting existing platforms...")
+    # Platform.query.delete()
+    # print("Deleting existing games...")
+    # Game.query.delete()
+    Community.query.delete()
+
+# def create_users():
+#     with app.app_context():
+#         users = []
+#         usernames = [fake.unique.user_name() for i in range(50)]
+#         for i in range(50):
+#             password = fake.password(
+#                 length=10,
+#                 special_chars=True,
+#                 upper_case=True,
+#                 lower_case=True,
+#                 digits=True,
+#             )
+#             user = User(
+#                 name=fake.name(),
+#                 username=usernames[i],
+#                 email=fake.email(),
+#                 bio=fake.paragraph(nb_sentences=3, variable_nb_sentences=True),
+#                 pfp_image="https://placekitten.com/150/150",
+#             )
+#             user.password_hash = password
+#             users.append(user)
+#         db.session.add_all(users)
+#         db.session.commit()
+#     return users
 
 
-def create_users():
-    with app.app_context():
-        users = []
-        usernames = [fake.unique.user_name() for i in range(50)]
-        for i in range(50):
-            password = fake.password(
-                length=10,
-                special_chars=True,
-                upper_case=True,
-                lower_case=True,
-                digits=True,
-            )
-            user = User(
-                name=fake.name(),
-                username=usernames[i],
-                email=fake.email(),
-                bio=fake.paragraph(nb_sentences=3, variable_nb_sentences=True),
-                pfp_image="https://placekitten.com/150/150",
-            )
-            user.password_hash = password
-            users.append(user)
-        db.session.add_all(users)
-        db.session.commit()
-    return users
+# def create_reviews():
+#     with app.app_context():
+#         users = [user.id for user in User.query.all()]
+#         games = [game.id for game in Game.query.all()]
+#         reviews = []
 
-
-def create_reviews():
-    with app.app_context():
-        users = [user.id for user in User.query.all()]
-        games = [game.id for game in Game.query.all()]
-        reviews = []
-
-        for i in range(500):
-            review = Review(
-                body=fake.paragraph(
-                    nb_sentences=5, variable_nb_sentences=False
-                ),
-                rating=fake.random_int(min=1, max=10),
-                user_id=fake.random_element(elements=users),
-                game_id=fake.random_element(elements=games),
-            )
-            reviews.append(review)
-        db.session.add_all(reviews)
-        db.session.commit()
-    return reviews
+#         for i in range(500):
+#             review = Review(
+#                 body=fake.paragraph(
+#                     nb_sentences=5, variable_nb_sentences=False
+#                 ),
+#                 rating=fake.random_int(min=1, max=10),
+#                 user_id=fake.random_element(elements=users),
+#                 game_id=fake.random_element(elements=games),
+#             )
+#             reviews.append(review)
+#         db.session.add_all(reviews)
+#         db.session.commit()
+#     return reviews
 
 
 def create_communities():
     with app.app_context():
-        community_list = ["Playstation", "Nintendo", "XBox", "PC", "Mobile"]
+        Community.query.delete()
+        community_list = [
+            {
+                "name": "Playstation",
+                "image": "./images/playstation_logo.svg",
+            },
+            {"name": "Nintendo", "image": "./images/nintendo_logo.svg"},
+            {"name": "XBox", "image": "./images/xbox_logo.svg"},
+            {"name": "PC", "image": "./images/pc_gaming.svg"},
+            {"name": "Mobile", "image": "./images/mobile_gaming.png"},
+        ]
 
         for i in range(len(community_list)):
-            community = Community(name=community_list[i])
+            community = Community(
+                name=community_list[i]["name"],
+                image=community_list[i]["image"],
+            )
             db.session.add(community)
             db.session.commit()
 
@@ -137,7 +150,7 @@ if __name__ == "__main__":
     #     print("Seeding games...")
     #     games = create_games(rows)
     #     print("Complete!")
-    
+
     print("loading communities")
     create_communities()
     print("communities loaded")
