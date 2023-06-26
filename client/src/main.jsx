@@ -24,7 +24,9 @@ import Login from "./pages/login";
 import Feed from "./components/Feed.jsx";
 import Communities from "./pages/communities.jsx";
 import Games from "./pages/games.jsx";
+import Game, {loader as gameLoader} from "./pages/game.jsx";
 import Social from "./pages/social.jsx";
+import CommunityCard from "./components/community-card.jsx";
 // React Router
 const router = createBrowserRouter([
   {
@@ -49,6 +51,12 @@ const router = createBrowserRouter([
         errorElement: <div>Whoops!</div>,
       },
       {
+        path: "/games/:id",
+        element: <Game />,
+        loader: gameLoader,
+        errorElement: <div>Whoops!</div>,
+      },
+      {
         path: "/games",
         element: <Games />,
         errorElement: <div>Whoops!</div>,
@@ -56,6 +64,11 @@ const router = createBrowserRouter([
       {
         path: "/social",
         element: <Social />,
+        errorElement: <div>Whoops!</div>,
+      },
+      {
+        path: "/communities/:community",
+        element: <Communities />,
         errorElement: <div>Whoops!</div>,
       },
     ],

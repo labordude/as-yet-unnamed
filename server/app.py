@@ -8,6 +8,7 @@ from flask import Flask, request, session, abort, flash, redirect, url_for
 from flask_migrate import Migrate
 from flask_restful import Resource
 from flask_cors import CORS
+from flask_paginate import Pagination
 from sqlalchemy.exc import IntegrityError
 from config import db, api, app
 from models import User, Game, Review, Community, followers
@@ -21,6 +22,7 @@ from flask_login import login_user
 from flask_login import logout_user
 from flask_wtf import FlaskForm
 from wtforms import SubmitField
+import jsonify
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -36,6 +38,8 @@ class Followers(Resource):
         return user_followers.to_dict(), 200
 
 api.add_resource(Followers, "/api/users/<int:id>/followers")
+
+
 
 class Following(Resource):
     def get(self, id):
@@ -179,8 +183,20 @@ class Games(Resource):
         # response = requests.get(
         #     "https://api.rawg.io/api/games?key=3eba459197494e8993ce88773ab7736c"
         # )
-        games = [game.to_dict() for game in Game.query.all()]
-        return (games, 200)
+        page = int(request.args.get("page", 1))
+        per_page = 15
+        total = Game.query.count()
+        games = Game.query.order_by(Game.release_date.desc())
+        games = games.paginate()
+
+        return {
+            "games": [game.to_dict() for game in games.items],
+            "total": games.total,
+            "has_next": games.has_next,
+            "has_prev": games.has_prev,
+            "page": page,
+            "per_page": per_page,
+        }, 200
 
     def post(self):
         data = request.get_json()

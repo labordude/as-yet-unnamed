@@ -23,6 +23,7 @@ email-validator = "*"
 requests = "*"
 igdb-api-v4 = "*"
 faker = "*"
+
 flask-login = "*"
 flask-ext = "*"
 flask-wtf = "*"

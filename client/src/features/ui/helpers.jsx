@@ -29,3 +29,23 @@ export async function getCommunities() {
     })
     .catch(error => setErrors(error));
 }
+
+export async function getGames(page = 1) {
+  return fetch(`/api/games?page=${page}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
+
+export async function getGamesByID(id) {
+  return fetch(`/api/games/${id}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
