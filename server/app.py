@@ -117,7 +117,7 @@ class Games(Resource):
         data = request.get_json()
         try:
             new_game = Game(
-                name=data.get("name"),
+                title=data.get("title"),
                 description=data.get("description"),
                 platform=data.get("platform"),
                 background_image=data.get("background_image"),
@@ -129,7 +129,7 @@ class Games(Resource):
             return (
                 new_game.to_dict(
                     only=(
-                        "name",
+                        "title",
                         "description",
                         "platform",
                         "background_image",
@@ -151,7 +151,7 @@ class GamesById(Resource):
                 .to_dict(
                     only=(
                         "id",
-                        "name",
+                        "title",
                         "description",
                         "platform",
                         "background_image",
@@ -186,7 +186,7 @@ class GamesById(Resource):
                 game.to_dict(
                     only=(
                         "id",
-                        "name",
+                        "title",
                         "description",
                         "platform",
                         "background_image",
