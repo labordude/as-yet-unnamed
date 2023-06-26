@@ -124,7 +124,10 @@ class Game(db.Model, SerializerMixin):
     )
     users = association_proxy("reviews", "user")
 
-    serialize_rules = ("-reviews.game", "-updated_at")
+    game_platforms = db.relationship("PlatformGames", back_populates="game")
+    platforms = association_proxy("game_platforms", "game")
+
+    serialize_rules = ("-reviews.game", "-updated_at", "-platforms.game")
 
     @validates("title")
     def validate_title(self, key, title):
@@ -243,6 +246,7 @@ class CommunityUser(db.Model, SerializerMixin):
 
 class Platform(db.Model, SerializerMixin):
     __tablename__ = "platforms"
+
     id = db.Column(db.Integer, primary_key=True)
     platform_id = db.Column(db.Integer, unique=True, nullable=False)
     name = db.Column(db.String, nullable=False)
@@ -253,6 +257,24 @@ class Platform(db.Model, SerializerMixin):
     generation = db.Column(db.Integer)
     platform_family = db.Column(db.Integer)
     abbreviation = db.Column(db.String)
+
+    platform_games = db.relationship("PlatformGames", back_populates="platform")
+    games = association_proxy("platform_games", "game")
+
+    serialize_rules = ("-platform_games.platform")
+
+class PlatformGames(db.Model, SerializerMixin):
+    __tablename__ = 'platform_games'
+
+    id = db.Column(db.Integer, primary_key=True)
+    game_id = db.Column(db.Integer, db.ForeignKey("games.id"), nullable=False)
+    game = db.relationship("Game", back_populates="game_platforms")
+
+    platform_id = db.Column(db.Integer, db.ForeignKey("platforms.id"), nullable=False)
+    platform = db.relationship("Platform", back_populates="platform_games")
+
+    serialize_rules = ("-game.game_platforms", "-platform.platform_games")
+
 
 
 # class Thread(db.Model, SerializerMixin):
