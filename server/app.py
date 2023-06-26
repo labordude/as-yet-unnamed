@@ -8,7 +8,7 @@ from flask import Flask, request, session, abort, flash, redirect, url_for
 from flask_migrate import Migrate
 from flask_restful import Resource
 from flask_cors import CORS
-from flask_paginate import Pagination
+# from flask_paginate import Pagination
 from sqlalchemy.exc import IntegrityError
 from config import db, api, app
 from models import User, Game, Review, Community, followers
@@ -22,7 +22,7 @@ from flask_login import login_user
 from flask_login import logout_user
 from flask_wtf import FlaskForm
 from wtforms import SubmitField
-import jsonify
+# import jsonify
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -469,6 +469,9 @@ class CommunitiesByID(Resource):
         if not community:
             return ({"error": "Community not found"}, 404)
         return community.to_dict(), 200
+    
+
+# add routes for platform games?
 
 
 api.add_resource(Communities, "/api/communities")
