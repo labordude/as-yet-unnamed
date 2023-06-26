@@ -29,6 +29,8 @@ class User(db.Model, SerializerMixin):
     )
     games = association_proxy("reviews", "game")
 
+    # followers = db.relationship("Follower", back_populates="user")
+
     community_users = db.relationship(
         "CommunityUser", back_populates="user", cascade="all,delete-orphan"
     )
@@ -226,6 +228,19 @@ class Platform(db.Model, SerializerMixin):
     abbreviation = db.Column(db.String)
 
 
-class Thread(db.Model, SerializerMixin):
-    __tablename__ = "threads"
-    id = db.Column(db.Integer, primary_key=True)
+# class Thread(db.Model, SerializerMixin):
+#     __tablename__ = "threads"
+#     id = db.Column(db.Integer, primary_key=True)
+
+
+# class Follower(db.Model, SerializerMixin):
+#     __tablename__ = "followers"
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+#     follower_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+#     user = db.relationship("User", back_populates="followers")
+    
+#     serialize_rules = ("-user.followers")
+    

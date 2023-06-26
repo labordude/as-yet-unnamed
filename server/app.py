@@ -385,6 +385,18 @@ class CommunitiesByID(Resource):
             return ({"error": "Community not found"}, 404)
         return community.to_dict(), 200
 
+# class Followers(Resource):
+#     def get(self, id):
+#         followers = Follower.query.filter(Follower.user_id == id).all()
+#         if not followers:
+#             return ({"error": "Followers not found"}, 404)
+#         return followers.to_dict(), 200
+
+#     # def post(self, id):
+#     #     data = request.get_json()
+#     #     new_follower = 
+        
+
 
 api.add_resource(Communities, "/api/communities")
 api.add_resource(CommunitiesByID, "/api/communities/<int:id>")
