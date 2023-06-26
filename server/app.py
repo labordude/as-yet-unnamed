@@ -4,18 +4,89 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-from flask import Flask, request, session, abort
+from flask import Flask, request, session, abort, flash, redirect, url_for
 from flask_migrate import Migrate
 from flask_restful import Resource
 from flask_cors import CORS
 from flask_paginate import Pagination
 from sqlalchemy.exc import IntegrityError
 from config import db, api, app
-from models import User, Game, Review, Community
+from models import User, Game, Review, Community, followers
 import requests
 import datetime
+from flask_login import LoginManager
+from flask_login import UserMixin
+from flask_login import current_user
+from flask_login import login_required
+from flask_login import login_user
+from flask_login import logout_user
+from flask_wtf import FlaskForm
+from wtforms import SubmitField
 import jsonify
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+class EmptyForm(FlaskForm):
+    submit = SubmitField('Submit')
+
+class Followers(Resource):
+    def get(self, id):
+        user_followers = followers.query.filter(followers.c.follower_id == id).all()
+        if user_followers is None:
+            return ({"error": "Followers not found"}, 404)
+        return user_followers.to_dict(), 200
+
+api.add_resource(Followers, "/api/users/<int:id>/followers")
+
+
+
+class Following(Resource):
+    def get(self, id):
+        user_following = followers.query.filter(followers.c.followed_id == id).all()
+        if user_following is None:
+            return ({"error": "Followings not found"}, 404)
+        return user_following.to_dict(), 200
+    
+api.add_resource(Following, "/api/users/<int:id>/following")
+
+@app.route('/follow/<username>', methods=['POST'])
+@login_required
+def follow(username):
+    form = EmptyForm()
+    if form.validate_on_submit():
+        user = User.query.filter(User.username == username).first()
+        if not user:
+            flash('User {} not found.'.format(username))
+            return redirect(url_for('/api/users/<int:id>'))
+        if user == current_user:
+            flash('You cannot follow yourself!')
+            return redirect(url_for('/api/users/<int:id>', username=username))
+        current_user.follow(user)
+        db.session.commit()
+        flash('You are following {}!'.format(username))
+        return redirect(url_for('/api/users/<int:id>', username=username))
+    else:
+        return redirect(url_for('/api/users/<int:id>')) 
+
+@app.route('/unfollow/<username>', methods=['POST'])
+@login_required
+def unfollow(username):
+    form = EmptyForm()
+    if form.validate_on_submit():
+        user = User.query.filter(User.username == username).first()
+        if not user:
+            flash('User {} not found.'.format(username))
+            return redirect(url_for('/api/users/<int:id>'))
+        if user == current_user:
+            flash('You cannot unfollow yourself!')
+            return redirect(url_for('user', username=username))
+        current_user.unfollow(user)
+        db.session.commit()
+        flash('You are not following {}.'.format(username))
+        return redirect(url_for('user', username=username))
+    else:
+        return redirect(url_for('index'))
 
 # app = Flask(
 #     __name__,
