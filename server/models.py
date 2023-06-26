@@ -224,3 +224,8 @@ class Platform(db.Model, SerializerMixin):
     generation = db.Column(db.Integer)
     platform_family = db.Column(db.Integer)
     abbreviation = db.Column(db.String)
+
+
+class Thread(db.Model, SerializerMixin):
+    __tablename__ = "threads"
+    id = db.Column(db.Integer, primary_key=True)

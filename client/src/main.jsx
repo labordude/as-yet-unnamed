@@ -23,6 +23,8 @@ import SignUpForm from "./components/Auth/SignUpForm.jsx";
 import Login from "./pages/login";
 import Feed from "./components/Feed.jsx";
 import Communities from "./pages/communities.jsx";
+import Games from "./pages/games.jsx";
+import Social from "./pages/social.jsx";
 // React Router
 const router = createBrowserRouter([
   {
@@ -30,7 +32,12 @@ const router = createBrowserRouter([
     element: <App />,
     id: "root",
     children: [
-      {index: true, element: <Home />},
+      {
+        path: "/home/",
+        index: true,
+        element: <Home />,
+        errorElement: <div>Whoops!</div>,
+      },
       {
         path: "/signup",
         element: <SignUpForm />,
@@ -42,8 +49,13 @@ const router = createBrowserRouter([
         errorElement: <div>Whoops!</div>,
       },
       {
-        path: "/communities",
-        element: <Communities />,
+        path: "/games",
+        element: <Games />,
+        errorElement: <div>Whoops!</div>,
+      },
+      {
+        path: "/social",
+        element: <Social />,
         errorElement: <div>Whoops!</div>,
       },
     ],

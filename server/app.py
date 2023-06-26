@@ -209,7 +209,12 @@ class GamesById(Resource):
 
 class NewestGames(Resource):
     def get(self):
-        newest_games = [game.to_dict() for game in Game.query.limit(10).all()]
+        newest_games = [
+            game.to_dict()
+            for game in Game.query.order_by(Game.release_date.desc())
+            .limit(10)
+            .all()
+        ]
         return newest_games, 200
 
 
