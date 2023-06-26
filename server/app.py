@@ -8,13 +8,11 @@ from flask import Flask, request, session, abort
 from flask_migrate import Migrate
 from flask_restful import Resource
 from flask_cors import CORS
-from flask_paginate import Pagination
 from sqlalchemy.exc import IntegrityError
 from config import db, api, app
 from models import User, Game, Review, Community
 import requests
 import datetime
-import jsonify
 
 
 # app = Flask(
