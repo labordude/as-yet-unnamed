@@ -41,11 +41,8 @@ export default function Header({onLogout, user}) {
           <ul
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-            <li className="text-xl">
-              <a className="text-xl">Home</a>
-            </li>
             <li>
-              <Link to="/games" className="text-xl text-white">
+              <Link to="/games">
                 Games
               </Link>
             </li>
@@ -60,14 +57,13 @@ export default function Header({onLogout, user}) {
           </ul>
         </div>
         <a className="btn btn-ghost normal-case text-3xl text-white">
-          GameXperience
+          <Link to="/home">
+            GameXperience
+          </Link>
         </a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          <li>
-            <a className="text-xl text-white">Home</a>
-          </li>
           {user ? (
             <>
               <li>
