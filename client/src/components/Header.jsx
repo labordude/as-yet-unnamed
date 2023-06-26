@@ -45,7 +45,9 @@ export default function Header({onLogout, user}) {
               <a className="text-xl">Home</a>
             </li>
             <li>
-              <a>Games</a>
+              <Link to="/games" className="text-xl text-white">
+                Games
+              </Link>
             </li>
             <li>
               <Link to="/communities" className="text-xl text-white">
@@ -69,7 +71,9 @@ export default function Header({onLogout, user}) {
           {user ? (
             <>
               <li>
-                <a className="text-xl text-white">Games</a>
+                <Link to="/games" className="text-xl text-white">
+                  Games
+                </Link>
               </li>
               <li>
                 <Link to="/communities" className="text-xl text-white">
