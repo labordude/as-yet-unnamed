@@ -14,7 +14,6 @@ function App() {
           // console.log(response.text());
           response.json().then(user => {
             setUser(user);
-            navigate("/home");
           });
         }
       })

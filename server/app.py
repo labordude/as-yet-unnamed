@@ -157,20 +157,7 @@ class Games(Resource):
 class GamesById(Resource):
     def get(self, id):
         try:
-            game = (
-                Game.query.filter(Game.id == id)
-                .first()
-                .to_dict(
-                    only=(
-                        "id",
-                        "title",
-                        "description",
-                        "platform",
-                        "background_image",
-                        "release_date",
-                    )
-                )
-            )
+            game = Game.query.filter(Game.id == id).first().to_dict()
             return game, 200
         except:
             return {"error": "404: Game not found"}, 404
