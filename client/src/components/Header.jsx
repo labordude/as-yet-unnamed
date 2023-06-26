@@ -48,7 +48,7 @@ export default function Header({onLogout, user}) {
               <a>Games</a>
             </li>
             <li>
-              <Link to="/communities" className="text-xl text-white">
+              <Link to="/communities/all" >
                 Communities
               </Link>
             </li>
@@ -72,7 +72,7 @@ export default function Header({onLogout, user}) {
                 <a className="text-xl text-white">Games</a>
               </li>
               <li>
-                <Link to="/communities" className="text-xl text-white">
+                <Link to="/communities/all" className="text-xl text-white">
                   Communities
                 </Link>
               </li>
