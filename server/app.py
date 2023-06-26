@@ -69,12 +69,8 @@ class Signup(Resource):
 
 class CheckSession(Resource):
     def get(self):
-        try:
-            user = User.query.filter(User.id == session.get("user_id")).first()
-            print(f'Current user is: {session.get("user_id")}')
-            return user.to_dict(), 200
-        except:
-            return ({"error": "unauthorized"}, 401)
+        session["user_id"] = 1
+        return {"message": ["successful login", session]}, 200
 
     pass
 
@@ -386,17 +382,17 @@ class CommunitiesByID(Resource):
 
 
 api.add_resource(Communities, "/api/communities")
-api.add_resource(CommunitiesByID, "/communities/<int:id>")
-api.add_resource(Games, "/games")
-api.add_resource(GamesById, "/games/<int:id>")
-api.add_resource(NewestGames, "/newest_games")
-api.add_resource(Reviews, "/reviews")
-api.add_resource(ReviewsById, "/reviews/<int:id>")
-api.add_resource(NewestReviews, "/newest_reviews")
-api.add_resource(Users, "/users")
-api.add_resource(UsersById, "/users/<int:id>")
+api.add_resource(CommunitiesByID, "/api/communities/<int:id>")
+api.add_resource(Games, "/api/games")
+api.add_resource(GamesById, "/api/games/<int:id>")
+api.add_resource(NewestGames, "/api/newest_games")
+api.add_resource(Reviews, "/api/reviews")
+api.add_resource(ReviewsById, "/api/reviews/<int:id>")
+api.add_resource(NewestReviews, "/api/newest_reviews")
+api.add_resource(Users, "/api/users")
+api.add_resource(UsersById, "/api/users/<int:id>")
 api.add_resource(Home, "/", endpoint="home")
-api.add_resource(Signup, "/signup", endpoint="signup")
+api.add_resource(Signup, "/api/signup", endpoint="signup")
 api.add_resource(CheckSession, "/api/check_session", endpoint="check_session")
 api.add_resource(Login, "/api/login", endpoint="login")
 api.add_resource(Logout, "/api/logout", endpoint="logout")

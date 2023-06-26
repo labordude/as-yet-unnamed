@@ -4,6 +4,7 @@ import csv
 from models import db, Platform, User, Community, CommunityUser, Game, Review
 from datetime import datetime
 from faker import Faker
+import ast
 
 # db.init_app(app)
 fake = Faker()
@@ -12,7 +13,7 @@ with app.app_context():
     # print("Deleting existing platforms...")
     # Platform.query.delete()
     # print("Deleting existing games...")
-    # Game.query.delete()
+    Game.query.delete()
     Community.query.delete()
 
 # def create_users():
@@ -106,35 +107,39 @@ def create_communities():
 #     return platforms
 
 
-# def create_games(rows):
-#     with app.app_context():
-#         games = []
-#         for i in range(1, len(rows)):
-#             id = rows[i][0]
-#             title = rows[i][5]
-#             if rows[i][11]:
-#                 description = rows[i][11]
-#             else:
-#                 description = "No data"
-#             platform = rows[i][6]
-#             if rows[i][2]:
-#                 background_image = rows[i][2]
-#             else:
-#                 background_image = "https://placekitten.com/150/150"
-#             release_date = datetime.fromtimestamp(int(rows[i][3]))
+def create_games(rows):
+    with app.app_context():
+        Game.query.delete()
+        games = []
+        for i in range(1, len(rows)):
+            id = rows[i][0]
+            title = rows[i][5]
+            if rows[i][11]:
+                description = rows[i][11]
+            else:
+                print("found no description")
+                description = "No data"
+            platform = rows[i][6]
+            if rows[i][2]:
+                image_dict = ast.literal_eval(rows[i][2])
+                big_picture = image_dict["url"].replace("thumb", "720p")
+                background_image = f"https:{big_picture}"
+            else:
+                background_image = "https://placekitten.com/150/150"
+            release_date = datetime.fromtimestamp(int(rows[i][3]))
 
-#             game = Game(
-#                 id=id,
-#                 title=title,
-#                 description=description,
-#                 platform=platform,
-#                 background_image=background_image,
-#                 release_date=release_date,
-#             )
-#             games.append(game)
-#         db.session.add_all(games)
-#         db.session.commit()
-#     return games
+            game = Game(
+                id=id,
+                title=title,
+                description=description,
+                platform=platform,
+                background_image=background_image,
+                release_date=release_date,
+            )
+            games.append(game)
+        db.session.add_all(games)
+        db.session.commit()
+    return games
 
 
 if __name__ == "__main__":
@@ -142,14 +147,14 @@ if __name__ == "__main__":
     # create_users()
     # print("users loaded")
 
-    # print("opening games.csv")
-    # with open("games.csv", newline="") as csvfile:
-    #     rows = [
-    #         row for row in csv.reader(csvfile, delimiter=",", quotechar='"')
-    #     ]
-    #     print("Seeding games...")
-    #     games = create_games(rows)
-    #     print("Complete!")
+    print("opening games.csv")
+    with open("games.csv", newline="") as csvfile:
+        rows = [
+            row for row in csv.reader(csvfile, delimiter=",", quotechar='"')
+        ]
+        print("Seeding games...")
+        games = create_games(rows)
+        print("Complete!")
 
     print("loading communities")
     create_communities()

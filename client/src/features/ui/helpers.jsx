@@ -1,23 +1,23 @@
 // get newest reviews
 export async function getNewestReviews() {
-  return fetch("/newest_reviews")
+  return fetch("/api/newest_reviews")
     .then(response => {
       if (response.ok) {
         return response.json();
       }
     })
-    .catch(error => setErrors(error.error));
+    .catch(error => console.log(error));
 }
 
 // get newest games
 export async function getNewestGames() {
-  return fetch("/newest_games")
+  return fetch("/api/newest_games")
     .then(response => {
       if (response.ok) {
         return response.json();
       }
     })
-    .catch(error => setErrors(error.error));
+    .catch(error => console.log(error));
 }
 
 export async function getCommunities() {
@@ -27,5 +27,5 @@ export async function getCommunities() {
         return response.json();
       }
     })
-    .catch(error => setErrors(error.error));
+    .catch(error => setErrors(error));
 }

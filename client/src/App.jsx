@@ -7,7 +7,7 @@ function App() {
   const [user, setUser] = useState(null);
   useEffect(() => {
     //check for a current session
-    fetch("/check_session")
+    fetch("/api/check_session")
       .then(response => {
         if (response.ok) {
           // console.log(response.text());
