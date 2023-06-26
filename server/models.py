@@ -7,6 +7,10 @@ from sqlalchemy.orm import validates
 from config import db, bcrypt
 import datetime
 
+followers = db.Table('followers',
+    db.Column("follower_id", db.Integer, db.ForeignKey('users.id')),
+    db.Column("followed_id", db.Integer, db.ForeignKey('users.id'))
+)
 
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
@@ -23,13 +27,36 @@ class User(db.Model, SerializerMixin):
     )
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
     active = db.Column(db.Boolean, default=False)
+    followed = db.relationship('User', 
+        secondary = followers, 
+        primaryjoin = (followers.c.follower_id == id), 
+        secondaryjoin = (followers.c.followed_id == id), 
+        backref = db.backref('followers', lazy = 'dynamic'), 
+        lazy = 'dynamic')
+
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0
+    
+    def followed_reviews(self):
+        followed_reviews = Review.query.join(
+            followers, (followers.c.followed_id == Review.user_id)).filter(
+                followers.c.follower_id == self.id)
+        own_reviews = Review.query.filter_by(user_id=self.id)
+        return followed_reviews.union(own_reviews).order_by(Review.created_at.desc())
 
     reviews = db.relationship(
         "Review", back_populates="user", cascade="all,delete-orphan"
     )
     games = association_proxy("reviews", "game")
-
-    # followers = db.relationship("Follower", back_populates="user")
 
     community_users = db.relationship(
         "CommunityUser", back_populates="user", cascade="all,delete-orphan"
@@ -91,7 +118,7 @@ class Game(db.Model, SerializerMixin):
     background_image = db.Column(db.String, nullable=False)
     release_date = db.Column(db.Date, nullable=False)
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
-
+    
     reviews = db.relationship(
         "Review", back_populates="game", cascade="all,delete-orphan"
     )
@@ -233,14 +260,4 @@ class Platform(db.Model, SerializerMixin):
 #     id = db.Column(db.Integer, primary_key=True)
 
 
-# class Follower(db.Model, SerializerMixin):
-#     __tablename__ = "followers"
 
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-#     follower_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-
-#     user = db.relationship("User", back_populates="followers")
-    
-#     serialize_rules = ("-user.followers")
-    
