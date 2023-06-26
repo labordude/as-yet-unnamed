@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import Login from "./login";
 import Feed from "../components/Feed";
 import NewestReviews from "../components/newest-reviews";
+import NewestGames from "../components/newest-games";
 import {useOutletContext} from "react-router-dom";
 import {Grid, GridItem} from "@chakra-ui/react";
 function Home() {
@@ -21,8 +22,8 @@ function Home() {
               <NewestReviews />
             </GridItem>
             <GridItem w="100%">
-              Newest Reviews
-              <NewestReviews />
+              Newest Games
+              <NewestGames />
             </GridItem>
           </Grid>
         </>
