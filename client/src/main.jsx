@@ -29,6 +29,7 @@ import Games from "./pages/games.jsx";
 import Game, {loader as gameLoader} from "./pages/game.jsx";
 import Social from "./pages/social.jsx";
 import CommunityCard from "./components/community-card.jsx";
+import EditUser, {loader as userLoader} from "./pages/edituser.jsx";
 import NewReviewForm from "./components/NewReviewForm.jsx";
 // React Router
 const router = createBrowserRouter([
@@ -73,6 +74,12 @@ const router = createBrowserRouter([
       {
         path: "/communities/:community",
         element: <Communities />,
+        errorElement: <div>Whoops!</div>,
+      },
+      {
+        path: "/edituser/:userid",
+        element: <EditUser />,
+        loader: userLoader,
         errorElement: <div>Whoops!</div>,
       },
       {

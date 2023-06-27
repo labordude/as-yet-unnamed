@@ -1,6 +1,9 @@
 import React from "react";
 import {Image, Icon} from "@chakra-ui/react";
 import {FaHeart, FaRegComments} from "react-icons/fa";
+
+
+
 export default function ReviewCard({review}) {
   return (
     <div className="w-full border-2 flex flex-col px-2">

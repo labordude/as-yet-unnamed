@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import {getCommunities} from "../features/ui/helpers";
+// need to add header photo to autoload
 export default function Header({onLogout, user}) {
   const [communities, setCommunities] = useState([]);
   useEffect(() => {
