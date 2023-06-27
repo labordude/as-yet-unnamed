@@ -18,6 +18,7 @@ GameXperience is an app that allows you to connect with fellow gamers to discuss
 
 ## Schema
 
+<img src="./assets/domain-models.png">
 <img src="./assets/p4-schema.png">
 
 ## API Endpoints
@@ -55,3 +56,6 @@ GameXperience is an app that allows you to connect with fellow gamers to discuss
 5. Add birthday and custom birthday theme
 6. Age restrictions for games
 7. Add created at and switch to updated at for reviews
+
+## Trello
+ <img src="./assets/p4-trello.png">
