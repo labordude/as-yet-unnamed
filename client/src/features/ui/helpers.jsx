@@ -20,6 +20,7 @@ export async function getNewestGames() {
     .catch(error => console.log(error));
 }
 
+//get community 
 export async function getCommunities() {
   return fetch("/api/communities")
     .then(response => {
