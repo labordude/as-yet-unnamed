@@ -404,7 +404,9 @@ class Users(Resource):
     def get(self):
         try:
             users = [
-                u.to_dict(only=("id", "username", "pfp_image", "active"))
+                u.to_dict(
+                    only=("id", "username", "pfp_image", "active", "reviews")
+                )
                 for u in User.query.all()
             ]
             return users, 200
@@ -427,6 +429,7 @@ class UsersById(Resource):
                         "pfp_image",
                         "bio",
                         "active",
+                        "reviews",
                     )
                 )
             )
