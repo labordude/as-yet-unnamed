@@ -3,19 +3,31 @@ import {Link, useLoaderData, useParams} from "react-router-dom";
 import {getGamesByID} from "../features/ui/helpers";
 import {Container, Image, Box} from "@chakra-ui/react";
 import ReviewCard from "../components/review-card";
+import NewReviewForm from "../components/NewReviewForm";
 export async function loader({params}) {
   const game_loader = await getGamesByID(params.id);
   return {game_loader};
 }
+
+
+
+
+
 // components needed:
 // data needed: Title, Release Date, Platforms, Community, Description, Rating, CurrentUser rating,
 export default function Game() {
   // let {id} = useParams();
   const [gameData, setGameData] = useState();
   const {game_loader} = useLoaderData();
+  const [toggle, setToggle] = useState(false);
+  
   useEffect(() => {
     setGameData(game_loader);
   }, []);
+  function toggled() {
+    setToggle(prev => !prev)
+  }
+  
   return (
     <Container>
       <Container className="my-4 flex">
@@ -46,6 +58,8 @@ export default function Game() {
         ) : (
           <p>"No reviews yet"</p>
         )}
+        {!toggle ? (<button onClick={toggled}>Add Review</button>) : (<NewReviewForm toggled={toggled} game_loader={game_loader}/>)}
+        
       </Container>
     </Container>
   );

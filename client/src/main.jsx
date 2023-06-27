@@ -27,6 +27,7 @@ import Games from "./pages/games.jsx";
 import Game, {loader as gameLoader} from "./pages/game.jsx";
 import Social from "./pages/social.jsx";
 import CommunityCard from "./components/community-card.jsx";
+import NewReviewForm from "./components/NewReviewForm.jsx";
 // React Router
 const router = createBrowserRouter([
   {
@@ -69,6 +70,11 @@ const router = createBrowserRouter([
       {
         path: "/communities/:community",
         element: <Communities />,
+        errorElement: <div>Whoops!</div>,
+      },
+      {
+        path: "/new_review_form",
+        element: <NewReviewForm />,
         errorElement: <div>Whoops!</div>,
       },
     ],

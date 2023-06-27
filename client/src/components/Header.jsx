@@ -54,11 +54,9 @@ export default function Header({onLogout, user}) {
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-3xl text-white">
-          <Link to="/home">
-            GameXperience
-          </Link>
-        </a>
+        <Link to="/home" className="btn btn-ghost normal-case text-3xl text-white">
+          GameXperience
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
