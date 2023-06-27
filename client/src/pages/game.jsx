@@ -45,7 +45,9 @@ export default function Game() {
       <Container className="my-4 flex">
         <Container boxSize="250px" className="flex flex-col">
           <Image src={game_loader.background_image} alt={game_loader.title} />
-          <div>Rating: {game_loader.rating.toFixed(2)} </div>
+          <div>
+            Rating: {game_loader.rating && game_loader.rating.toFixed(2)}{" "}
+          </div>
         </Container>
         <Container>
           {showEdit ? (
