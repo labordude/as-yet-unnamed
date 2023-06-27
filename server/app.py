@@ -111,7 +111,7 @@ class Signup(Resource):
         data = request.get_json()
         username = data.get("username")
         password = data.get("password")
-        pfp_image = data.get("pf_image")
+        pfp_image = data.get("pfp_image")
         name = data.get("name")
         email = data.get("email")
         bio = data.get("bio")
@@ -150,6 +150,12 @@ class CheckSession(Resource):
         return ({"error": "unauthorized"}, 401)
 
     pass
+
+# class CurrentUser(Resource):
+#     def get(self):
+        
+#         user = User.query.filter(User.id == session.get("user_id")).first().to_dict()
+#         return user, 200
 
 
 class Login(Resource):
@@ -478,7 +484,7 @@ api.add_resource(Signup, "/api/signup", endpoint="signup")
 api.add_resource(CheckSession, "/api/check_session", endpoint="check_session")
 api.add_resource(Login, "/api/login", endpoint="login")
 api.add_resource(Logout, "/api/logout", endpoint="logout")
-
+# api.add_resource(CurrentUser, "/api/current_user")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

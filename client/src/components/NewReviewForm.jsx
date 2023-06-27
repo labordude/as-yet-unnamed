@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -10,6 +10,8 @@ const validation = Yup.object().shape({
 
 
 export default function NewReviewForm({toggled, game_loader}) {
+    const [submittedReview, setSubmittedReview] = useState(null)
+
     const formik = useFormik({
         initialValues: {
             review: '',
@@ -35,43 +37,60 @@ export default function NewReviewForm({toggled, game_loader}) {
             })
         })
         .then(resp => {
-            console.log(resp.status);
-            console.log(resp.json());
+            if (resp.ok) {
+                return resp.json()
+            } else {
+                throw new Error("Failed to post review")
+            }
+        })
+        .then((data) => {
+            setSubmittedReview(data)
+            console.log('review posted')
+            window.location.reload()
         })
         .catch((error) => {
             console.error(error)
         })
     }
-
     return (
-        <form onSubmit={formik.handleSubmit}>
-            <div>
-                <label htmlFor="review">Review Body:</label>
-                <textarea
-                    id="review"
-                    name="review"
-                    onChange={formik.handleChange}
-                    value={formik.values.review}
-                />
-                {formik.errors.review && formik.touched.review && (
-                    <div>{formik.errors.review}</div>
-                )}
+        <div>
+            {submittedReview ? (
+                <div>
+                    <h2>Submitted Review:</h2>
+                    <p>Review: {submittedReview.review}</p>
+                    <p>Rating: {submittedReview.rating}</p>
+                </div>
+            ) : (
+                <form onSubmit={formik.handleSubmit}>
+                    <div>
+                        <label htmlFor="review">Review Body:</label>
+                        <textarea
+                            id="review"
+                            name="review"
+                            onChange={formik.handleChange}
+                            value={formik.values.review}
+                        />
+                        {formik.errors.review && formik.touched.review && (
+                            <div>{formik.errors.review}</div>
+                        )}
+                    </div>
+                    <div>
+                        <label htmlFor="rating">Rating:</label>
+                        <input
+                            type="number"
+                            id="rating"
+                            name="rating"
+                            onChange={formik.handleChange}
+                            value={formik.values.rating}
+                        />
+                        {formik.errors.rating && formik.touched.rating && (
+                            <div>{formik.errors.rating}</div>
+                        )}
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            )}
             </div>
-            <div>
-                <label htmlFor="rating">Rating:</label>
-                <input
-                    type="number"
-                    id="rating"
-                    name="rating"
-                    onChange={formik.handleChange}
-                    value={formik.values.rating}
-                />
-                {formik.errors.rating && formik.touched.rating && (
-                    <div>{formik.errors.rating}</div>
-                )}
-            </div>
-            <button type="submit">Submit</button>
-        </form>
-    )
-}
+        );
+    }
 
