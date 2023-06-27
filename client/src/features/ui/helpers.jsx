@@ -50,3 +50,13 @@ export async function getGamesByID(id) {
     })
     .catch(error => setErrors(error));
 }
+
+export async function getUsersbyid(id) {
+  return fetch(`/api/users/${id}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
