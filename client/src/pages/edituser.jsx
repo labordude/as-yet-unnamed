@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
-import Navbar from "./components/NavBar";
-import Header from "./components/Header";
-import {getUsersbyid} from "./features/helpers"
+import Header from "../components/Header";
+import {getUsersbyid} from "../features-ui/helpers"
 import {useLoaderData} from "react-router-dom"
+import { Grid, GridItem } from '@chakra-ui/react'
 
 
 export async function loader({ params }) {
     const newUser = await getUsersbyid(params.userId);
-    return newUser;
+    return {newUser};
 }
 // navigated in here from signup form
 // lead to profile when done editing 
@@ -35,8 +35,6 @@ export default function EditUser(id) {
     return (
         <Header/>
         
-
     )
-
     // pass
 }
