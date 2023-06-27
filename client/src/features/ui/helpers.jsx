@@ -1,3 +1,5 @@
+import {redirect} from "react-router-dom";
+
 // get newest reviews
 export async function getNewestReviews() {
   return fetch("/api/newest_reviews")
@@ -20,7 +22,7 @@ export async function getNewestGames() {
     .catch(error => console.log(error));
 }
 
-//get community 
+//get community
 export async function getCommunities() {
   return fetch("/api/communities")
     .then(response => {
@@ -51,21 +53,37 @@ export async function getGamesByID(id) {
     .catch(error => setErrors(error));
 }
 
-// GAMES PATCH 
+// GAMES PATCH
 export async function updateGame(id, values) {
-      return fetch(`/games/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          }
-        })
-        .catch(error => setErrors(error));;
+  return fetch(`/api/games/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(values),
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
+
+// GAMES DELETE
+export async function deleteGame(id) {
+  return fetch(`/api/games/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then(response => {
+      if (response.ok) {
+        return redirect("/games");
+      }
+    })
+    .catch(error => console.log(error));
 }
 //change edit user from lowercase "id" to uppercase
 export async function getUserByID(id) {
@@ -89,7 +107,6 @@ export async function getCurrentUser() {
 }
 
 export async function createUser(values) {
-  
   return fetch(`api/signup`, {
     method: "POST",
     headers: {"Content-Type": "application/json"},

@@ -127,15 +127,19 @@ class Game(db.Model, SerializerMixin):
     background_image = db.Column(db.String, nullable=False)
     release_date = db.Column(db.Date, nullable=False)
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
-
+    rating = db.Column(db.Float)
     reviews = db.relationship(
         "Review", back_populates="game", cascade="all,delete-orphan"
     )
     users = association_proxy("reviews", "user")
 
-    game_platforms = db.relationship("PlatformGames", back_populates="game")
+    game_platforms = db.relationship(
+        "PlatformGames", back_populates="game", cascade="all,delete-orphan"
+    )
     platforms = association_proxy("game_platforms", "game")
-    game_communities = db.relationship("CommunityGame", back_populates="game")
+    game_communities = db.relationship(
+        "CommunityGame", back_populates="game", cascade="all,delete-orphan"
+    )
     communities = association_proxy("game_communities", "community")
     serialize_rules = (
         "-reviews.game",
