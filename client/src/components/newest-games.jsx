@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {getNewestGames} from "../ui/helpers";
+import {getNewestGames} from "../features/ui/helpers";
 import {
   Accordion,
   Box,

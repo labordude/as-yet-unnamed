@@ -16,7 +16,7 @@ export default function ReviewCardDetailed({review, game}) {
         </div>
         <div className="flex flex-col ml-2">
           <div className="text-sm font-bold">{review.user.username}</div>
-          <div className="text-sm font-bold">{review.rating} / 10</div>
+          <div className="text-sm font-bold">{review.rating} / 5</div>
           <div className="text-sm">{review.body}</div>
           <div className="text-sm">
             <Icon as={FaHeart} />
