@@ -32,6 +32,16 @@ export default function GameEdit({game, toggleShowEdit}) {
       handleSubmit(values);
     },
   });
+
+  function handleSubmit(values) {
+    fetch(`/games/${game.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+  }
   return (
     <>
       <form

@@ -59,14 +59,14 @@ export default function Game() {
           <p>
             Communities:{" "}
             {Object.values(communities).map(community => (
-              <>
+              <span key={community}>
                 <Link
                   to={`/communities/${community}`}
                   key={community}
                   className="border-b-2">
                   {community}
                 </Link>{" "}
-              </>
+              </span>
             ))}
           </p>
           <p>Game description: {game_loader.description}</p>
