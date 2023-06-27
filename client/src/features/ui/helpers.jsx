@@ -49,3 +49,23 @@ export async function getGamesByID(id) {
     })
     .catch(error => setErrors(error));
 }
+
+export async function getUserByID(id) {
+  return fetch(`/api/users/${id}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
+
+export async function getCurrentUser() {
+  return fetch(`/api/check_session`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}

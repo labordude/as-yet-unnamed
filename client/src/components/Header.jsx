@@ -54,11 +54,9 @@ export default function Header({onLogout, user}) {
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-3xl text-white">
-          <Link to="/home">
+          <Link to="/home" className="btn btn-ghost normal-case text-3xl text-white">
             GameXperience
           </Link>
-        </a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
@@ -112,17 +110,15 @@ export default function Header({onLogout, user}) {
           <div className="dropdown dropdown-end mx-4">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
               <div className="w-16 rounded-full">
-                <img src="https://placekitten.com/100/100" />
+                <img src={"https://placekitten.com/100/100"} />
               </div>
             </label>
             <ul
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
               <li>
-                <a className="justify-between" href="/profile">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
+                <Link to={`/profile`} className="justify-between">Profile</Link>
+                  {/* <span className="badge">New</span> */}
               </li>
               <li>
                 <a>Settings</a>

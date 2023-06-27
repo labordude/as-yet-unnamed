@@ -27,6 +27,8 @@ import Games from "./pages/games.jsx";
 import Game, {loader as gameLoader} from "./pages/game.jsx";
 import Social from "./pages/social.jsx";
 import CommunityCard from "./components/community-card.jsx";
+import Profile, {loader as profileLoader} from "./pages/profile.jsx";
+import User, {loader as userLoader} from "./pages/user.jsx";
 // React Router
 const router = createBrowserRouter([
   {
@@ -71,6 +73,18 @@ const router = createBrowserRouter([
         element: <Communities />,
         errorElement: <div>Whoops!</div>,
       },
+      {
+        path: "/profile",
+        element: <Profile />,
+        loader: profileLoader,
+        errorElement: <div>Whoops!</div>,
+      },
+      {
+        path: "/users/:id",
+        element: <User />,
+        loader: userLoader,
+        errorElement: <div>Whoops!</div>,
+      }
     ],
   },
 ]);
