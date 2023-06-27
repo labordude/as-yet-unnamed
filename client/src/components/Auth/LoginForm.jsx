@@ -36,7 +36,6 @@ export default function LoginForm({onLogin}) {
           resp.json().then(user => {
             console.log(user);
             onLogin(user);
-            // redirect("/feed");
             // ensure we update the local cookie before sending off other data
           });
         }
