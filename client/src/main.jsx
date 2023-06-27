@@ -19,7 +19,9 @@ import "vite/modulepreload-polyfill";
 // clean up and bakc fill anything that is old code
 // componenets and endpoints
 import Home from "./pages/home";
-import SignUpForm from "./components/Auth/SignUpForm.jsx";
+import SignUpForm, {
+  action as SignUpAction,
+} from "./components/Auth/SignUpForm.jsx";
 import Login from "./pages/login";
 import Feed from "./components/Feed.jsx";
 import Communities from "./pages/communities.jsx";
@@ -28,6 +30,7 @@ import Game, {loader as gameLoader} from "./pages/game.jsx";
 import Social from "./pages/social.jsx";
 import CommunityCard from "./components/community-card.jsx";
 import EditUser, {loader as userLoader} from "./pages/edituser.jsx";
+import NewReviewForm from "./components/NewReviewForm.jsx";
 // React Router
 const router = createBrowserRouter([
   {
@@ -36,7 +39,7 @@ const router = createBrowserRouter([
     id: "root",
     children: [
       {
-        path: "/home/",
+        path: "/home",
         index: true,
         element: <Home />,
         errorElement: <div>Whoops!</div>,
@@ -45,6 +48,7 @@ const router = createBrowserRouter([
         path: "/signup",
         element: <SignUpForm />,
         errorElement: <div>Whoops!</div>,
+        action: SignUpAction,
       },
       {
         path: "/login",
@@ -76,6 +80,11 @@ const router = createBrowserRouter([
         path: "/edituser/:userid",
         element: <EditUser />,
         loader: userLoader,
+        errorElement: <div>Whoops!</div>,
+      },
+      {
+        path: "/new_review_form",
+        element: <NewReviewForm />,
         errorElement: <div>Whoops!</div>,
       },
     ],

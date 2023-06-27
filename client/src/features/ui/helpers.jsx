@@ -51,6 +51,21 @@ export async function getGamesByID(id) {
     .catch(error => setErrors(error));
 }
 
+export async function createUser(values) {
+  
+  return fetch(`api/signup`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(values),
+  })
+    .then(response => response.json())
+    .then(newUser => {
+      return newUser;
+      // navigate('/editformpageything')
+    });
+}
+
+
 export async function getUsersbyid(id) {
   return fetch(`/api/users/${id}`)
     .then(response => {
@@ -59,4 +74,4 @@ export async function getUsersbyid(id) {
       }
     })
     .catch(error => setErrors(error));
-}
+  }

@@ -15,7 +15,7 @@ export default function ReviewCard({review}) {
       </div>
       <div className="flex flex-row align-top items-start justify-start">
         <div className="justify-start align-top items-start">
-          <Image w="250px" src={review.game.background_image} />
+          <Image w="250px" src={review.background_image} />
         </div>
         <div className="flex flex-col ml-2">
           <div className="text-sm font-bold">{review.user.username}</div>

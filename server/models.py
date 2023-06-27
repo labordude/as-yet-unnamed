@@ -7,10 +7,12 @@ from sqlalchemy.orm import validates
 from config import db, bcrypt
 import datetime
 
-followers = db.Table('followers',
-    db.Column("follower_id", db.Integer, db.ForeignKey('users.id')),
-    db.Column("followed_id", db.Integer, db.ForeignKey('users.id'))
+followers = db.Table(
+    "followers",
+    db.Column("follower_id", db.Integer, db.ForeignKey("users.id")),
+    db.Column("followed_id", db.Integer, db.ForeignKey("users.id")),
 )
+
 
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
@@ -27,12 +29,15 @@ class User(db.Model, SerializerMixin):
     )
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
     active = db.Column(db.Boolean, default=False)
-    followed = db.relationship('User', 
-        secondary = followers, 
-        primaryjoin = (followers.c.follower_id == id), 
-        secondaryjoin = (followers.c.followed_id == id), 
-        backref = db.backref('followers', lazy = 'dynamic'), 
-        lazy = 'dynamic')
+    is_admin = db.Column(db.Boolean, default=False)
+    followed = db.relationship(
+        "User",
+        secondary=followers,
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followed_id == id),
+        backref=db.backref("followers", lazy="dynamic"),
+        lazy="dynamic",
+    )
 
     def follow(self, user):
         if not self.is_following(user):
@@ -43,15 +48,19 @@ class User(db.Model, SerializerMixin):
             self.followed.remove(user)
 
     def is_following(self, user):
-        return self.followed.filter(
-            followers.c.followed_id == user.id).count() > 0
-    
+        return (
+            self.followed.filter(followers.c.followed_id == user.id).count()
+            > 0
+        )
+
     def followed_reviews(self):
         followed_reviews = Review.query.join(
-            followers, (followers.c.followed_id == Review.user_id)).filter(
-                followers.c.follower_id == self.id)
+            followers, (followers.c.followed_id == Review.user_id)
+        ).filter(followers.c.follower_id == self.id)
         own_reviews = Review.query.filter_by(user_id=self.id)
-        return followed_reviews.union(own_reviews).order_by(Review.created_at.desc())
+        return followed_reviews.union(own_reviews).order_by(
+            Review.created_at.desc()
+        )
 
     reviews = db.relationship(
         "Review", back_populates="user", cascade="all,delete-orphan"
@@ -118,7 +127,7 @@ class Game(db.Model, SerializerMixin):
     background_image = db.Column(db.String, nullable=False)
     release_date = db.Column(db.Date, nullable=False)
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
-    
+
     reviews = db.relationship(
         "Review", back_populates="game", cascade="all,delete-orphan"
     )
@@ -224,7 +233,9 @@ class Community(db.Model, SerializerMixin):
         cascade="all,delete-orphan",
     )
     users = association_proxy("community_users", "user")
-
+    platforms = db.relationship(
+        "PlatformCommunity", back_populates="community"
+    )
     serialize_rules = ("-community_users.community",)
 
 
@@ -257,29 +268,46 @@ class Platform(db.Model, SerializerMixin):
     generation = db.Column(db.Integer)
     platform_family = db.Column(db.Integer)
     abbreviation = db.Column(db.String)
-
-    platform_games = db.relationship("PlatformGames", back_populates="platform")
+    communities = db.relationship(
+        "PlatformCommunity", back_populates="platform"
+    )
+    platform_games = db.relationship(
+        "PlatformGames", back_populates="platform"
+    )
     games = association_proxy("platform_games", "game")
 
-    serialize_rules = ("-platform_games.platform")
+    serialize_rules = "-platform_games.platform"
+
 
 class PlatformGames(db.Model, SerializerMixin):
-    __tablename__ = 'platform_games'
+    __tablename__ = "platform_games"
 
     id = db.Column(db.Integer, primary_key=True)
     game_id = db.Column(db.Integer, db.ForeignKey("games.id"), nullable=False)
     game = db.relationship("Game", back_populates="game_platforms")
 
-    platform_id = db.Column(db.Integer, db.ForeignKey("platforms.id"), nullable=False)
+    platform_id = db.Column(
+        db.Integer, db.ForeignKey("platforms.id"), nullable=False
+    )
     platform = db.relationship("Platform", back_populates="platform_games")
 
     serialize_rules = ("-game.game_platforms", "-platform.platform_games")
 
 
+class PlatformCommunity(db.Model, SerializerMixin):
+    __tablename__ = "platform_communities"
+
+    id = db.Column(db.Integer, primary_key=True)
+    platform_id = db.Column(
+        db.Integer, db.ForeignKey("platforms.id"), nullable=False
+    )
+    community_id = db.Column(
+        db.Integer, db.ForeignKey("communities.id"), nullable=False
+    )
+    platform = db.relationship("Platform", back_populates="communities")
+    community = db.relationship("Community", back_populates="platforms")
+
 
 # class Thread(db.Model, SerializerMixin):
 #     __tablename__ = "threads"
 #     id = db.Column(db.Integer, primary_key=True)
-
-
-
