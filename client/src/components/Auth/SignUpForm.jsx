@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
@@ -37,15 +38,20 @@ export default function SignUpForm({onLogin}) {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate()
   function handleSubmit(values) {
-    fetch(`/signup`, {
+    fetch(`api/signup`, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(values),
     })
       .then(response => response.json())
-      .then(newUser => console.log(newUser));
-    
+      .then(newUser => {
+        
+        console.log(newUser);
+        // navigate('/editformpageything')
+      });
+
     // // POST fetch to dispatch
     // fetch(`/new_user`, {
     //   method: "POST",
@@ -219,7 +225,7 @@ export default function SignUpForm({onLogin}) {
 }
 function Success({newUser}) {
   const {name, username, password, email, bio, pfp_image} = newUser;
-  
+
   return (
     <div>
       Successfully created:

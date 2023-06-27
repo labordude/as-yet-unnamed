@@ -8,7 +8,7 @@ export default function Header({onLogout, user}) {
   }, []);
   function handleLogoutClick() {
     // POST fetch to dispatch
-    fetch(`/logout`, {
+    fetch(`/api/logout`, {
       method: "DELETE",
       headers: {"Content-Type": "application/json"},
     })
@@ -50,9 +50,7 @@ export default function Header({onLogout, user}) {
               </Link>
             </li>
             <li>
-              <Link to="/communities/all" >
-                Communities
-              </Link>
+              <Link to="/communities/all">Communities</Link>
             </li>
             <li>
               <a>Threads</a>

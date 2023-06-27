@@ -69,8 +69,19 @@ class Signup(Resource):
 
 class CheckSession(Resource):
     def get(self):
-        session["user_id"] = 1
-        return {"message": ["successful login", session]}, 200
+        # please leave this code for testing purposes
+        # session["user_id"] = 1
+        # return {"message": ["successful login", session]}, 200
+
+        if session.get("user_id"):
+            user = (
+                User.query.filter(User.id == session.get("user_id"))
+                .first()
+                .to_dict()
+            )
+            return user, 200
+
+        return ({"error": "unauthorized"}, 401)
 
     pass
 
