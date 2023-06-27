@@ -233,11 +233,11 @@ class Games(Resource):
 
 class GamesById(Resource):
     def get(self, id):
-        try:
-            game = Game.query.filter(Game.id == id).first().to_dict()
-            return game, 200
-        except:
+        game = Game.query.filter(Game.id == id).first()
+        if not game:
             return {"error": "404: Game not found"}, 404
+
+        return game.to_dict(), 200
 
     def patch(self, id):
         data = request.get_json()
