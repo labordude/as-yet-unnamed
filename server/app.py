@@ -111,7 +111,7 @@ class Signup(Resource):
         data = request.get_json()
         username = data.get("username")
         password = data.get("password")
-        pfp_image = data.get("pf_image")
+        pfp_image = data.get("pfp_image")
         name = data.get("name")
         email = data.get("email")
         bio = data.get("bio")
@@ -135,21 +135,33 @@ class Signup(Resource):
 class CheckSession(Resource):
     def get(self):
         # please leave this code for testing purposes
-        # session["user_id"] = 1
-        # return {"message": ["successful login", session]}, 200
+        session["user_id"] = 1
+        user = (
+            User.query.filter(User.id == session.get("user_id"))
+            .first()
+            .to_dict()
+        )
+        return user, 200
 
-        if session.get("user_id"):
-            print(session["user_id"])
-            user = (
-                User.query.filter(User.id == session.get("user_id"))
-                .first()
-                .to_dict()
-            )
-            return user, 200
+        # if session.get("user_id"):
+        #     print(session["user_id"])
+        #     user = (
+        #         User.query.filter(User.id == session.get("user_id"))
+        #         .first()
+        #         .to_dict()
+        #     )
+        #     return user, 200
 
-        return ({"error": "unauthorized"}, 401)
+        # return ({"error": "unauthorized"}, 401)
 
     pass
+
+
+# class CurrentUser(Resource):
+#     def get(self):
+
+#         user = User.query.filter(User.id == session.get("user_id")).first().to_dict()
+#         return user, 200
 
 
 class Login(Resource):
@@ -233,11 +245,11 @@ class Games(Resource):
 
 class GamesById(Resource):
     def get(self, id):
-        try:
-            game = Game.query.filter(Game.id == id).first().to_dict()
-            return game, 200
-        except:
+        game = Game.query.filter(Game.id == id).first()
+        if not game:
             return {"error": "404: Game not found"}, 404
+
+        return game.to_dict(), 200
 
     def patch(self, id):
         data = request.get_json()
@@ -305,13 +317,13 @@ class Reviews(Resource):
         return reviews, 200
 
     def post(self):
-        if session.get('user_id'):
+        if session.get("user_id"):
             data = request.get_json()
             try:
                 new_review = Review(
                     body=data.get("review"),
                     rating=data.get("rating"),
-                    user_id=session.get('user_id'),
+                    user_id=session.get("user_id"),
                     game_id=data.get("game_id"),
                 )
                 db.session.add(new_review)
@@ -326,10 +338,12 @@ class Reviews(Resource):
                             "user_id",
                             "game_id",
                         )
-                    ), 201)
+                    ),
+                    201,
+                )
             except:
                 return {"error": "Unable to post review"}, 400
-        return {'error': "401 Unauthorized"}, 401
+        return {"error": "401 Unauthorized"}, 401
 
 
 class ReviewsById(Resource):
@@ -390,7 +404,9 @@ class Users(Resource):
     def get(self):
         try:
             users = [
-                u.to_dict(only=("id", "username", "pfp_image", "active"))
+                u.to_dict(
+                    only=("id", "username", "pfp_image", "active", "reviews")
+                )
                 for u in User.query.all()
             ]
             return users, 200
@@ -413,6 +429,7 @@ class UsersById(Resource):
                         "pfp_image",
                         "bio",
                         "active",
+                        "reviews",
                     )
                 )
             )
@@ -478,7 +495,7 @@ api.add_resource(Signup, "/api/signup", endpoint="signup")
 api.add_resource(CheckSession, "/api/check_session", endpoint="check_session")
 api.add_resource(Login, "/api/login", endpoint="login")
 api.add_resource(Logout, "/api/logout", endpoint="logout")
-
+# api.add_resource(CurrentUser, "/api/current_user")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

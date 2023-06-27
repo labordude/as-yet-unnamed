@@ -51,6 +51,43 @@ export async function getGamesByID(id) {
     .catch(error => setErrors(error));
 }
 
+// GAMES PATCH 
+export async function updateGame(id, values) {
+      return fetch(`/games/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          }
+        })
+        .catch(error => setErrors(error));;
+}
+//change edit user from lowercase "id" to uppercase
+export async function getUserByID(id) {
+  return fetch(`/api/users/${id}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
+
+export async function getCurrentUser() {
+  return fetch(`/api/check_session`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
+
 export async function createUser(values) {
   
   return fetch(`api/signup`, {
@@ -64,14 +101,3 @@ export async function createUser(values) {
       // navigate('/editformpageything')
     });
 }
-
-
-export async function getUsersbyid(id) {
-  return fetch(`/api/users/${id}`)
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-    })
-    .catch(error => setErrors(error));
-  }

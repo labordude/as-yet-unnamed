@@ -34,8 +34,8 @@ export default function LoginForm({onLogin}) {
         console.log(resp);
         if (resp.status === 200) {
           resp.json().then(user => {
+            console.log(user);
             onLogin(user);
-            // redirect("/feed");
             // ensure we update the local cookie before sending off other data
           });
         }
@@ -98,4 +98,3 @@ export default function LoginForm({onLogin}) {
     </form>
   );
 }
-

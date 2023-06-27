@@ -1,7 +1,59 @@
-import React from "react";
+import React, {useState} from "react";
 import {Image, Icon} from "@chakra-ui/react";
 import {FaHeart, FaRegComments} from "react-icons/fa";
 export default function ReviewCardDetailed({review, game}) {
+  const [isDeleted, setIsDeleted] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
+  const [editedReview, setEditedReview] = useState(review.review)
+  const [editedRating, setEditedRating] = useState(review.rating)
+  
+
+  function deleteReview() {
+    fetch(`/api/reviews/${review.id}`, {
+      method: 'DELETE',
+    })
+      .then((res) => {
+        if (res.ok) {
+          setIsDeleted(true);
+          console.log('Review deleted')
+        } else {
+          throw new Error("Failed to delete review")
+        }
+      })
+      .catch((error) => console.error(error))
+  }
+
+  if (isDeleted) {
+    return null
+  }
+
+  function editReview() {
+    fetch(`/api/reviews/${review.id}`, {
+      method: 'PATCH',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        review: editedReview,
+        rating: parseInt(editedRating)
+      })
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to update review")
+        }
+        return res.json()
+      })
+      .then((data) => {
+        setIsEditing(false);
+        setEditedReview({
+          ...review,
+          review: editedReview,
+          rating: data
+        })
+        window.location.reload()
+      })
+      .catch((error) => console.error(error));
+  }
+
   return (
     <div className="w-full border-2 flex flex-col px-2">
       <div className="font-bold text-lg">
@@ -16,12 +68,36 @@ export default function ReviewCardDetailed({review, game}) {
         </div>
         <div className="flex flex-col ml-2">
           <div className="text-sm font-bold">{review.user.username}</div>
-          <div className="text-sm font-bold">{review.rating} / 5</div>
-          <div className="text-sm">{review.body}</div>
+          {isEditing ? (
+            <div className='flex flex-col'>
+              <textarea 
+                className="text-sm"
+                value={editedReview}
+                onChange={(e) => setEditedReview(e.target.value)}
+              />
+              <input 
+                type="number"
+                className="text-sm"
+                value={editedRating}
+                onChange={(e) => setEditedRating(e.target.value)}
+              />
+            </div>
+          ) : (
+            <>
+              <div className="text-sm font-bold">{review.rating} /5</div>
+              <div className="text-sm">{review.body}</div>
+            </>
+          )}
           <div className="text-sm">
             <Icon as={FaHeart} />
             Likes <Icon as={FaRegComments} />2 See full review
           </div>
+          {isEditing ? (
+            <button onClick={editReview}>Save Changes</button>
+          ) : (
+            <button onClick={() => setIsEditing(true)}>Edit Review</button>
+          )}
+          <button onClick={deleteReview}>Delete Review</button>
         </div>
       </div>
     </div>
