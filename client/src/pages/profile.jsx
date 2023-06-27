@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react'
 import {Link, useLoaderData, useParams} from "react-router-dom";
 import { getCurrentUser } from '../features/ui/helpers'
 import {Container, Image, Box} from "@chakra-ui/react";
-import GameCard from "../components/game-card"
+// import GameCard from "../components/game-card"
+import UserReviewCard from '../components/user-review-card'
 
 export async function loader() {
     const user = await getCurrentUser();
@@ -36,11 +37,12 @@ export default function Profile() {
                 </Container>
             </Container>
             <Container>
-                <h2 className="text-center text-2xl font-bold">Your Games</h2>
+                <h2 className="text-center text-2xl font-bold">Games</h2>
                 {user.games && user.games.length > 0 ? (
                     <div>
                         {user.games.map(game => (
-                            <GameCard key={game.id} game={game_loader} />
+                            // <GameCard key={game.id} game={game} />
+                            <p>{game.title}</p>
                         ))}
                     </div>
                 ) : (
@@ -51,12 +53,9 @@ export default function Profile() {
                 <h2 className="text-center text-2xl font-bold">Recent Reviews</h2>
                 {user.reviews && user.reviews.length > 0 ? (
                     <div>
-                        {user.reviews.map(review => (
-                            <ReviewCardDetailed
-                            key={review.id}
-                            review={review}
-                            game={game_loader}
-                            />
+                        {user.reviews.slice(0,5).map(review => (
+                            <UserReviewCard key={review.id} review={review}/>
+                            // <p>{review.body}</p>
                         ))}
                     </div>
                 ) : (
