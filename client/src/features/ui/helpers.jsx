@@ -30,3 +30,14 @@ export async function getCommunities() {
     })
     .catch(error => setErrors(error));
 }
+
+// Get user data by id for profile
+export async function getUserbyidData() {
+  return fetch("/api/users/<int:id>")
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}

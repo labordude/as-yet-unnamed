@@ -6,6 +6,7 @@ import {
   AccordionButton,
   AccordionPanel,
 } from "@chakra-ui/react";
+// Accordion = threads
 function NewGameAccordionItem({game}) {
   return (
     <AccordionItem>

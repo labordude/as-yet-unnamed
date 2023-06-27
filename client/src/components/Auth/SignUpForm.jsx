@@ -33,6 +33,7 @@ const checkUsername = username => {
       return data.length === 0;
     });
 };
+
 export default function SignUpForm({onLogin}) {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
@@ -217,6 +218,7 @@ export default function SignUpForm({onLogin}) {
     </>
   );
 }
+
 function Success({newUser}) {
   const {name, username, password, email, bio, pfp_image} = newUser;
   
