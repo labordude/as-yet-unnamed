@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link, useLoaderData, useParams} from "react-router-dom";
 import {getGamesByID} from "../features/ui/helpers";
-import {Container, Image, Box} from "@chakra-ui/react";
+import {Container, Image, Button} from "@chakra-ui/react";
 import ReviewCardDetailed from "../components/review-card-detailed";
 import NewReviewForm from "../components/NewReviewForm";
 import GameEdit from "../features/games/edit-game-form";
@@ -10,10 +10,6 @@ export async function loader({params}) {
   return {game_loader};
 }
 
-
-
-
-
 // components needed:
 // data needed: Title, Release Date, Platforms, Community, Description, Rating, CurrentUser rating,
 export default function Game() {
@@ -21,19 +17,29 @@ export default function Game() {
   const [gameData, setGameData] = useState();
   const {game_loader} = useLoaderData();
   const [toggle, setToggle] = useState(false);
-  
-  const [showEdit, setShowEdit] = useState(true);
-
+  const [communities, setCommunities] = useState([]);
+  const [showEdit, setShowEdit] = useState(false);
+  const {game_platforms} = game_loader;
   function toggleShowEdit() {
     setShowEdit(prevShowEdit => !prevShowEdit);
   }
   useEffect(() => {
     setGameData(game_loader);
+    setCommunities(
+      Array.from([
+        ...new Set(
+          game_loader.game_communities.map(
+            community => community.community.name,
+          ),
+        ),
+      ]),
+    );
+    // console.log(Object.values(communities));
   }, []);
   function toggled() {
-    setToggle(prev => !prev)
+    setToggle(prev => !prev);
   }
-  
+
   return (
     <Container>
       <Container className="my-4 flex">
@@ -45,17 +51,25 @@ export default function Game() {
           {showEdit ? (
             <GameEdit game={game_loader} toggleShowEdit={toggleShowEdit} />
           ) : (
-            <button onClick={toggleShowEdit}>Show Edit Game Form</button>
+            <Button onClick={toggleShowEdit}>Show Edit Game Form</Button>
           )}
           <p>{game_loader.title}</p>
           <p>Released on {game_loader.release_date}</p>
-          <p>Platforms list goes here</p>
+
+          <p>
+            Communities:{" "}
+            {Object.values(communities).map(community => (
+              <>
+                <Link
+                  to={`/communities/${community}`}
+                  key={community}
+                  className="border-b-2">
+                  {community}
+                </Link>{" "}
+              </>
+            ))}
+          </p>
           <p>Game description: {game_loader.description}</p>
-          <ul>
-            {/* {platforms.map(platform => (
-              <li key={platform.id}>{platform.id}</li>
-            ))} */}
-          </ul>
         </Container>
       </Container>
       <Container>
@@ -73,8 +87,11 @@ export default function Game() {
         ) : (
           <p>"No reviews yet"</p>
         )}
-        {!toggle ? (<button onClick={toggled}>Add Review</button>) : (<NewReviewForm toggled={toggled} game_loader={game_loader}/>)}
-        
+        {!toggle ? (
+          <button onClick={toggled}>Add Review</button>
+        ) : (
+          <NewReviewForm toggled={toggled} game_loader={game_loader} />
+        )}
       </Container>
     </Container>
   );
