@@ -157,9 +157,9 @@ if __name__ == "__main__":
         games = create_games(rows)
         print("Complete!")
 
-    # print("loading communities")
-    # create_communities()
-    # print("communities loaded")
+    print("loading communities")
+    create_communities()
+    print("communities loaded")
 
     # print("loading reviews")
     # create_reviews()
