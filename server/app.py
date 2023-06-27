@@ -23,6 +23,7 @@ from flask_login import login_user
 from flask_login import logout_user
 from flask_wtf import FlaskForm
 from wtforms import SubmitField
+import datetime
 
 # import jsonify
 
@@ -136,12 +137,9 @@ class CheckSession(Resource):
     def get(self):
         # please leave this code for testing purposes
         session["user_id"] = 1
-        user = (
-            User.query.filter(User.id == session.get("user_id"))
-            .first()
-            .to_dict()
-        )
-        return user, 200
+        user = User.query.filter(User.id == 1).first()
+
+        return user.to_dict(), 200
 
         # if session.get("user_id"):
         #     print(session["user_id"])
@@ -222,7 +220,10 @@ class Games(Resource):
                 description=data.get("description"),
                 platform=data.get("platform"),
                 background_image=data.get("background_image"),
-                release_date=data.get("release_date"),
+                rating=data.get("rating"),
+                release_date=datetime.datetime.strptime(
+                    data.get("released"), "%Y-%m-%d"
+                ).date(),
             )
             db.session.add(new_game)
             db.session.commit()
@@ -235,6 +236,7 @@ class Games(Resource):
                         "platform",
                         "background_image",
                         "release_date",
+                        "rating",
                     )
                 ),
                 201,

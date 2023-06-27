@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {useFormik} from "formik";
+import {updateGame, deleteGame} from "../ui/helpers";
 import * as Yup from "yup";
 import {
   Input,
@@ -9,6 +10,7 @@ import {
   Textarea,
   Spinner,
 } from "@chakra-ui/react";
+import {redirect, useNavigate} from "react-router-dom";
 
 // Yup schema for game validation
 const GameSchema = Yup.object().shape({
@@ -19,6 +21,7 @@ const GameSchema = Yup.object().shape({
 });
 export default function GameEdit({game, toggleShowEdit}) {
   const {title, release_date, background_image, platform, description} = game;
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       title: title,
@@ -32,14 +35,16 @@ export default function GameEdit({game, toggleShowEdit}) {
       handleSubmit(values);
     },
   });
+  function handleDelete() {
+    deleteGame(game.id).then(deleted => {
+      navigate("/games");
+    });
+  }
 
   function handleSubmit(values) {
-    fetch(`/games/${game.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
+    updateGame(game.id, values).then(data => {
+      toggleShowEdit();
+      navigate(`/games/${data.id}`);
     });
   }
   return (
@@ -48,6 +53,11 @@ export default function GameEdit({game, toggleShowEdit}) {
         onSubmit={formik.handleSubmit}
         method="post"
         className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">
+        <div className="flex justify-end place-items-end">
+          <Button size="sm" colorScheme="red" onClick={handleDelete}>
+            Delete Game
+          </Button>
+        </div>
         <div className="mb-2">
           <label
             htmlFor="title"

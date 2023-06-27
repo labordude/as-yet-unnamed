@@ -53,25 +53,25 @@ with app.app_context():
 #     return users
 
 
-# def create_reviews():
-#     with app.app_context():
-#         users = [user.id for user in User.query.all()]
-#         games = [game.id for game in Game.query.all()]
-#         reviews = []
+def create_reviews():
+    with app.app_context():
+        users = [user.id for user in User.query.all()]
+        games = [game.id for game in Game.query.all()]
+        reviews = []
 
-#         for i in range(500):
-#             review = Review(
-#                 body=fake.paragraph(
-#                     nb_sentences=5, variable_nb_sentences=False
-#                 ),
-#                 rating=fake.random_int(min=1, max=10),
-#                 user_id=fake.random_element(elements=users),
-#                 game_id=fake.random_element(elements=games),
-#             )
-#             reviews.append(review)
-#         db.session.add_all(reviews)
-#         db.session.commit()
-#     return reviews
+        for i in range(500):
+            review = Review(
+                body=fake.paragraph(
+                    nb_sentences=5, variable_nb_sentences=False
+                ),
+                rating=fake.random_int(min=1, max=5),
+                user_id=fake.random_element(elements=users),
+                game_id=fake.random_element(elements=games),
+            )
+            reviews.append(review)
+        db.session.add_all(reviews)
+        db.session.commit()
+    return reviews
 
 
 def create_communities():
@@ -158,7 +158,7 @@ def create_games(rows):
             else:
                 background_image = "https://placekitten.com/150/150"
             release_date = datetime.fromtimestamp(int(rows[i][3]))
-
+            rating = rows[i][12]
             game = Game(
                 id=id,
                 title=title,
@@ -166,6 +166,7 @@ def create_games(rows):
                 platform=platform_list,
                 background_image=background_image,
                 release_date=release_date,
+                rating=rating,
             )
 
             db.session.add(game)
