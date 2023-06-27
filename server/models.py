@@ -136,7 +136,12 @@ class Game(db.Model, SerializerMixin):
     game_platforms = db.relationship("PlatformGames", back_populates="game")
     platforms = association_proxy("game_platforms", "game")
 
-    serialize_rules = ("-reviews.game", "-updated_at", "-platforms.game")
+    serialize_rules = (
+        "-reviews.game",
+        "-updated_at",
+        "-platforms.game",
+        "-game_platforms.game",
+    )
 
     @validates("title")
     def validate_title(self, key, title):
@@ -276,7 +281,7 @@ class Platform(db.Model, SerializerMixin):
     )
     games = association_proxy("platform_games", "game")
 
-    serialize_rules = "-platform_games.platform"
+    serialize_rules = ("-platform_games.platform", "-communities.platform")
 
 
 class PlatformGames(db.Model, SerializerMixin):
@@ -306,6 +311,8 @@ class PlatformCommunity(db.Model, SerializerMixin):
     )
     platform = db.relationship("Platform", back_populates="communities")
     community = db.relationship("Community", back_populates="platforms")
+
+    serialize_rules = ("-community.platforms", "-platform.communities")
 
 
 # class Thread(db.Model, SerializerMixin):

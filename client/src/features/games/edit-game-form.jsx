@@ -70,11 +70,11 @@ export default function GameEdit({game, toggleShowEdit}) {
             <div>{formik.errors.description}</div>
           ) : null}
         </div>
-        <div className="mb-2">
+        {/* <div className="mb-2">
           <label
             htmlFor="platform"
             className="block text-gray-700 text-sm font-bold mb-2">
-            Email
+            Platform
           </label>
           <Input
             id="platform"
@@ -85,7 +85,7 @@ export default function GameEdit({game, toggleShowEdit}) {
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
           />
           {formik.errors.email ? <div>{formik.errors.email}</div> : null}
-        </div>
+        </div> */}
         <div className="mb-2">
           <label
             htmlFor="release_date"
