@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from "react";
 
 import Header from "../components/Header";
-import {getUserByID} from "../features/ui/helpers";
+import {getUserByID} from "../features-ui/helpers";
 import {useLoaderData} from "react-router-dom";
+import { Grid, GridItem } from '@chakra-ui/react';
 
-export async function loader({params}) {
-  const newUser = await getUsersbyid(params.userId);
-  return newUser;
+export async function loader({ params }) {
+    const newUser = await getUsersbyid(params.userId);
+    return {newUser};
 }
 // navigated in here from signup form
 // lead to profile when done editing
@@ -28,8 +29,11 @@ export default function EditUser(id) {
       .then(data => setUserData(data));
   }
 
-  // Seperate by rows and columns (can use tailwind UI, bootstrap styling does really well for structure)
-  return <Header />;
 
-  // pass
+    // Seperate by rows and columns (can use tailwind UI, bootstrap styling does really well for structure)
+    return (
+        <Header/>
+        
+    )
+    // pass
 }
