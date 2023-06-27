@@ -42,9 +42,7 @@ export default function Header({onLogout, user}) {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
             <li>
-              <Link to="/games">
-                Games
-              </Link>
+              <Link to="/games">Games</Link>
             </li>
             <li>
               <Link to="/communities/all">Communities</Link>
@@ -54,11 +52,11 @@ export default function Header({onLogout, user}) {
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-3xl text-white">
-          <Link to="/home">
-            GameXperience
-          </Link>
-        </a>
+        <Link
+          to="/home"
+          className="btn btn-ghost normal-case text-3xl text-white">
+          GameXperience
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">

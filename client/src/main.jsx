@@ -19,7 +19,9 @@ import "vite/modulepreload-polyfill";
 // clean up and bakc fill anything that is old code
 // componenets and endpoints
 import Home from "./pages/home";
-import SignUpForm from "./components/Auth/SignUpForm.jsx";
+import SignUpForm, {
+  action as SignUpAction,
+} from "./components/Auth/SignUpForm.jsx";
 import Login from "./pages/login";
 import Feed from "./components/Feed.jsx";
 import Communities from "./pages/communities.jsx";
@@ -44,6 +46,7 @@ const router = createBrowserRouter([
         path: "/signup",
         element: <SignUpForm />,
         errorElement: <div>Whoops!</div>,
+        action: SignUpAction,
       },
       {
         path: "/login",

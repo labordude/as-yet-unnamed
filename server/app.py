@@ -139,6 +139,7 @@ class CheckSession(Resource):
         # return {"message": ["successful login", session]}, 200
 
         if session.get("user_id"):
+            print(session["user_id"])
             user = (
                 User.query.filter(User.id == session.get("user_id"))
                 .first()

@@ -1,15 +1,21 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useState} from "react";
+import {
+  useNavigate,
+  useNavigation,
+  useActionData,
+  useSubmit,
+} from "react-router-dom";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
+import {createUser} from "../../features/ui/helpers";
 import {
   Input,
   Button,
   InputGroup,
   InputRightElement,
   Textarea,
-  Text,
+  Spinner,
 } from "@chakra-ui/react";
 // import bcrypt from "bcryptjs";
 // const salt = bcrypt.genSaltSync(10);
@@ -34,38 +40,50 @@ const checkUsername = username => {
       return data.length === 0;
     });
 };
+
+export const action = async ({request}) => {
+  const formData = await request.formData();
+  const values = Object.fromEntries(formData);
+  console.log(values);
+  // fetch(`api/signup`, {
+  //   method: "POST",
+  //   headers: {"Content-Type": "application/json"},
+  //   body: JSON.stringify(values),
+  // })
+  //   .then(response => response.json())
+  //   .then(newUser => {
+  //     return newUser;
+  //     // navigate('/editformpageything')
+  //   });
+
+  try {
+    const newUser = await createUser(values);
+    console.log(newUser);
+  } catch (error) {
+    return {error: "Error creating a new user."};
+  }
+  return redirect(`/edituser/${newUser.ID}`);
+};
 export default function SignUpForm({onLogin}) {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
-  const [success, setSuccess] = useState(false);
-  const navigate = useNavigate()
-  function handleSubmit(values) {
-    fetch(`api/signup`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(values),
-    })
-      .then(response => response.json())
-      .then(newUser => {
-        
-        console.log(newUser);
-        // navigate('/editformpageything')
-      });
-
-    // // POST fetch to dispatch
-    // fetch(`/new_user`, {
-    //   method: "POST",
-    //   headers: {"Content-Type": "application/json"},
-    //   body: JSON.stringify(values),
-    // })
-    //   .then(resp => resp.json())
-    //   .then(newProfile => {
-    //     console.log(newProfile.id);
-    //     // ensure we update the local cookie before sending off other data
-    //   })
-
-    //   .catch(error => console.log("error", error.message));
-  }
+  const actionData = useActionData();
+  const {error} = actionData || {};
+  const navigate = useNavigate();
+  const navigation = useNavigation();
+  const submit = useSubmit();
+  // function handleSubmit(values) {
+  //   fetch(`api/signup`, {
+  //     method: "POST",
+  //     headers: {"Content-Type": "application/json"},
+  //     body: JSON.stringify(values),
+  //   })
+  //     .then(response => response.json())
+  //     .then(newUser => {
+  //       console.log(newUser);
+  //       // navigate('/editformpageything')
+  //     });
+  // }
   // Pass the useFormik() hook initial form values, a validate function that will be called when
   // form values change or fields are blurred, and a submit function that will
   // be called when the form is submitted
@@ -79,168 +97,143 @@ export default function SignUpForm({onLogin}) {
       pfp_image: "",
     },
     validationSchema: ProfileSchema,
-    onSubmit: values => handleSubmit(values),
+    onSubmit: async values => {
+      console.log(values);
+      submit(values, {method: "post"});
+    },
   });
   return (
     <>
-      {!success ? (
-        <form
-          onSubmit={formik.handleSubmit}
-          className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">
-          <div className="mb-2">
-            <label
-              htmlFor="firstName"
-              className="block text-gray-700 text-sm font-bold mb-2">
-              Name
-            </label>
-            <Input
-              id="name"
-              name="name"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.name}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-            />
-            {formik.errors.name ? <div>{formik.errors.name}</div> : null}
-          </div>
-          <div className="mb-2">
-            <label
-              htmlFor="email"
-              className="block text-gray-700 text-sm font-bold mb-2">
-              Email
-            </label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              onChange={formik.handleChange}
-              value={formik.values.email}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-            />
-            {formik.errors.email ? <div>{formik.errors.email}</div> : null}
-          </div>
-          <div className="mb-2">
-            <label
-              htmlFor="username"
-              className="block text-gray-700 text-sm font-bold mb-2">
-              Username
-            </label>
-            <Input
-              id="username"
-              name="username"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.username}
-              autoComplete="username"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-            />
-            {formik.errors.username ? (
-              <div>{formik.errors.username}</div>
-            ) : null}
-          </div>
-          <div className="mb-2">
-            <label
-              htmlFor="password"
-              className="block text-gray-700 text-sm font-bold mb-2">
-              Password
-            </label>
-            <InputGroup size="md">
-              <Input
-                pr="4.5rem"
-                type={show ? "text" : "password"}
-                placeholder="Enter password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-                name="password"
-                id="password"
-                autoComplete="current-password"
-              />
-              <InputRightElement width="4.5rem">
-                <Button h="1.75rem" size="sm" onClick={handleClick}>
-                  {show ? "Hide" : "Show"}
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-            {formik.errors.password ? (
-              <div>{formik.errors.password}</div>
-            ) : null}
-          </div>
-          <div className="mb-2">
-            <label
-              htmlFor="pfp_image"
-              className="block text-gray-700 text-sm font-bold mb-2">
-              Image
-            </label>
-            <input
-              id="pfp_image"
-              name="pfp_image"
-              type="file"
-              onChange={event =>
-                formik.setFieldValue(
-                  "pfp_image",
-                  URL.createObjectURL(event.currentTarget.files[0]),
-                )
-              }
-              className="block w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg file:mr-4 file:py-2 file:px-4 file:bg-slate-600 file:text-white file:rounded-md"
-            />
-            {formik.errors.pfp_image ? (
-              <div>{formik.errors.pfp_image}</div>
-            ) : null}
-          </div>
-          <div className="mb-2">
-            <label
-              htmlFor="bio"
-              className="block text-gray-700 text-sm font-bold mb-2">
-              Bio
-            </label>
-            <Textarea
-              name="bio"
-              value={formik.values.bio}
-              onChange={formik.handleChange}
-              placeholder="Tell us about yourself"
-              size="sm"
-            />
-            {formik.errors.bio ? <div>{formik.errors.bio}</div> : null}
-          </div>
-          <div className="flex justify-around">
-            <button
-              className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300"
-              type="submit">
-              Save
-            </button>
-            <button
-              type="button"
-              className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
-              Cancel
-            </button>
-          </div>
-        </form>
-      ) : (
-        <div>
-          <Success newUser={formik.values} />
+      <form
+        onSubmit={formik.handleSubmit}
+        method="post"
+        className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">
+        <div className="mb-2">
+          <label
+            htmlFor="firstName"
+            className="block text-gray-700 text-sm font-bold mb-2">
+            Name
+          </label>
+          <Input
+            id="name"
+            name="name"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.name}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+          />
+          {formik.errors.name ? <div>{formik.errors.name}</div> : null}
         </div>
-      )}
+        <div className="mb-2">
+          <label
+            htmlFor="email"
+            className="block text-gray-700 text-sm font-bold mb-2">
+            Email
+          </label>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            onChange={formik.handleChange}
+            value={formik.values.email}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+          />
+          {formik.errors.email ? <div>{formik.errors.email}</div> : null}
+        </div>
+        <div className="mb-2">
+          <label
+            htmlFor="username"
+            className="block text-gray-700 text-sm font-bold mb-2">
+            Username
+          </label>
+          <Input
+            id="username"
+            name="username"
+            type="text"
+            onChange={formik.handleChange}
+            value={formik.values.username}
+            autoComplete="username"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+          />
+          {formik.errors.username ? <div>{formik.errors.username}</div> : null}
+        </div>
+        <div className="mb-2">
+          <label
+            htmlFor="password"
+            className="block text-gray-700 text-sm font-bold mb-2">
+            Password
+          </label>
+          <InputGroup size="md">
+            <Input
+              pr="4.5rem"
+              type={show ? "text" : "password"}
+              placeholder="Enter password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              name="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <InputRightElement width="4.5rem">
+              <Button h="1.75rem" size="sm" onClick={handleClick}>
+                {show ? "Hide" : "Show"}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
+          {formik.errors.password ? <div>{formik.errors.password}</div> : null}
+        </div>
+        <div className="mb-2">
+          <label
+            htmlFor="pfp_image"
+            className="block text-gray-700 text-sm font-bold mb-2">
+            Image
+          </label>
+          <input
+            id="pfp_image"
+            name="pfp_image"
+            type="file"
+            onChange={event =>
+              formik.setFieldValue(
+                "pfp_image",
+                URL.createObjectURL(event.currentTarget.files[0]),
+              )
+            }
+            className="block w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg file:mr-4 file:py-2 file:px-4 file:bg-slate-600 file:text-white file:rounded-md"
+          />
+          {formik.errors.pfp_image ? (
+            <div>{formik.errors.pfp_image}</div>
+          ) : null}
+        </div>
+        <div className="mb-2">
+          <label
+            htmlFor="bio"
+            className="block text-gray-700 text-sm font-bold mb-2">
+            Bio
+          </label>
+          <Textarea
+            name="bio"
+            value={formik.values.bio}
+            onChange={formik.handleChange}
+            placeholder="Tell us about yourself"
+            size="sm"
+          />
+          {formik.errors.bio ? <div>{formik.errors.bio}</div> : null}
+        </div>
+        <div className="flex justify-around">
+          <button
+            className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300"
+            type="submit"
+            disabled={navigation.state === "submitting"}>
+            {navigation.state === "submitting" && <Spinner />}
+            Save
+          </button>
+          <button
+            type="button"
+            className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
+            Cancel
+          </button>
+        </div>
+      </form>
     </>
-  );
-}
-function Success({newUser}) {
-  const {name, username, password, email, bio, pfp_image} = newUser;
-
-  return (
-    <div>
-      Successfully created:
-      <ul>
-        New User
-        <li>Name: {name}</li>
-        <li>Username: {username}</li>
-        <li>Password hash: {hashBrowns}</li>
-        <li>Email: {email}</li>
-        <li>Bio:{bio}</li>
-        <li>
-          Image:
-          <img src={pfp_image} />
-        </li>
-      </ul>
-    </div>
   );
 }

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Link, useLoaderData, useParams} from "react-router-dom";
 import {getGamesByID} from "../features/ui/helpers";
 import {Container, Image, Box} from "@chakra-ui/react";
-import ReviewCard from "../components/review-card";
+import ReviewCardDetailed from "../components/review-card-detailed";
 export async function loader({params}) {
   const game_loader = await getGamesByID(params.id);
   return {game_loader};
@@ -40,7 +40,11 @@ export default function Game() {
         {game_loader.reviews && game_loader.reviews.length > 0 ? (
           <div>
             {game_loader.reviews.map(review => (
-              <ReviewCard key={review.id} review={review} game={game_loader} />
+              <ReviewCardDetailed
+                key={review.id}
+                review={review}
+                game={game_loader}
+              />
             ))}
           </div>
         ) : (
