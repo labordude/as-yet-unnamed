@@ -2,7 +2,7 @@ import React, {useState, useEffect, useMemo} from "react";
 import {getGames} from "../features/ui/helpers";
 import GameCard from "../components/game-card";
 import {SimpleGrid, GridItem} from "@chakra-ui/react";
-
+// import ReactPaginate from "react-paginate";
 // Components needed: Search, GameCard
 
 export default function Games() {
