@@ -24,22 +24,6 @@ from flask_wtf import FlaskForm
 from wtforms import SubmitField
 # import jsonify
 
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-class EmptyForm(FlaskForm):
-    submit = SubmitField('Submit')
-
-class Followers(Resource):
-    def get(self, id):
-        user_followers = followers.query.filter(followers.c.follower_id == id).all()
-        if user_followers is None:
-            return ({"error": "Followers not found"}, 404)
-        return user_followers.to_dict(), 200
-
-api.add_resource(Followers, "/api/users/<int:id>/followers")
-
-
 
 class Following(Resource):
     def get(self, id):
@@ -142,8 +126,19 @@ class Signup(Resource):
 
 class CheckSession(Resource):
     def get(self):
-        session["user_id"] = 1
-        return {"message": ["successful login", session]}, 200
+        # please leave this code for testing purposes
+        # session["user_id"] = 1
+        # return {"message": ["successful login", session]}, 200
+
+        if session.get("user_id"):
+            user = (
+                User.query.filter(User.id == session.get("user_id"))
+                .first()
+                .to_dict()
+            )
+            return user, 200
+
+        return ({"error": "unauthorized"}, 401)
 
     pass
 
@@ -230,20 +225,7 @@ class Games(Resource):
 class GamesById(Resource):
     def get(self, id):
         try:
-            game = (
-                Game.query.filter(Game.id == id)
-                .first()
-                .to_dict(
-                    only=(
-                        "id",
-                        "title",
-                        "description",
-                        "platform",
-                        "background_image",
-                        "release_date",
-                    )
-                )
-            )
+            game = Game.query.filter(Game.id == id).first().to_dict()
             return game, 200
         except:
             return {"error": "404: Game not found"}, 404

@@ -69,12 +69,12 @@ def create_communities():
         community_list = [
             {
                 "name": "Playstation",
-                "image": "./images/playstation_logo.svg",
+                "image": "/images/playstation_logo.svg",
             },
-            {"name": "Nintendo", "image": "./images/nintendo_logo.svg"},
-            {"name": "XBox", "image": "./images/xbox_logo.svg"},
-            {"name": "PC", "image": "./images/pc_gaming.svg"},
-            {"name": "Mobile", "image": "./images/mobile_gaming.png"},
+            {"name": "Nintendo", "image": "/images/nintendo_logo.svg"},
+            {"name": "XBox", "image": "/images/xbox_logo.svg"},
+            {"name": "PC", "image": "/images/pc_gaming.svg"},
+            {"name": "Mobile", "image": "/images/mobile_gaming.png"},
         ]
 
         for i in range(len(community_list)):
@@ -119,7 +119,8 @@ def create_games(rows):
             else:
                 print("found no description")
                 description = "No data"
-            platform = rows[i][6]
+            platform = ast.literal_eval(rows[i][6])
+            print([item["id"] for item in platform])
             if rows[i][2]:
                 image_dict = ast.literal_eval(rows[i][2])
                 big_picture = image_dict["url"].replace("thumb", "720p")
@@ -128,18 +129,18 @@ def create_games(rows):
                 background_image = "https://placekitten.com/150/150"
             release_date = datetime.fromtimestamp(int(rows[i][3]))
 
-            game = Game(
-                id=id,
-                title=title,
-                description=description,
-                platform=platform,
-                background_image=background_image,
-                release_date=release_date,
-            )
-            games.append(game)
-        db.session.add_all(games)
-        db.session.commit()
-    return games
+    #         game = Game(
+    #             id=id,
+    #             title=title,
+    #             description=description,
+    #             platform=platform,
+    #             background_image=background_image,
+    #             release_date=release_date,
+    #         )
+    #         games.append(game)
+    #     db.session.add_all(games)
+    #     db.session.commit()
+    # return games
 
 
 if __name__ == "__main__":
@@ -156,9 +157,9 @@ if __name__ == "__main__":
         games = create_games(rows)
         print("Complete!")
 
-    print("loading communities")
-    create_communities()
-    print("communities loaded")
+    # print("loading communities")
+    # create_communities()
+    # print("communities loaded")
 
     # print("loading reviews")
     # create_reviews()

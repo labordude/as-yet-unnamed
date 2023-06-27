@@ -1,6 +1,7 @@
-id,name,slug,checksum
-5,Nintendo,nintendo,398e5c87-f7db-6265-6da6-433441385208
-4,Linux,linux,be8b89fa-823c-790a-1d5a-7e74315c1b27
+id,name,slug
+6,PC,pc
+5,Nintendo,nintendo
+4,PC,linux,be8b89fa-823c-790a-1d5a-7e74315c1b27
 2,Xbox,xbox,5bb9bcec-4aa7-45b8-129b-a6f88932942e
 3,Sega,sega,bd1a9cc4-3632-33b0-ff4b-feab8cd15001
 1,PlayStation,playstation,eadc0208-7972-9364-88b9-d2a9de75a998
