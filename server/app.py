@@ -204,7 +204,20 @@ class Games(Resource):
         games = games.paginate()
 
         return {
-            "games": [game.to_dict() for game in games.items],
+            "games": [
+                game.to_dict(
+                    only=(
+                        "id",
+                        "title",
+                        "rating",
+                        "release_date",
+                        "description",
+                        "background_image",
+                        "platform",
+                    )
+                )
+                for game in games.items
+            ],
             "total": games.total,
             "has_next": games.has_next,
             "has_prev": games.has_prev,
@@ -466,7 +479,8 @@ class UsersById(Resource):
 class Communities(Resource):
     def get(self):
         communities = [
-            community.to_dict() for community in Community.query.all()
+            community.to_dict(only=("id", "name", "image"))
+            for community in Community.query.all()
         ]
         return communities, 200
 

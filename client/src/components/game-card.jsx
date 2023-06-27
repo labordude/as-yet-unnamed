@@ -16,7 +16,7 @@ function GameCard({game}) {
         </figure>
         <div className="card-body items-center text-center">
           <h2 className="card-title">{game.name}</h2>
-          <p>Rating: {game.rating.toFixed(2)}</p>
+          <p>Rating: {game.rating && game.rating.toFixed(2)}</p>
           <div className="card-actions">
             <Link to={`/games/${game.id}`}>
               <Button colorScheme="blue">Get More Info</Button>
