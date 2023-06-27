@@ -1,7 +1,7 @@
 from app import app
 from random import randint
 import csv
-from models import db, Platform, User, Community, CommunityUser, Game, Review
+from models import db, Platform, User, Community, CommunityUser, Game, Review, PlatformCommunity, PlatformGames
 from datetime import datetime
 from faker import Faker
 import ast

@@ -3,6 +3,7 @@ import {Link, useLoaderData, useParams} from "react-router-dom";
 import {getGamesByID} from "../features/ui/helpers";
 import {Container, Image, Box} from "@chakra-ui/react";
 import ReviewCardDetailed from "../components/review-card-detailed";
+import GameEdit from "../features/games/edit-game-form";
 export async function loader({params}) {
   const game_loader = await getGamesByID(params.id);
   return {game_loader};
@@ -13,6 +14,11 @@ export default function Game() {
   // let {id} = useParams();
   const [gameData, setGameData] = useState();
   const {game_loader} = useLoaderData();
+  const [showEdit, setShowEdit] = useState(true);
+
+  function toggleShowEdit() {
+    setShowEdit(prevShowEdit => !prevShowEdit);
+  }
   useEffect(() => {
     setGameData(game_loader);
   }, []);
@@ -24,6 +30,11 @@ export default function Game() {
           <div>Rating: </div>
         </Container>
         <Container>
+          {showEdit ? (
+            <GameEdit game={game_loader} toggleShowEdit={toggleShowEdit} />
+          ) : (
+            <button onClick={toggleShowEdit}>Show Edit Game Form</button>
+          )}
           <p>{game_loader.title}</p>
           <p>Released on {game_loader.release_date}</p>
           <p>Platforms list goes here</p>
