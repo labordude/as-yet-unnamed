@@ -1,5 +1,6 @@
 import React from "react";
 import bcrypt from "bcrypt";
+
 function Success({newUser}) {
   const {name, username, password, email, bio, pfp_image} = newUser;
   const hashBrowns = bcrypt.hash(password, 10);

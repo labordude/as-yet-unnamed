@@ -2,20 +2,38 @@ import React, {useEffect, useState} from "react";
 import {Link, useLoaderData, useParams} from "react-router-dom";
 import {getGamesByID} from "../features/ui/helpers";
 import {Container, Image, Box} from "@chakra-ui/react";
-import ReviewCard from "../components/review-card";
+import ReviewCardDetailed from "../components/review-card-detailed";
+import NewReviewForm from "../components/NewReviewForm";
+import GameEdit from "../features/games/edit-game-form";
 export async function loader({params}) {
   const game_loader = await getGamesByID(params.id);
   return {game_loader};
 }
+
+
+
+
+
 // components needed:
 // data needed: Title, Release Date, Platforms, Community, Description, Rating, CurrentUser rating,
 export default function Game() {
   // let {id} = useParams();
   const [gameData, setGameData] = useState();
   const {game_loader} = useLoaderData();
+  const [toggle, setToggle] = useState(false);
+  
+  const [showEdit, setShowEdit] = useState(true);
+
+  function toggleShowEdit() {
+    setShowEdit(prevShowEdit => !prevShowEdit);
+  }
   useEffect(() => {
     setGameData(game_loader);
   }, []);
+  function toggled() {
+    setToggle(prev => !prev)
+  }
+  
   return (
     <Container>
       <Container className="my-4 flex">
@@ -24,6 +42,11 @@ export default function Game() {
           <div>Rating: </div>
         </Container>
         <Container>
+          {showEdit ? (
+            <GameEdit game={game_loader} toggleShowEdit={toggleShowEdit} />
+          ) : (
+            <button onClick={toggleShowEdit}>Show Edit Game Form</button>
+          )}
           <p>{game_loader.title}</p>
           <p>Released on {game_loader.release_date}</p>
           <p>Platforms list goes here</p>
@@ -40,12 +63,18 @@ export default function Game() {
         {game_loader.reviews && game_loader.reviews.length > 0 ? (
           <div>
             {game_loader.reviews.map(review => (
-              <ReviewCard key={review.id} review={review} game={game_loader} />
+              <ReviewCardDetailed
+                key={review.id}
+                review={review}
+                game={game_loader}
+              />
             ))}
           </div>
         ) : (
           <p>"No reviews yet"</p>
         )}
+        {!toggle ? (<button onClick={toggled}>Add Review</button>) : (<NewReviewForm toggled={toggled} game_loader={game_loader}/>)}
+        
       </Container>
     </Container>
   );

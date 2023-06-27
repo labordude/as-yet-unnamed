@@ -20,6 +20,7 @@ export async function getNewestGames() {
     .catch(error => console.log(error));
 }
 
+//get community 
 export async function getCommunities() {
   return fetch("/api/communities")
     .then(response => {
@@ -50,6 +51,7 @@ export async function getGamesByID(id) {
     .catch(error => setErrors(error));
 }
 
+//change edit user from lowercase "id" to uppercase
 export async function getUserByID(id) {
   return fetch(`/api/users/${id}`)
     .then(response => {
@@ -68,4 +70,18 @@ export async function getCurrentUser() {
       }
     })
     .catch(error => setErrors(error));
+}
+
+export async function createUser(values) {
+  
+  return fetch(`api/signup`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(values),
+  })
+    .then(response => response.json())
+    .then(newUser => {
+      return newUser;
+      // navigate('/editformpageything')
+    });
 }

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import {getCommunities} from "../features/ui/helpers";
+// need to add header photo to autoload
 export default function Header({onLogout, user}) {
   const [communities, setCommunities] = useState([]);
   useEffect(() => {
@@ -42,9 +43,7 @@ export default function Header({onLogout, user}) {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
             <li>
-              <Link to="/games">
-                Games
-              </Link>
+              <Link to="/games">Games</Link>
             </li>
             <li>
               <Link to="/communities/all">Communities</Link>
@@ -54,9 +53,11 @@ export default function Header({onLogout, user}) {
             </li>
           </ul>
         </div>
-          <Link to="/home" className="btn btn-ghost normal-case text-3xl text-white">
-            GameXperience
-          </Link>
+        <Link
+          to="/home"
+          className="btn btn-ghost normal-case text-3xl text-white">
+          GameXperience
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">

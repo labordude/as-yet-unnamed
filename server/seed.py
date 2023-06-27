@@ -1,7 +1,17 @@
 from app import app
 from random import randint
 import csv
-from models import db, Platform, User, Community, CommunityUser, Game, Review
+from models import (
+    db,
+    Platform,
+    User,
+    Community,
+    CommunityUser,
+    Game,
+    Review,
+    PlatformCommunity,
+    PlatformGames,
+)
 from datetime import datetime
 from faker import Faker
 import ast
@@ -86,30 +96,31 @@ def create_communities():
             db.session.commit()
 
 
-# def create_platforms(rows):
-#     with app.app_context():
-#         platforms = []
-#         for i in range(1, len(rows)):
-#             platform = Platform(
-#                 platform_id=rows[i][0],
-#                 name=rows[i][1],
-#                 alternative_name=rows[i][2],
-#                 platform_logo=rows[i][3],
-#                 slug=rows[i][4],
-#                 url=rows[i][5],
-#                 generation=rows[i][6],
-#                 platform_family=rows[i][7],
-#                 abbreviation=rows[i][8],
-#             )
-#             platforms.append(platform)
-#         db.session.add_all(platforms)
-#         db.session.commit()
-#     return platforms
+def create_platforms(rows):
+    with app.app_context():
+        platforms = []
+        for i in range(1, len(rows)):
+            platform = Platform(
+                platform_id=rows[i][0],
+                name=rows[i][1],
+                alternative_name=rows[i][2],
+                platform_logo=rows[i][3],
+                slug=rows[i][4],
+                url=rows[i][5],
+                generation=rows[i][6],
+                platform_family=rows[i][7],
+                abbreviation=rows[i][8],
+            )
+            platforms.append(platform)
+        db.session.add_all(platforms)
+        db.session.commit()
+    return platforms
 
 
 def create_games(rows):
     with app.app_context():
         Game.query.delete()
+        PlatformGames.query.delete()
         games = []
         for i in range(1, len(rows)):
             id = rows[i][0]
@@ -120,7 +131,9 @@ def create_games(rows):
                 print("found no description")
                 description = "No data"
             platform = ast.literal_eval(rows[i][6])
-            print([item["id"] for item in platform])
+            platforms = [item["id"] for item in platform]
+            platform_list = ",".join([str(item["id"]) for item in platform])
+
             if rows[i][2]:
                 image_dict = ast.literal_eval(rows[i][2])
                 big_picture = image_dict["url"].replace("thumb", "720p")
@@ -129,18 +142,46 @@ def create_games(rows):
                 background_image = "https://placekitten.com/150/150"
             release_date = datetime.fromtimestamp(int(rows[i][3]))
 
-    #         game = Game(
-    #             id=id,
-    #             title=title,
-    #             description=description,
-    #             platform=platform,
-    #             background_image=background_image,
-    #             release_date=release_date,
-    #         )
-    #         games.append(game)
-    #     db.session.add_all(games)
-    #     db.session.commit()
-    # return games
+            game = Game(
+                id=id,
+                title=title,
+                description=description,
+                platform=platform_list,
+                background_image=background_image,
+                release_date=release_date,
+            )
+
+            db.session.add(game)
+
+            db.session.commit()
+            # print(game.id)
+            for j in range(len(platforms)):
+                game_platform = PlatformGames(
+                    game_id=game.id, platform_id=platforms[j]
+                )
+
+                db.session.add(game_platform)
+                db.session.commit()
+            # print(
+            #     game_platform.id,
+            #     game_platform.game_id,
+            #     game_platform.platform_id,
+            # )
+    return games
+
+
+def create_platform_communities(rows):
+    with app.app_context():
+        PlatformCommunity.query.delete()
+        platform_communities = []
+        for i in range(1, len(rows)):
+            platform_community = PlatformCommunity(
+                platform_id=rows[i][0],
+                community_id=rows[i][1],
+            )
+            platform_communities.append(platform_community)
+        db.session.add_all(platform_communities)
+        db.session.commit()
 
 
 if __name__ == "__main__":
@@ -157,19 +198,19 @@ if __name__ == "__main__":
         games = create_games(rows)
         print("Complete!")
 
-    # print("loading communities")
-    # create_communities()
-    # print("communities loaded")
+    print("loading communities")
+    create_communities()
+    print("communities loaded")
 
     # print("loading reviews")
     # create_reviews()
     # print("reviews loaded")
 
-    # print("Opening CSV...")
-    # with open("platforms.csv", newline="") as csvfile:
-    #     rows = [
-    #         row for row in csv.reader(csvfile, delimiter=",", quotechar="|")
-    #     ]
-    #     print("Seeding platforms...")
-    #     platforms = create_platforms(rows)
-    #     print("Complete!")
+    print("Opening CSV...")
+    with open("platform_communities.csv", newline="") as csvfile:
+        rows = [
+            row for row in csv.reader(csvfile, delimiter=",", quotechar='"')
+        ]
+        print("Seeding platform communities...")
+        platform_communities = create_platform_communities(rows)
+        print("Complete!")
