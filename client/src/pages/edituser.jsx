@@ -5,9 +5,10 @@ import {getUserByID} from "../features-ui/helpers";
 import {useLoaderData} from "react-router-dom";
 import { Grid, GridItem } from '@chakra-ui/react';
 
-export async function loader({ params }) {
-    const newUser = await getUsersbyid(params.userId);
-    return {newUser};
+export async function loader({params}) {
+  const newUser = await getUserByID(params.userId);
+  return newUser;
+
 }
 // navigated in here from signup form
 // lead to profile when done editing
