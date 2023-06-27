@@ -135,12 +135,15 @@ class Game(db.Model, SerializerMixin):
 
     game_platforms = db.relationship("PlatformGames", back_populates="game")
     platforms = association_proxy("game_platforms", "game")
-
+    game_communities = db.relationship("CommunityGame", back_populates="game")
+    communities = association_proxy("game_communities", "community")
     serialize_rules = (
         "-reviews.game",
         "-updated_at",
         "-platforms.game",
         "-game_platforms.game",
+        "-game_communities.game",
+        "-game_communities.community.platforms",
     )
 
     @validates("title")
@@ -231,7 +234,10 @@ class Community(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     image = db.Column(db.String)
-    # games = db.relationship("Game", back_populates="community")
+    community_games = db.relationship(
+        "CommunityGame", back_populates="community"
+    )
+    games = association_proxy("community_games", "game")
     community_users = db.relationship(
         "CommunityUser",
         back_populates="community",
@@ -241,7 +247,11 @@ class Community(db.Model, SerializerMixin):
     platforms = db.relationship(
         "PlatformCommunity", back_populates="community"
     )
-    serialize_rules = ("-community_users.community",)
+    serialize_rules = (
+        "-community_users.community",
+        "-community_games.community",
+        "-platforms.community",
+    )
 
 
 class CommunityUser(db.Model, SerializerMixin):
@@ -257,7 +267,7 @@ class CommunityUser(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     user = db.relationship("User", back_populates="community_users")
 
-    serialize_rules = ("-user.community_users", "community.community_users")
+    serialize_rules = ("-user.community_users", "-community.community_users")
 
 
 class Platform(db.Model, SerializerMixin):
@@ -313,6 +323,20 @@ class PlatformCommunity(db.Model, SerializerMixin):
     community = db.relationship("Community", back_populates="platforms")
 
     serialize_rules = ("-community.platforms", "-platform.communities")
+
+
+class CommunityGame(db.Model, SerializerMixin):
+    __tablename__ = "community_games"
+
+    id = db.Column(db.Integer, primary_key=True)
+    game_id = db.Column(db.Integer, db.ForeignKey("games.id"), nullable=False)
+    community_id = db.Column(
+        db.Integer, db.ForeignKey("communities.id"), nullable=False
+    )
+    game = db.relationship("Game", back_populates="game_communities")
+    community = db.relationship("Community", back_populates="community_games")
+
+    serialize_rules = ("-community.community_games", "-game.game_communities")
 
 
 # class Thread(db.Model, SerializerMixin):

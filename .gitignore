@@ -30,3 +30,6 @@ server/config.yml
 server/gameload.py
 *.pyc
 server/gameload copy.py
+server/__pycache__
+server/__pycache__/*
+server/__pycache__/app.cpython-38.pyc
