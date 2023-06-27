@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import Navbar from "./components/NavBar";
-import Header from "./components/Header";
-import {getUsersbyid} from "./features/helpers"
+// import Navbar from "./components/NavBar";
+import Header from "../components/Header";
+import {getUsersbyid} from "../features/ui/helpers"
 import {useLoaderData} from "react-router-dom"
 
 
