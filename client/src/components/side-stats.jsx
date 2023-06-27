@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Navbar from "./components/NavBar";
 import Header from "./components/Header";
-import getUserbyidData from "./features/helpers"
+import getUserbyIdData from "./features/helpers"
 
 
 export default function SideStats() {

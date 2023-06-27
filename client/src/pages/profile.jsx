@@ -47,6 +47,22 @@ export default function Profile() {
                     <p>"No games yet"</p>
                 )}
             </Container>
+            <Container>
+                <h2 className="text-center text-2xl font-bold">Recent Reviews</h2>
+                {user.reviews && user.reviews.length > 0 ? (
+                    <div>
+                        {user.reviews.map(review => (
+                            <ReviewCardDetailed
+                            key={review.id}
+                            review={review}
+                            game={game_loader}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <p>"No reviews yet"</p>
+                )}
+            </Container>
         </Container>
         
     )

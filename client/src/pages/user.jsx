@@ -15,6 +15,8 @@ export default function User() {
         setUserData(user_loader)
     }, [])
 
+    console.log(user_loader)
+
     return (
         <Container>
             <Container className="my-4 flex">
@@ -40,6 +42,22 @@ export default function User() {
                     </div>
                 ) : (
                     <p>"No games yet"</p>
+                )}
+            </Container>
+            <Container>
+                <h2 className="text-center text-2xl font-bold">Recent Reviews</h2>
+                {user_loader.reviews && user_loader.reviews.length > 0 ? (
+                    <div>
+                        {user_loader.reviews.map(review => (
+                            <ReviewCardDetailed
+                            key={review.id}
+                            review={review}
+                            game={game_loader}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <p>"No reviews yet"</p>
                 )}
             </Container>
         </Container>
