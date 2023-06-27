@@ -305,33 +305,31 @@ class Reviews(Resource):
         return reviews, 200
 
     def post(self):
-        data = request.get_json()
-        try:
-            new_review = Review(
-                body=data.get("review"),
-                rating=data.get("rating"),
-                user_id=data.get("user_id"),
-                game_id=data.get("game_id"),
-                created_at=data.get("created_at"),
-            )
-            db.session.add(new_review)
-            db.session.commit()
+        if session.get('user_id'):
+            data = request.get_json()
+            try:
+                new_review = Review(
+                    body=data.get("review"),
+                    rating=data.get("rating"),
+                    user_id=session.get('user_id'),
+                    game_id=data.get("game_id"),
+                )
+                db.session.add(new_review)
+                db.session.commit()
 
-            return (
-                new_review.to_dict(
-                    only=(
-                        "id",
-                        "body",
-                        "rating",
-                        "user_id",
-                        "game_id",
-                        "created_at",
-                    )
-                ),
-                201,
-            )
-        except:
-            return {"error": "Unable to post review"}, 400
+                return (
+                    new_review.to_dict(
+                        only=(
+                            "id",
+                            "body",
+                            "rating",
+                            "user_id",
+                            "game_id",
+                        )
+                    ), 201)
+            except:
+                return {"error": "Unable to post review"}, 400
+        return {'error': "401 Unauthorized"}, 401
 
 
 class ReviewsById(Resource):
