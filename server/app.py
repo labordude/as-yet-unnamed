@@ -135,25 +135,31 @@ class Signup(Resource):
 class CheckSession(Resource):
     def get(self):
         # please leave this code for testing purposes
-        # session["user_id"] = 1
-        # return {"message": ["successful login", session]}, 200
+        session["user_id"] = 1
+        user = (
+            User.query.filter(User.id == session.get("user_id"))
+            .first()
+            .to_dict()
+        )
+        return user, 200
 
-        if session.get("user_id"):
-            print(session["user_id"])
-            user = (
-                User.query.filter(User.id == session.get("user_id"))
-                .first()
-                .to_dict()
-            )
-            return user, 200
+        # if session.get("user_id"):
+        #     print(session["user_id"])
+        #     user = (
+        #         User.query.filter(User.id == session.get("user_id"))
+        #         .first()
+        #         .to_dict()
+        #     )
+        #     return user, 200
 
-        return ({"error": "unauthorized"}, 401)
+        # return ({"error": "unauthorized"}, 401)
 
     pass
 
+
 # class CurrentUser(Resource):
 #     def get(self):
-        
+
 #         user = User.query.filter(User.id == session.get("user_id")).first().to_dict()
 #         return user, 200
 
@@ -311,13 +317,13 @@ class Reviews(Resource):
         return reviews, 200
 
     def post(self):
-        if session.get('user_id'):
+        if session.get("user_id"):
             data = request.get_json()
             try:
                 new_review = Review(
                     body=data.get("review"),
                     rating=data.get("rating"),
-                    user_id=session.get('user_id'),
+                    user_id=session.get("user_id"),
                     game_id=data.get("game_id"),
                 )
                 db.session.add(new_review)
@@ -332,10 +338,12 @@ class Reviews(Resource):
                             "user_id",
                             "game_id",
                         )
-                    ), 201)
+                    ),
+                    201,
+                )
             except:
                 return {"error": "Unable to post review"}, 400
-        return {'error': "401 Unauthorized"}, 401
+        return {"error": "401 Unauthorized"}, 401
 
 
 class ReviewsById(Resource):
