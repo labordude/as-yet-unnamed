@@ -1,4 +1,4 @@
-import React from react
+
 // import NewGameAccordionItem from new-games-accordion-item
 import NewestGames from "./newest-games";
 // Should be home Feed
