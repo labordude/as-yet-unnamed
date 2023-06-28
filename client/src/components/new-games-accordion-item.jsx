@@ -6,6 +6,7 @@ import {
   AccordionButton,
   AccordionPanel,
 } from "@chakra-ui/react";
+import {Link} from "react-router-dom";
 // Accordion = threads
 function NewGameAccordionItem({game}) {
   return (
@@ -20,9 +21,12 @@ function NewGameAccordionItem({game}) {
       </h2>
       <AccordionPanel pb={4}>
         <span className="text-sm">{game.description}</span>
-        <p className="text-center">
-          <a className="text-sm underline">Click here for more details</a>
-        </p>
+
+        <Link
+          to={`/games/${game.id}`}
+          className="text-sm underline text-center">
+          Click here for more details
+        </Link>
       </AccordionPanel>
     </AccordionItem>
   );

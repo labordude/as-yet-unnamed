@@ -90,7 +90,7 @@ export default function Game() {
           <p>"No reviews yet"</p>
         )}
         {!toggle ? (
-          <button onClick={toggled}>Add Review</button>
+          <Button onClick={toggled}>Add Review</Button>
         ) : (
           <NewReviewForm toggled={toggled} game_loader={game_loader} />
         )}

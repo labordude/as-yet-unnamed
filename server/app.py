@@ -154,17 +154,18 @@ class Signup(Resource):
         try:
             db.session.add(new_user)
             db.session.commit()
-            session["user_id"] = new_user.id
-            return user_schema.dump(new_user), 201
         except IntegrityError:
             return ({"error": "Unprocessable entry"}, 422)
+        session["user_id"] = new_user.id
+        return user_schema.dump(new_user), 201
 
 
 class CheckSession(Resource):
     def get(self):
         # please leave this code for testing purposes
-        session["user_id"] = 1
-        user = User.query.filter(User.id == 1).first()
+        if not session.get("user_id"):
+            session["user_id"] = 1
+        user = User.query.filter(User.id == session["user_id"]).first()
 
         return user_schema.dump(user), 200
 
