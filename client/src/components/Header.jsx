@@ -20,10 +20,12 @@ export default function Header({onLogout, user}) {
       })
       .catch(error => console.log("error", error.message));
   }
+  //https://github.com/labordude/as-yet-unnamed/blob/69785785968cc49407465cfd216c24ec92c12f6f/GameXperience%20background.jpeg
   return (
     <div className="navbar bg-slate-600 ">
       <div className="navbar-start">
         <div className="dropdown">
+        <img src="https://github.com/labordude/as-yet-unnamed/blob/69785785968cc49407465cfd216c24ec92c12f6f/GameXperience%20background.jpeg"/>
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
             <svg
               xmlns="http://www.w3.org/2000/svg"
