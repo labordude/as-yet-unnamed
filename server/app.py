@@ -217,12 +217,13 @@ class Games(Resource):
     def post(self):
         data = request.get_json()
         try:
+            # platform = [int(item.strip()) for item in data.get("platform").split(",") if item.strip().isdigit()]
             new_game = Game(
                 title=data.get("title"),
                 description=data.get("description"),
                 platform=data.get("platform"),
                 background_image=data.get("background_image"),
-                release_date=data.get("release_date"),
+                release_date=datetime.datetime.strptime(data.get("release_date"), "%Y-%m-%d").date(),
             )
             db.session.add(new_game)
             db.session.commit()
