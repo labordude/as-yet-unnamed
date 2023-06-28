@@ -7,7 +7,7 @@ import {Grid, GridItem} from "@chakra-ui/react";
 
 export async function loader({params}) {
   const newUser = await getUserByID(params.id);
-  return newUser;
+  return {newUser};
 }
 // navigated in here from signup form
 // lead to profile when done editing
@@ -30,6 +30,6 @@ export default function EditUser(id) {
   }
 
   // Seperate by rows and columns (can use tailwind UI, bootstrap styling does really well for structure)
-  return <div>hello world</div>;
+  return <div>{newUser.username}</div>;
   // pass
 }
