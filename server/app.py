@@ -480,14 +480,67 @@ class CommunitiesByID(Resource):
 # add routes for platform games?
 class CommunityUsersByID(Resource):
     def get(self, id):
-        cu = [
-            community.user_id
-            for community in CommunityUser.query.filter(
-                CommunityUser.id == id
-            ).all()
-        ]
-        c_users = [user for user in cu]
-        return users_schema.dump(c_users), 200
+        community = Community.query.filter(Community.id == id).first()
+        if not community:
+            return ({"error": "Community not found"}, 404)
+        return community_schema.dump(community), 200
+
+        # cu = [
+        #     community.user_id
+        #     for community in CommunityUser.query.filter(
+        #         CommunityUser.community_id == id
+        #     ).all()
+        # ]
+
+        # total = len(cu)
+        # c_users = []
+        # for user in cu:
+        #     c_user = User.query.filter(User.id == user).first()
+        #     c_users.append(user_schema.dump(c_user))
+        # c_users = c_users.paginate()
+
+        # return {
+        #     "users": c_users,
+        #     "total": len(c_users),
+        #     "has_next": c_users.has_next,
+        #     "has_prev": c_users.has_prev,
+        #     "page": page,
+        #     "per_page": per_page,
+        # }, 200
+
+
+class CommunityGamesByID(Resource):
+    def get(self):
+        # response = requests.get(
+        #     "https://api.rawg.io/api/games?key=3eba459197494e8993ce88773ab7736c"
+        # )
+        page = int(request.args.get("page", 1))
+        per_page = 15
+        total = Game.query.count()
+        games = Game.query.order_by(Game.release_date.desc())
+        games = games.paginate()
+
+        return {
+            "games": [
+                game.to_dict(
+                    only=(
+                        "id",
+                        "title",
+                        "rating",
+                        "release_date",
+                        "description",
+                        "background_image",
+                        "platform",
+                    )
+                )
+                for game in games.items
+            ],
+            "total": games.total,
+            "has_next": games.has_next,
+            "has_prev": games.has_prev,
+            "page": page,
+            "per_page": per_page,
+        }, 200
 
 
 api.add_resource(Communities, "/api/communities")
