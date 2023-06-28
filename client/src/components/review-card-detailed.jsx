@@ -1,12 +1,12 @@
 import React, {useState} from "react";
-import {Image, Icon} from "@chakra-ui/react";
+import {Image, Icon, Input, Textarea, Button} from "@chakra-ui/react";
 import {FaHeart, FaRegComments} from "react-icons/fa";
+
 export default function ReviewCardDetailed({review, game}) {
   const [isDeleted, setIsDeleted] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [editedReview, setEditedReview] = useState(review.review)
   const [editedRating, setEditedRating] = useState(review.rating)
-  
 
   function deleteReview() {
     fetch(`/api/reviews/${review.id}`, {
@@ -32,7 +32,7 @@ export default function ReviewCardDetailed({review, game}) {
       method: 'PATCH',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        review: editedReview,
+        body: editedReview,
         rating: parseInt(editedRating)
       })
     })
@@ -70,16 +70,18 @@ export default function ReviewCardDetailed({review, game}) {
           <div className="text-sm font-bold">{review.user.username}</div>
           {isEditing ? (
             <div className='flex flex-col'>
-              <textarea 
+              <Textarea 
                 className="text-sm"
                 value={editedReview}
                 onChange={(e) => setEditedReview(e.target.value)}
+                _hover={{ borderColor: "blue.400" }}
               />
-              <input 
+              <Input 
                 type="number"
                 className="text-sm"
                 value={editedRating}
                 onChange={(e) => setEditedRating(e.target.value)}
+                _hover={{ borderColor: "blue.400" }}
               />
             </div>
           ) : (
@@ -93,11 +95,11 @@ export default function ReviewCardDetailed({review, game}) {
             Likes <Icon as={FaRegComments} />2 See full review
           </div>
           {isEditing ? (
-            <button onClick={editReview}>Save Changes</button>
+            <Button onClick={editReview}>Save Changes</Button>
           ) : (
-            <button onClick={() => setIsEditing(true)}>Edit Review</button>
+            <Button onClick={() => setIsEditing(true)}>Edit Review</Button>
           )}
-          <button onClick={deleteReview}>Delete Review</button>
+          <Button onClick={deleteReview}>Delete Review</Button>
         </div>
       </div>
     </div>
