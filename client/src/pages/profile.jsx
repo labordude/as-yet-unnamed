@@ -103,7 +103,7 @@ export default function Profile() {
           )}
         </Container> */}
         <Container className="mt-10">
-          <h2 className="text-center text-2xl font-bold">Recent Reviews</h2>
+          <h2 className="text-center text-2xl font-bold">Recent Activity</h2>
           {user.reviews && user.reviews.length > 0 ? (
             <div>
               {user.reviews.slice(0, 5).map(review => (

@@ -8,7 +8,11 @@ function UserCard({user}) {
         <div className="card max-w-10 bg-base-10 shadow-xl">
             <figure className="px-0 pt-10 h-50 object-contain">
             <Image
-                src={user.pfp_image}
+                src={
+                    user.pfp_image
+                        ? user.pfp_image
+                        : "https://placekitten.com/250/250"
+                }
                 alt={user.username}
                 boxSize="100px"
                 objectFit="contain"
