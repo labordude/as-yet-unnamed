@@ -4,41 +4,15 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-from flask import (
-    Flask,
-    request,
-    session,
-    abort,
-    flash,
-    redirect,
-    url_for,
-    jsonify,
-)
+from flask import Flask, request, session, abort, flash, redirect, url_for
 from flask_migrate import Migrate
 from flask_restful import Resource
 from flask_cors import CORS
 
 # from flask_paginate import Pagination
 from sqlalchemy.exc import IntegrityError
-from config import db, api, app, ma
-from models import (
-    User,
-    Game,
-    Review,
-    Community,
-    followers,
-    PlatformCommunity,
-    UserSchema,
-    GameSchema,
-    user_schema,
-    users_schema,
-    game_schema,
-    games_schema,
-    review_schema,
-    reviews_schema,
-    communities_schema,
-    community_schema,
-)
+from config import db, api, app
+from models import User, Game, Review, Community, followers
 import requests
 import datetime
 from flask_login import LoginManager
@@ -50,7 +24,6 @@ from flask_login import logout_user
 from flask_wtf import FlaskForm
 from wtforms import SubmitField
 import datetime
-
 
 # import jsonify
 
@@ -155,7 +128,7 @@ class Signup(Resource):
             db.session.add(new_user)
             db.session.commit()
             session["user_id"] = new_user.id
-            return user_schema.dump(new_user), 201
+            return new_user.to_dict(), 201
         except IntegrityError:
             return ({"error": "Unprocessable entry"}, 422)
 
@@ -166,7 +139,12 @@ class CheckSession(Resource):
         session["user_id"] = 1
         user = User.query.filter(User.id == 1).first()
 
-        return user_schema.dump(user), 200
+        return (
+            user.to_dict(
+                only=("id", "name", "email", "bio", "pfp_image", "username")
+            ),
+            200,
+        )
 
         # if session.get("user_id"):
         #     print(session["user_id"])
@@ -202,7 +180,7 @@ class Login(Resource):
                 print("successful login")
                 session["user_id"] = user.id
                 print(f"successfully logged in: {user.id}")
-                return user_schema.dump(user), 200
+                return user.to_dict(), 200
 
         return ({"error": "invalid login"}, 401)
 
@@ -292,7 +270,7 @@ class GamesById(Resource):
         if not game:
             return {"error": "404: Game not found"}, 404
 
-        return game_schema.dump(game), 200
+        return game.to_dict(), 200
 
     def patch(self, id):
         data = request.get_json()
@@ -351,8 +329,13 @@ class NewestGames(Resource):
 
 class Reviews(Resource):
     def get(self):
-        reviews = Review.query.all()
-        return reviews_schema.dump(reviews), 200
+        reviews = [
+            r.to_dict(
+                only=("body", "rating", "created_at", "user_id", "game_id")
+            )
+            for r in Review.query.all()
+        ]
+        return reviews, 200
 
     def post(self):
         if session.get("user_id"):
@@ -386,8 +369,12 @@ class Reviews(Resource):
 
 class ReviewsById(Resource):
     def get(self, id):
-        review = Review.query.filter_by(id=id).first()
-        return review_schema.dump(review), 200
+        review = (
+            Review.query.filter_by(id=id)
+            .first()
+            .to_dict(only=("id", "body", "rating", "user_id", "game_id"))
+        )
+        return review, 200
 
     def patch(self, id):
         data = request.get_json()
@@ -409,7 +396,9 @@ class ReviewsById(Resource):
             db.session.add(review)
             db.session.commit()
             return (
-                review_schema.dump(review),
+                review.to_dict(
+                    only=("body", "rating", "updated_at", "user_id", "game_id")
+                ),
                 201,
             )
         except:
@@ -427,8 +416,7 @@ class ReviewsById(Resource):
 class NewestReviews(Resource):
     def get(self):
         newest_reviews = [
-            review_schema.dump(review)
-            for review in Review.query.limit(10).all()
+            review.to_dict() for review in Review.query.limit(10).all()
         ]
         return newest_reviews, 200
 
@@ -436,8 +424,13 @@ class NewestReviews(Resource):
 class Users(Resource):
     def get(self):
         try:
-            users = User.query.all()
-            return users_schema.dump(users), 200
+            users = [
+                u.to_dict(
+                    only=("id", "username", "pfp_image", "active", "reviews")
+                )
+                for u in User.query.all()
+            ]
+            return users, 200
         except:
             return {"error": "Bad request"}, 400
 
@@ -447,7 +440,21 @@ class UsersById(Resource):
         user = User.query.filter(User.id == id).first()
         if not user:
             return {"error": "404: User not found"}, 404
-        return user_schema.dump(user), 200
+        return (
+            user.to_dict(
+                only=(
+                    "id",
+                    "username",
+                    "name",
+                    "email",
+                    "pfp_image",
+                    "bio",
+                    "active",
+                    "reviews",
+                )
+            ),
+            200,
+        )
 
     def patch(self, id):
         data = request.get_json()
@@ -459,7 +466,7 @@ class UsersById(Resource):
         try:
             db.session.add(user)
             db.session.commit()
-            return user_schema.dump(user), 201
+            return user.to_dict(), 201
         except:
             return {"error": "Unable to update user"}, 400
 
@@ -475,8 +482,11 @@ class UsersById(Resource):
 # adding Communities and CommunitiesByID endpoint
 class Communities(Resource):
     def get(self):
-        communities = [community for community in Community.query.all()]
-        return communities_schema.dump(communities), 200
+        communities = [
+            community.to_dict(only=("id", "name", "image"))
+            for community in Community.query.all()
+        ]
+        return communities, 200
 
 
 class CommunitiesByID(Resource):
@@ -484,7 +494,7 @@ class CommunitiesByID(Resource):
         community = Community.query.filter(Community.id == id).first()
         if not community:
             return ({"error": "Community not found"}, 404)
-        return community_schema.dump(community), 200
+        return community.to_dict(), 200
 
 
 # add routes for platform games?
