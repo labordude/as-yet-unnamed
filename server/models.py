@@ -499,20 +499,20 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         include_fk = True
         # show these
-        fields = (
-            "id",
-            "username",
-            "name",
-            "email",
-            "bio",
-            "active",
-            "is_admin",
-            "_links",
-            "reviews",
-            "games",
-            "communities",
-            "pfp_image",
-        )
+        # fields = (
+        #     "id",
+        #     "username",
+        #     "name",
+        #     "email",
+        #     "bio",
+        #     "active",
+        #     "is_admin",
+        #     "_links",
+        #     "reviews",
+        #     "games",
+        #     "communities",
+        #     "pfp_image",
+        # )
 
     communities = ma.Nested(CommunitySchema, many=True)
     games = ma.Nested(GameSchema, many=True)

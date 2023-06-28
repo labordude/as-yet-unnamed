@@ -135,3 +135,12 @@ export async function updateUser(id, values) {
     })
     .catch(error => setErrors(error));
 }
+
+export async function deleteUser(id) {
+  return fetch(`/api/users/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
