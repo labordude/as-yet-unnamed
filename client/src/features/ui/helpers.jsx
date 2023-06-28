@@ -107,7 +107,7 @@ export async function getCurrentUser() {
 }
 
 export async function createUser(values) {
-  return fetch(`api/signup`, {
+  return fetch(`/api/signup`, {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(values),

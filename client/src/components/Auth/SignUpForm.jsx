@@ -4,6 +4,7 @@ import {
   useNavigation,
   useActionData,
   useSubmit,
+  redirect,
 } from "react-router-dom";
 import {useFormik} from "formik";
 import * as Yup from "yup";
@@ -59,10 +60,11 @@ export const action = async ({request}) => {
   try {
     const newUser = await createUser(values);
     console.log(newUser);
+    return redirect(`../edituser/${newUser.id}`);
   } catch (error) {
     return {error: "Error creating a new user."};
   }
-  return redirect(`/edituser/${newUser.ID}`);
+  console.log("right before redirect");
 };
 export default function SignUpForm({onLogin}) {
   const [show, setShow] = React.useState(false);
