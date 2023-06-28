@@ -45,13 +45,15 @@ export default function Game() {
       <Container className="my-4 flex">
         <Container boxSize="250px" className="flex flex-col">
           <Image src={game_loader.background_image} alt={game_loader.title} />
-          <div>Rating: </div>
+          <div>
+            Rating: {game_loader.rating && game_loader.rating.toFixed(2)}{" "}
+          </div>
         </Container>
         <Container>
           {showEdit ? (
             <GameEdit game={game_loader} toggleShowEdit={toggleShowEdit} />
           ) : (
-            <Button onClick={toggleShowEdit}>Show Edit Game Form</Button>
+            <Button onClick={toggleShowEdit}>Edit Game</Button>
           )}
           <p>{game_loader.title}</p>
           <p>Released on {game_loader.release_date}</p>
@@ -59,14 +61,14 @@ export default function Game() {
           <p>
             Communities:{" "}
             {Object.values(communities).map(community => (
-              <>
+              <span key={community}>
                 <Link
                   to={`/communities/${community}`}
                   key={community}
                   className="border-b-2">
                   {community}
                 </Link>{" "}
-              </>
+              </span>
             ))}
           </p>
           <p>Game description: {game_loader.description}</p>

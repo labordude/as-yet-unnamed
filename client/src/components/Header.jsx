@@ -48,9 +48,9 @@ export default function Header({onLogout, user}) {
             <li>
               <Link to="/communities/all">Communities</Link>
             </li>
-            <li>
+            {/* <li>
               <a>Threads</a>
-            </li>
+            </li> */}
           </ul>
         </div>
         <Link
@@ -73,9 +73,9 @@ export default function Header({onLogout, user}) {
                   Communities
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <a className="text-xl text-white">Threads</a>
-              </li>
+              </li> */}
             </>
           ) : null}
           {!user ? (
@@ -118,8 +118,10 @@ export default function Header({onLogout, user}) {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
               <li>
-                <Link to={`/profile`} className="justify-between">Profile</Link>
-                  {/* <span className="badge">New</span> */}
+                <Link to={`/profile`} className="justify-between">
+                  Profile
+                </Link>
+                {/* <span className="badge">New</span> */}
               </li>
               <li>
                 <a>Settings</a>

@@ -91,7 +91,7 @@ const router = createBrowserRouter([
         errorElement: <div>Whoops!</div>,
       },
       {
-        path: "/edituser/:userid",
+        path: "/edituser/:id",
         element: <EditUser />,
         loader: userLoader,
         errorElement: <div>Whoops!</div>,

@@ -3,9 +3,10 @@ import React, {useEffect, useState} from "react";
 import Header from "../components/Header";
 import {getUserByID} from "../features/ui/helpers";
 import {useLoaderData} from "react-router-dom";
+import {Grid, GridItem} from "@chakra-ui/react";
 
 export async function loader({params}) {
-  const newUser = await getUsersbyid(params.userId);
+  const newUser = await getUserByID(params.id);
   return newUser;
 }
 // navigated in here from signup form
@@ -29,7 +30,6 @@ export default function EditUser(id) {
   }
 
   // Seperate by rows and columns (can use tailwind UI, bootstrap styling does really well for structure)
-  return <Header />;
-
+  return <div>hello world</div>;
   // pass
 }
