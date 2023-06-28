@@ -23,7 +23,7 @@ function Home() {
             </GridItem>
             <GridItem w="100%">
               Newest Games
-              <NewestGames />
+              {/* <NewestGames /> */}
             </GridItem>
           </Grid>
         </>
@@ -35,4 +35,4 @@ function Home() {
 }
 
 export default Home;
-// honcho start -f Procfile.dev to start 
+// honcho start -f Procfile.dev to start

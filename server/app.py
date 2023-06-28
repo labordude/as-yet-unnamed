@@ -426,11 +426,18 @@ class ReviewsById(Resource):
 
 class NewestReviews(Resource):
     def get(self):
-        newest_reviews = [
-            review_schema.dump(review)
-            for review in Review.query.limit(10).all()
-        ]
-        return newest_reviews, 200
+        # newest_reviews = [
+        #     review_schema.dump(review)
+        #     for review in Review.query.limit(10).all()
+        # ]
+        new_reviews = Review.query.limit(10).all()
+        newest_reviews = []
+        for i in range(len(new_reviews)):
+            new_review = Game.query.filter(
+                Game.id == new_reviews[i].game_id
+            ).first()
+            newest_reviews.append(new_review)
+        return games_schema.dump(newest_reviews), 200
 
 
 class Users(Resource):
