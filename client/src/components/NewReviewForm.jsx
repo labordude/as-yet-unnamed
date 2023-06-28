@@ -11,7 +11,7 @@ const validation = Yup.object().shape({
 
 
 
-export default function NewReviewForm({toggled, game_loader}) {
+export default function NewReviewForm({toggled, game_loader, onClose}) {
     const [submittedReview, setSubmittedReview] = useState(null)
     const navigate = useNavigate();
 
@@ -23,7 +23,7 @@ export default function NewReviewForm({toggled, game_loader}) {
         },
         validationSchema: validation,
         onSubmit: (values) => {
-            toggled()
+            // toggled()
             console.log(values);
             postReview(values);
         },
@@ -49,6 +49,7 @@ export default function NewReviewForm({toggled, game_loader}) {
         .then((data) => {
             setSubmittedReview(data)
             console.log('review posted')
+            onClose()
             navigate(`/games/${game_loader.id}`);
             // getGamesByID(game_loader.id)
         })
