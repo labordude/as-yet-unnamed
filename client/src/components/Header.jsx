@@ -16,7 +16,6 @@ export default function Header({onLogout, user}) {
       .then(resp => {
         if (resp.ok) {
           onLogout(null);
-          
         }
       })
       .catch(error => console.log("error", error.message));
@@ -127,7 +126,7 @@ export default function Header({onLogout, user}) {
               <li>
                 <a>Settings</a>
               </li>
-              <li>
+              <li onClick={handleLogoutClick}>
                 <a>Logout</a>
               </li>
             </ul>
