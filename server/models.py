@@ -353,24 +353,24 @@ class CommunityGame(db.Model, SerializerMixin):
 
 
 ##### SCHEMAS #####
-class CommunityUserSchema(ma.SQLAlchemySchema):
+class CommunityUserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = CommunityUser
         load_instance = True
-        sqla_session = db.session
         include_fk = True
         include_relationships = True
+        fields = ("community_id", "user_id")
 
 
 community_user_schema = CommunityUserSchema()
 community_users_schema = CommunityUserSchema(many=True)
 
 
-class PlatformGameSchema(ma.SQLAlchemySchema):
+class PlatformGameSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = PlatformGames
         load_instance = True
-        sqla_session = db.session
+
         include_fk = True
         fields = ("platform_id", "game_id")
 
