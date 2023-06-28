@@ -36,7 +36,7 @@ export default function User() {
             </Container>
             <Container>
                 <h2 className="text-center text-2xl font-bold">Games</h2>
-                {user_loader.games && user_loader.games.length > 0 ? (
+                {/* {user_loader.games && user_loader.games.length > 0 ? (
                     <div>
                         {user_loader.games.map(game => (
                             // <GameCard key={game.id} game={game}/>
@@ -45,11 +45,11 @@ export default function User() {
                     </div>
                 ) : (
                     <p>"No games yet"</p>
-                )}
+                )} */}
             </Container>
             <Container>
                 <h2 className="text-center text-2xl font-bold">Activity</h2>
-                {user_loader.reviews && user_loader.reviews.length > 0 ? (
+                {/* {user_loader.reviews && user_loader.reviews.length > 0 ? (
                     <div>
                         {user_loader.reviews.slice(0,5).map(review => (
                             <UserReviewCard key={review.id} review={review}/>
@@ -58,7 +58,7 @@ export default function User() {
                     </div>
                 ) : (
                     <p>"No reviews yet"</p>
-                )}
+                )} */}
             </Container>
         </Container>
         
