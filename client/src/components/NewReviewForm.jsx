@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+import { getGamesByID } from '../features/ui/helpers';
 
 const validation = Yup.object().shape({
     review: Yup.string().required('Review body is required'),
@@ -11,6 +13,7 @@ const validation = Yup.object().shape({
 
 export default function NewReviewForm({toggled, game_loader}) {
     const [submittedReview, setSubmittedReview] = useState(null)
+    const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {
@@ -46,12 +49,14 @@ export default function NewReviewForm({toggled, game_loader}) {
         .then((data) => {
             setSubmittedReview(data)
             console.log('review posted')
-            window.location.reload()
+            navigate(`/games/${game_loader.id}`);
+            // getGamesByID(game_loader.id)
         })
         .catch((error) => {
             console.error(error)
         })
     }
+
     return (
         <div>
             {submittedReview ? (
