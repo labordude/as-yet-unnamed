@@ -263,7 +263,7 @@ class Games(Resource):
                 background_image=data.get("background_image"),
                 rating=data.get("rating"),
                 release_date=datetime.datetime.strptime(
-                    data.get("released"), "%Y-%m-%d"
+                    data.get("release_date"), "%Y-%m-%d"
                 ).date(),
             )
             db.session.add(new_game)

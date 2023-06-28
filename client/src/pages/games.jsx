@@ -24,10 +24,12 @@ export default function Games() {
       });
     });
   }, [currentPage]);
-
+  function toggleInput() {
+    setShowInputs(!showInputs);
+  }
   return (
     <div>
-      {showInputs ? <AddGame /> : null}
+      {showInputs ? <AddGame toggleInput={toggleInput} /> : null}
       <div>
         <Button onClick={() => setShowInputs(!showInputs)}>
           {showInputs ? "Hide Inputs" : "Show Inputs"}
