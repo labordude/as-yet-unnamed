@@ -140,7 +140,7 @@ class Game(db.Model, SerializerMixin):
     game_platforms = db.relationship(
         "PlatformGames", back_populates="game", cascade="all,delete-orphan"
     )
-    platforms = association_proxy("game_platforms", "game")
+    platforms = association_proxy("game_platforms", "platform")
     game_communities = db.relationship(
         "CommunityGame", back_populates="game", cascade="all,delete-orphan"
     )
@@ -151,7 +151,7 @@ class Game(db.Model, SerializerMixin):
         "-platforms.game",
         "-game_platforms.game",
         "-game_communities.game",
-        "-game_communities.community.platforms",
+        "-game_communities.community",
     )
 
     @validates("title")
