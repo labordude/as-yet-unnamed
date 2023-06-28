@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 
 import Header from "../components/Header";
-import {getUserByID} from "../features-ui/helpers";
+import {getUserByID} from "../features/ui/helpers";
 import {useLoaderData} from "react-router-dom";
 import { Grid, GridItem } from '@chakra-ui/react';
 
