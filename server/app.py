@@ -28,6 +28,7 @@ from models import (
     Community,
     followers,
     PlatformCommunity,
+    CommunityUser,
     UserSchema,
     GameSchema,
     user_schema,
@@ -360,18 +361,7 @@ class Reviews(Resource):
                 db.session.add(new_review)
                 db.session.commit()
 
-                return (
-                    new_review.to_dict(
-                        only=(
-                            "id",
-                            "body",
-                            "rating",
-                            "user_id",
-                            "game_id",
-                        )
-                    ),
-                    201,
-                )
+                return review_schema.dump(new_review), 201
             except:
                 return {"error": "Unable to post review"}, 400
         return {"error": "401 Unauthorized"}, 401
@@ -488,6 +478,16 @@ class CommunitiesByID(Resource):
 
 
 # add routes for platform games?
+class CommunityUsersByID(Resource):
+    def get(self, id):
+        cu = [
+            community.user_id
+            for community in CommunityUser.query.filter(
+                CommunityUser.id == id
+            ).all()
+        ]
+        c_users = [user for user in cu]
+        return users_schema.dump(c_users), 200
 
 
 api.add_resource(Communities, "/api/communities")
@@ -505,6 +505,7 @@ api.add_resource(Signup, "/api/signup", endpoint="signup")
 api.add_resource(CheckSession, "/api/check_session", endpoint="check_session")
 api.add_resource(Login, "/api/login", endpoint="login")
 api.add_resource(Logout, "/api/logout", endpoint="logout")
+api.add_resource(CommunityUsersByID, "/api/community_users/<int:id>")
 # api.add_resource(CurrentUser, "/api/current_user")
 
 if __name__ == "__main__":
