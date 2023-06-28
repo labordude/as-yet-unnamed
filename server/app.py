@@ -139,7 +139,12 @@ class CheckSession(Resource):
         session["user_id"] = 1
         user = User.query.filter(User.id == 1).first()
 
-        return user.to_dict(), 200
+        return (
+            user.to_dict(
+                only=("id", "name", "email", "bio", "pfp_image", "username")
+            ),
+            200,
+        )
 
         # if session.get("user_id"):
         #     print(session["user_id"])
