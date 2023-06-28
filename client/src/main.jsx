@@ -93,11 +93,11 @@ const router = createBrowserRouter([
         loader: useridLoader,
         errorElement: <div>Whoops!</div>,
       },
+
       {
-        path: "/edituser/:id",
+        path: "/edituser/:userid",
         element: <EditUser />,
         loader: userLoader,
-        action: editUserAction,
         errorElement: <div>Whoops!</div>,
       },
       {
