@@ -368,10 +368,31 @@ platform_schema = PlatformSchema()
 platforms_schema = PlatformSchema(many=True)
 
 
-class GameSchema(ma.SQLAlchemySchema):
+class ReviewSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Review
+        include_fk = True
+        include_relationships = True
+        load_instance = True
+
+        # fields = ("id", "body", "rating", "game_id", "user_id", "_links")
+        _links = ma.Hyperlinks(
+            {
+                "self": ma.URLFor("reviews", values=dict(id="<id>")),
+                "collection": ma.URLFor("reviews"),
+            }
+        )
+
+
+review_schema = ReviewSchema()
+reviews_schema = ReviewSchema(many=True)
+
+
+class GameSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Game
         include_fk = True
+        include_relationships = True
         fields = (
             "title",
             "description",
@@ -382,7 +403,10 @@ class GameSchema(ma.SQLAlchemySchema):
             "updated_at",
             "rating",
             "_links",
+            "reviews",
         )
+
+    reviews = ma.Nested(ReviewSchema, many=True)
 
     _links = ma.Hyperlinks(
         {
@@ -399,6 +423,9 @@ games_schema = GameSchema(many=True)
 class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = User
+        include_relationships = True
+        load_instance = True
+        include_fk = True
         # show these
         fields = (
             "id",
@@ -409,8 +436,12 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
             "active",
             "is_admin",
             "_links",
+            "reviews",
+            "games",
         )
 
+    games = ma.Nested(GameSchema, many=True)
+    reviews = ma.Nested(ReviewSchema, many=True)
     _links = ma.Hyperlinks(
         {
             "self": ma.URLFor("users", values=dict(id="<id>")),
@@ -421,26 +452,6 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
-
-
-class ReviewSchema(ma.SQLAlchemySchema):
-    class Meta:
-        model = Review
-        load_instance = True
-        sqla_session = db.session
-        include_fk = True
-        fields = ("id", "body", "rating", "_links")
-
-        _links = ma.Hyperlinks(
-            {
-                "self": ma.URLFor("reviews", values=dict(id="<id>")),
-                "collection": ma.URLFor("reviews"),
-            }
-        )
-
-
-review_schema = ReviewSchema()
-reviews_schema = ReviewSchema(many=True)
 
 
 class CommunitySchema(ma.SQLAlchemySchema):

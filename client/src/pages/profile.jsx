@@ -56,17 +56,15 @@ export default function Profile() {
       <Container className="flex flex-col">
         <Container>
           <h2 className="text-center text-2xl font-bold">Games</h2>
-          {user.reviews && user.reviews.length > 0 ? (
+          {user.games && user.games.length > 0 ? (
             <SimpleGrid columns={[3, null, 4]} spacing="40px" className="mt-4">
-              {user.reviews.slice(0, 4).map(review => (
+              {user.games.slice(0, 4).map(game => (
                 // <GameCard key={game.id} game={game} />
-                <div
-                  className="flex justify-center items-center"
-                  key={review.game.id}>
+                <div className="flex justify-center items-center" key={game.id}>
                   <Image
                     boxSize="100px"
-                    key={review.game.id}
-                    src={review.game.background_image}
+                    key={game.id}
+                    src={game.background_image}
                   />
                 </div>
               ))}
@@ -75,7 +73,7 @@ export default function Profile() {
             <p>"No games yet"</p>
           )}
         </Container>
-        <Container className="mt-10 ">
+        {/* <Container className="mt-10 ">
           <h2 className="text-center text-2xl font-bold">
             Highest Rated Games
           </h2>
@@ -90,11 +88,11 @@ export default function Profile() {
                   // <GameCard key={game.id} game={game} />
                   <div
                     className="flex flex-col items-center"
-                    key={review.game.id}>
+                    key={review.game_id}>
                     <Image
                       boxSize="100px"
-                      key={review.game.id}
-                      src={review.game.background_image}
+                      key={review.game_id}
+                      src={user.games[0].background_image}
                     />
                     <span className="text-center">Rating:{review.rating}</span>
                   </div>
@@ -103,7 +101,7 @@ export default function Profile() {
           ) : (
             <p>"No games yet"</p>
           )}
-        </Container>
+        </Container> */}
         <Container className="mt-10">
           <h2 className="text-center text-2xl font-bold">Recent Reviews</h2>
           {user.reviews && user.reviews.length > 0 ? (
