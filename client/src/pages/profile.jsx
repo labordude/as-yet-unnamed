@@ -1,20 +1,39 @@
 import React, {useState, useEffect} from "react";
-import {Link, useLoaderData, useParams} from "react-router-dom";
+import {
+  Link,
+  useLoaderData,
+  useParams,
+  useOutletContext,
+} from "react-router-dom";
 import {getCurrentUser} from "../features/ui/helpers";
 import {Container, Image, Box, SimpleGrid} from "@chakra-ui/react";
 // import GameCard from "../components/game-card"
 import UserReviewCard from "../components/user-review-card";
 
 export async function loader() {
-  const user = await getCurrentUser();
-  return {user};
+  const currentUser = await getCurrentUser();
+  return {currentUser};
 }
 
-export default function Profile() {
+export default function Profile({}) {
   const [profileData, setProfileData] = useState();
-  const {user} = useLoaderData();
+  const [user, setUser] = useOutletContext();
+  const {currentUser} = useLoaderData();
   useEffect(() => {
-    setProfileData(user);
+    //check for a current session
+    fetch("/api/check_session")
+      .then(response => {
+        if (response.ok) {
+          response.json().then(user => {
+            setUser(user);
+            setProfileData(currentUser);
+            // navigate("/home");
+          });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }, []);
 
   console.log(user);
@@ -25,8 +44,8 @@ export default function Profile() {
         <Container className="flex flex-col px-0 items-center">
           <Image
             src={
-              user.pfp_image
-                ? user.pfp_image
+              currentUser.pfp_image
+                ? currentUser.pfp_image
                 : "https://placekitten.com/250/250"
             }
             alt="Pfp Image"
@@ -34,21 +53,21 @@ export default function Profile() {
             borderRadius="full"
           />
           <div className="text-bold text-2xl text-center">
-            {user.username || "username would go here"}
+            {currentUser.username || "username would go here"}
           </div>
-          <div>Followers: {user.followers}</div>
-          <div>Following: {user.followed}</div>
+          <div>Followers: {currentUser.followers}</div>
+          <div>Following: {currentUser.followed}</div>
         </Container>
         <Container>
           <Container>
-            <p>Name: {user.name}</p>
-            <p>Bio: {user.bio}</p>
+            <p>Name: {currentUser.name}</p>
+            <p>Bio: {currentUser.bio}</p>
             <p>Communities: </p>
           </Container>
           <Container className="mt-8">
-            <p>Total Reviews: {user.reviews.length}</p>
-            <p>Total Games: {user.reviews.length}</p>
-            <p>Total Ratings: {user.reviews.length} </p>
+            <p>Total Reviews: {currentUser.reviews.length}</p>
+            <p>Total Games: {currentUser.reviews.length}</p>
+            <p>Total Ratings: {currentUser.reviews.length} </p>
           </Container>
         </Container>
       </Container>
@@ -56,9 +75,9 @@ export default function Profile() {
       <Container className="flex flex-col">
         <Container>
           <h2 className="text-center text-2xl font-bold">Games</h2>
-          {user.games && user.games.length > 0 ? (
+          {currentUser.games && currentUser.games.length > 0 ? (
             <SimpleGrid columns={[3, null, 4]} spacing="40px" className="mt-4">
-              {user.games.slice(0, 4).map(game => (
+              {currentUser.games.slice(0, 4).map(game => (
                 // <GameCard key={game.id} game={game} />
                 <div className="flex justify-center items-center" key={game.id}>
                   <Image
@@ -103,10 +122,10 @@ export default function Profile() {
           )}
         </Container> */}
         <Container className="mt-10">
-          <h2 className="text-center text-2xl font-bold">Recent Activity</h2>
-          {user.reviews && user.reviews.length > 0 ? (
+          <h2 className="text-center text-2xl font-bold">Recent Reviews</h2>
+          {currentUser.reviews && currentUser.reviews.length > 0 ? (
             <div>
-              {user.reviews.slice(0, 5).map(review => (
+              {currentUser.reviews.slice(0, 5).map(review => (
                 <UserReviewCard key={review.id} review={review} />
                 // <p>{review.body}</p>
               ))}

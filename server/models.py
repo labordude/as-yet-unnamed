@@ -438,13 +438,12 @@ review_schema = ReviewSchema()
 reviews_schema = ReviewSchema(many=True)
 
 
-class CommunitySchema(ma.SQLAlchemySchema):
+class CommunitySchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Community
         load_instance = True
-        sqla_session = db.session
         include_fk = True
-        include_relationships = True
+
         # fields = ("id", "name", "image", "_links")
 
     _links = ma.Hyperlinks(
@@ -466,6 +465,7 @@ class GameSchema(ma.SQLAlchemyAutoSchema):
         include_relationships = True
         load_instance = True
         fields = (
+            "id",
             "title",
             "description",
             "platform",
@@ -511,6 +511,7 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
             "reviews",
             "games",
             "communities",
+            "pfp_image",
         )
 
     communities = ma.Nested(CommunitySchema, many=True)

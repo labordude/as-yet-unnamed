@@ -9,8 +9,12 @@ export default function NewestReviews() {
 
   return (
     <div>
-      {reviews.map(review => (
-        <ReviewCard key={review.id} review={review} />
+      {reviews.map(game => (
+        <ReviewCard
+          key={game.reviews[0].id}
+          review={game.reviews[0]}
+          game={game}
+        />
       ))}
     </div>
   );

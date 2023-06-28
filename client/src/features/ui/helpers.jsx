@@ -5,6 +5,7 @@ export async function getNewestReviews() {
   return fetch("/api/newest_reviews")
     .then(response => {
       if (response.ok) {
+        console.log(response);
         return response.json();
       }
     })
