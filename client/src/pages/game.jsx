@@ -25,15 +25,15 @@ export default function Game() {
   }
   useEffect(() => {
     setGameData(game_loader);
-    setCommunities(
-      Array.from([
-        ...new Set(
-          game_loader.game_communities.map(
-            community => community.community.name,
-          ),
-        ),
-      ]),
-    );
+    // setCommunities(
+    //   Array.from([
+    //     ...new Set(
+    //       game_loader.game_communities.map(
+    //         community => community.community.name,
+    //       ),
+    //     ),
+    //   ]),
+    // );
     // console.log(Object.values(communities));
   }, []);
   function toggled() {
@@ -59,8 +59,8 @@ export default function Game() {
           <p>Released on {game_loader.release_date}</p>
 
           <p>
-            Communities:{" "}
-            {Object.values(communities).map(community => (
+            Communities:{"Coming Soon "}
+            {/* {Object.values(communities).map(community => (
               <span key={community}>
                 <Link
                   to={`/communities/${community}`}
@@ -69,7 +69,7 @@ export default function Game() {
                   {community}
                 </Link>{" "}
               </span>
-            ))}
+            ))} */}
           </p>
           <p>Game description: {game_loader.description}</p>
         </Container>
@@ -90,7 +90,7 @@ export default function Game() {
           <p>"No reviews yet"</p>
         )}
         {!toggle ? (
-          <button onClick={toggled}>Add Review</button>
+          <Button onClick={toggled}>Add Review</Button>
         ) : (
           <NewReviewForm toggled={toggled} game_loader={game_loader} />
         )}

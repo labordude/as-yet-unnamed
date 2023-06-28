@@ -9,14 +9,14 @@ function GameCard({game}) {
         <figure className="px-0 pt-10 h-72 object-contain">
           <Image
             src={game.background_image}
-            alt={game.name}
+            alt={game.title}
             boxSize="350px"
             objectFit="contain"
             className="rounded-xl"
           />
         </figure>
         <div className="card-body items-center text-center">
-          <h2 className="card-title">{game.name}</h2>
+          <h2 className="card-title">{game.title}</h2>
           <p>Rating: {game.rating && game.rating.toFixed(2)}</p>
           <div className="card-actions">
             <Link to={`/games/${game.id}`}>

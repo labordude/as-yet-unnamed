@@ -6,6 +6,7 @@ export async function getNewestReviews() {
   return fetch("/api/newest_reviews")
     .then(response => {
       if (response.ok) {
+        console.log(response);
         return response.json();
       }
     })
@@ -109,7 +110,7 @@ export async function getCurrentUser() {
 }
 
 export async function createUser(values) {
-  return fetch(`api/signup`, {
+  return fetch(`/api/signup`, {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(values),
@@ -119,4 +120,30 @@ export async function createUser(values) {
       return newUser;
       // navigate('/editformpageything')
     });
+}
+
+export async function updateUser(id, values) {
+  return fetch(`/api/users/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(values),
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
+
+export async function getUsers() {
+  return fetch(`/api/users`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
 }

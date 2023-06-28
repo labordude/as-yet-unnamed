@@ -14,7 +14,7 @@ export default function Communities() {
   function communityChoice() {
     if (community === "all") {
       return communities.map(community => (
-        <Link to={`/communities/${community.name}`} key={community.id}>
+        <Link to={`/communities/${community.id}`} key={community.id}>
           <CommunityCard key={community.id} community={community} />
         </Link>
       ));

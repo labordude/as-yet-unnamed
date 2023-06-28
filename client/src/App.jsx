@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-import {Outlet, useNavigate} from "react-router-dom";
+import {Outlet, useNavigate, redirect} from "react-router-dom";
 import Header from "./components/Header";
 import Login from "./pages/login";
 import Home from "./pages/home";
@@ -15,6 +15,7 @@ function App() {
         if (response.ok) {
           response.json().then(user => {
             setUser(user);
+
             // navigate("/home");
           });
         }
@@ -22,9 +23,13 @@ function App() {
       .catch(error => {
         console.log(error);
       });
+    if (user === null) {
+      navigate("/home");
+    }
   }, []);
   function onLogout(loggedOut) {
     setUser(loggedOut);
+    navigate("/home");
   }
   return (
     <>

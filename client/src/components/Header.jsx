@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Link} from "react-router-dom";
+import {Link, redirect} from "react-router-dom";
 import {getCommunities} from "../features/ui/helpers";
 // need to add header photo to autoload
 export default function Header({onLogout, user}) {
@@ -49,7 +49,7 @@ export default function Header({onLogout, user}) {
               <Link to="/communities/all">Communities</Link>
             </li>
             <li>
-              <a>Threads</a>
+              <Link to="/social">Social</Link>
             </li>
           </ul>
         </div>
@@ -74,14 +74,14 @@ export default function Header({onLogout, user}) {
                 </Link>
               </li>
               <li>
-                <a className="text-xl text-white">Threads</a>
+                <Link to="/social"  className="text-xl text-white">Social</Link>
               </li>
             </>
           ) : null}
           {!user ? (
             <>
               <li>
-                <Link to="/login" className="text-xl text-white">
+                <Link to="/home" className="text-xl text-white">
                   Login
                 </Link>
               </li>
@@ -118,13 +118,15 @@ export default function Header({onLogout, user}) {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
               <li>
-                <Link to={`/profile`} className="justify-between">Profile</Link>
-                  {/* <span className="badge">New</span> */}
+                <Link to={`/profile`} className="justify-between">
+                  Profile
+                </Link>
+                {/* <span className="badge">New</span> */}
               </li>
               <li>
                 <a>Settings</a>
               </li>
-              <li>
+              <li onClick={handleLogoutClick}>
                 <a>Logout</a>
               </li>
             </ul>
