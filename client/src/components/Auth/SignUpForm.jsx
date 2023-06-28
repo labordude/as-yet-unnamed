@@ -49,8 +49,7 @@ export const action = async ({request}) => {
 
   try {
     const newUser = await createUser(values);
-    console.log(newUser);
-    return redirect(`../edituser/${newUser.id}`);
+    return redirect("../profile");
   } catch (error) {
     return {error: "Error creating a new user."};
   }
