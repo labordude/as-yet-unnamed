@@ -135,3 +135,13 @@ export async function updateUser(id, values) {
     })
     .catch(error => setErrors(error));
 }
+
+export async function getUsers() {
+  return fetch(`/api/users`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}

@@ -49,9 +49,9 @@ export default function Header({onLogout, user}) {
             <li>
               <Link to="/communities/all">Communities</Link>
             </li>
-            {/* <li>
-              <a>Threads</a>
-            </li> */}
+            <li>
+              <Link to="/social">Social</Link>
+            </li>
           </ul>
         </div>
         <Link
@@ -74,9 +74,9 @@ export default function Header({onLogout, user}) {
                   Communities
                 </Link>
               </li>
-              {/* <li>
-                <a className="text-xl text-white">Threads</a>
-              </li> */}
+              <li>
+                <Link to="/social"  className="text-xl text-white">Social</Link>
+              </li>
             </>
           ) : null}
           {!user ? (

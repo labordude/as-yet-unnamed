@@ -1,9 +1,26 @@
 import React, {useState, useEffect} from "react";
-import {getCommunities} from "../features/ui/helpers";
+import {getUsers} from "../features/ui/helpers";
+import {Container, Image, Box} from "@chakra-ui/react";
+import UserCard from "../components/user-card"
 export default function Social() {
-  const [communities, setCommunities] = useState([]);
+  const [usersList, setUsersList] = useState([]);
   useEffect(() => {
-    getCommunities().then(data => setCommunities(data));
+    getUsers().then(data => setUsersList(data));
   }, []);
-  return <div>Social</div>;
+
+  return (
+    <Container>
+      <Container>
+        <h2 className="text-center text-2xl font-bold">Social</h2>
+      </Container>
+      <Container>
+        <div>
+          {usersList.map(user => (
+            // <p>{user.username}</p>
+            <UserCard key={user.id} user={user}/>
+          ))}
+        </div>
+      </Container>
+    </Container>
+  )
 }
