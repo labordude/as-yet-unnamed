@@ -31,7 +31,7 @@ export default function AddGameModal({ isOpen, onOpen, onClose }) {
             <ModalHeader>Add Game</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
-                <AddGame />
+                <AddGame onClose={onClose}/>
             </ModalBody>
             <ModalFooter>
               {/* <Button onClick={onClose}>Cancel</Button> */}
