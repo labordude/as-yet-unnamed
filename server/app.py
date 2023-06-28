@@ -358,9 +358,10 @@ class Reviews(Resource):
                     user_id=session.get("user_id"),
                     game_id=data.get("game_id"),
                 )
+                print(new_review)
                 db.session.add(new_review)
                 db.session.commit()
-
+                print(new_review)
                 return review_schema.dump(new_review), 201
             except:
                 return {"error": "Unable to post review"}, 400
