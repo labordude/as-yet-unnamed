@@ -2,6 +2,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import {GridItem, Container, Box, Button, Image} from "@chakra-ui/react";
 function GameCard({game}) {
+  
   return (
     <Container className="px-4" p="2">
       <div className="card max-w-48 bg-base-100 shadow-xl">

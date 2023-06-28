@@ -160,7 +160,7 @@ class Signup(Resource):
         session["user_id"] = new_user.id
         return user_schema.dump(new_user), 201
 
-
+# checks session for user
 class CheckSession(Resource):
     def get(self):
         # please leave this code for testing purposes
