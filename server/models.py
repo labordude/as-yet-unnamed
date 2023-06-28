@@ -70,7 +70,7 @@ class User(db.Model, SerializerMixin):
     community_users = db.relationship(
         "CommunityUser", back_populates="user", cascade="all,delete-orphan"
     )
-    communities = association_proxy("community_users", "users")
+    communities = association_proxy("community_users", "community")
     serialize_rules = (
         "-password_hash",
         "-created_at",
@@ -140,7 +140,7 @@ class Game(db.Model, SerializerMixin):
     game_platforms = db.relationship(
         "PlatformGames", back_populates="game", cascade="all,delete-orphan"
     )
-    platforms = association_proxy("game_platforms", "game")
+    platforms = association_proxy("game_platforms", "platform")
     game_communities = db.relationship(
         "CommunityGame", back_populates="game", cascade="all,delete-orphan"
     )
@@ -151,7 +151,7 @@ class Game(db.Model, SerializerMixin):
         "-platforms.game",
         "-game_platforms.game",
         "-game_communities.game",
-        "-game_communities.community.platforms",
+        "-game_communities.community",
     )
 
     @validates("title")
@@ -353,6 +353,56 @@ class CommunityGame(db.Model, SerializerMixin):
 
 
 ##### SCHEMAS #####
+class CommunityUserSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = CommunityUser
+        load_instance = True
+        sqla_session = db.session
+        include_fk = True
+        include_relationships = True
+
+
+community_user_schema = CommunityUserSchema()
+community_users_schema = CommunityUserSchema(many=True)
+
+
+class PlatformGameSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = PlatformGames
+        load_instance = True
+        sqla_session = db.session
+        include_fk = True
+        fields = ("platform_id", "game_id")
+
+
+platform_game_schema = PlatformGameSchema()
+platform_games_schema = PlatformGameSchema(many=True)
+
+
+class PlatformCommunitySchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = PlatformCommunity
+        load_instance = True
+        sqla_session = db.session
+        include_fk = True
+        fields = ("platform_id", "community_id")
+
+
+platform_community_schema = PlatformCommunitySchema()
+platform_communities_schema = PlatformCommunitySchema(many=True)
+
+
+class CommunityGameSchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = CommunityGame
+        load_instance = True
+        sqla_session = db.session
+        include_fk = True
+        fields = ("community_id", "game_id")
+
+
+community_game_schema = CommunityGameSchema()
+community_games_schema = CommunityGameSchema(many=True)
 
 
 class PlatformSchema(ma.SQLAlchemySchema):
@@ -388,11 +438,33 @@ review_schema = ReviewSchema()
 reviews_schema = ReviewSchema(many=True)
 
 
+class CommunitySchema(ma.SQLAlchemySchema):
+    class Meta:
+        model = Community
+        load_instance = True
+        sqla_session = db.session
+        include_fk = True
+        include_relationships = True
+        # fields = ("id", "name", "image", "_links")
+
+    _links = ma.Hyperlinks(
+        {
+            "self": ma.URLFor("communities", values=dict(id="<id>")),
+            "collection": ma.URLFor("communities"),
+        }
+    )
+
+
+community_schema = CommunitySchema()
+communities_schema = CommunitySchema(many=True)
+
+
 class GameSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Game
         include_fk = True
         include_relationships = True
+        load_instance = True
         fields = (
             "title",
             "description",
@@ -438,8 +510,10 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
             "_links",
             "reviews",
             "games",
+            "communities",
         )
 
+    communities = ma.Nested(CommunitySchema, many=True)
     games = ma.Nested(GameSchema, many=True)
     reviews = ma.Nested(ReviewSchema, many=True)
     _links = ma.Hyperlinks(
@@ -452,75 +526,3 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
-
-
-class CommunitySchema(ma.SQLAlchemySchema):
-    class Meta:
-        model = Community
-        load_instance = True
-        sqla_session = db.session
-        include_fk = True
-        fields = ("id", "name", "image", "_links")
-
-    _links = ma.Hyperlinks(
-        {
-            "self": ma.URLFor("communities", values=dict(id="<id>")),
-            "collection": ma.URLFor("communities"),
-        }
-    )
-
-
-community_schema = CommunitySchema()
-communities_schema = CommunitySchema(many=True)
-
-
-class CommunityUserSchema(ma.SQLAlchemySchema):
-    class Meta:
-        model = CommunityUser
-        load_instance = True
-        sqla_session = db.session
-        include_fk = True
-        fields = ("community_id", "user_id")
-
-
-community_user_schema = CommunityUserSchema()
-community_users_schema = CommunityUserSchema(many=True)
-
-
-class PlatformGameSchema(ma.SQLAlchemySchema):
-    class Meta:
-        model = PlatformGames
-        load_instance = True
-        sqla_session = db.session
-        include_fk = True
-        fields = ("platform_id", "game_id")
-
-
-platform_game_schema = PlatformGameSchema()
-platform_games_schema = PlatformGameSchema(many=True)
-
-
-class PlatformCommunitySchema(ma.SQLAlchemySchema):
-    class Meta:
-        model = PlatformCommunity
-        load_instance = True
-        sqla_session = db.session
-        include_fk = True
-        fields = ("platform_id", "community_id")
-
-
-platform_community_schema = PlatformCommunitySchema()
-platform_communities_schema = PlatformCommunitySchema(many=True)
-
-
-class CommunityGameSchema(ma.SQLAlchemySchema):
-    class Meta:
-        model = CommunityGame
-        load_instance = True
-        sqla_session = db.session
-        include_fk = True
-        fields = ("community_id", "game_id")
-
-
-community_game_schema = CommunityGameSchema()
-community_games_schema = CommunityGameSchema(many=True)

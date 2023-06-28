@@ -263,7 +263,7 @@ class Games(Resource):
                 background_image=data.get("background_image"),
                 rating=data.get("rating"),
                 release_date=datetime.datetime.strptime(
-                    data.get("released"), "%Y-%m-%d"
+                    data.get("release_date"), "%Y-%m-%d"
                 ).date(),
             )
             db.session.add(new_game)
@@ -426,11 +426,18 @@ class ReviewsById(Resource):
 
 class NewestReviews(Resource):
     def get(self):
-        newest_reviews = [
-            review_schema.dump(review)
-            for review in Review.query.limit(10).all()
-        ]
-        return newest_reviews, 200
+        # newest_reviews = [
+        #     review_schema.dump(review)
+        #     for review in Review.query.limit(10).all()
+        # ]
+        new_reviews = Review.query.limit(10).all()
+        newest_reviews = []
+        for i in range(len(new_reviews)):
+            new_review = Game.query.filter(
+                Game.id == new_reviews[i].game_id
+            ).first()
+            newest_reviews.append(new_review)
+        return games_schema.dump(newest_reviews), 200
 
 
 class Users(Resource):

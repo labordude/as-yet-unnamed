@@ -5,6 +5,7 @@ import {SimpleGrid, GridItem, Button} from "@chakra-ui/react";
 // import ReactPaginate from "react-paginate";
 // Components needed: Search, GameCard
 import {Formik, Field, Form, ErrorMessage} from "formik";
+import {redirect} from "react-router-dom";
 import * as Yup from "yup";
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
@@ -23,8 +24,9 @@ const validationSchema = Yup.object().shape({
       value => value !== null,
     ),
   platform: Yup.string().required("Platform is required"),
+  rating: Yup.number().label("rating").min(0).max(100).required(""),
 });
-export default function AddGame() {
+export default function AddGame({toggleInput}) {
   function postGame(values) {
     const platformArray = values.platform
       .split(",")
@@ -52,7 +54,7 @@ export default function AddGame() {
       .then(() => {
         console.log(updatedValues);
         console.log("game posted");
-
+        toggleInput()
         return redirect("/");
       })
       .catch(error => {
@@ -70,6 +72,7 @@ export default function AddGame() {
           background_image: "",
           release_date: "",
           platform: "",
+          rating: "",
         }}
         validationSchema={validationSchema}
         onSubmit={postGame}>
@@ -116,6 +119,18 @@ export default function AddGame() {
                 />
               </div>
               <ErrorMessage name="release_date" component="div" />
+              <div className="flex flex-row justify-between">
+                <label htmlFor="rating">Rating</label>
+                <Field
+                  type="number"
+                  name="rating"
+                  className="border-2 w-2/3"
+                  max="100"
+                  min="0"
+                  step="0.1"
+                />
+              </div>
+              <ErrorMessage name="rating" component="div" />
               <div className="flex flex-row justify-between">
                 <label htmlFor="platform">Platform</label>
                 <Field
