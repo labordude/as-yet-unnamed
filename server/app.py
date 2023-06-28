@@ -132,7 +132,7 @@ class Signup(Resource):
         except IntegrityError:
             return ({"error": "Unprocessable entry"}, 422)
 
-
+# checks session for user
 class CheckSession(Resource):
     def get(self):
         # please leave this code for testing purposes

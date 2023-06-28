@@ -31,7 +31,7 @@ import Social from "./pages/social.jsx";
 import CommunityCard from "./components/community-card.jsx";
 import Profile, {loader as profileLoader} from "./pages/profile.jsx";
 import User, {loader as useridLoader} from "./pages/user.jsx";
-import EditUser, {loader as userLoader} from "./pages/edituser.jsx";
+// import EditUser, {loader as userLoader} from "./pages/edituser.jsx";
 import NewReviewForm from "./components/NewReviewForm.jsx";
 // React Router
 const router = createBrowserRouter([
@@ -90,12 +90,12 @@ const router = createBrowserRouter([
         loader: useridLoader,
         errorElement: <div>Whoops!</div>,
       },
-      {
-        path: "/edituser/:userid",
-        element: <EditUser />,
-        loader: userLoader,
-        errorElement: <div>Whoops!</div>,
-      },
+      // {
+      //   path: "/edituser/:userid",
+      //   element: <EditUser />,
+      //   loader: userLoader,
+      //   errorElement: <div>Whoops!</div>,
+      // },
       {
         path: "/new_review_form",
         element: <NewReviewForm />,

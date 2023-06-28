@@ -1,4 +1,5 @@
 import {redirect} from "react-router-dom";
+// finished with something go somewhere else
 
 // get newest reviews
 export async function getNewestReviews() {
@@ -85,6 +86,7 @@ export async function deleteGame(id) {
     })
     .catch(error => console.log(error));
 }
+
 //change edit user from lowercase "id" to uppercase
 export async function getUserByID(id) {
   return fetch(`/api/users/${id}`)
