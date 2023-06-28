@@ -76,8 +76,12 @@ class User(db.Model, SerializerMixin):
         "-created_at",
         "-updated_at",
         "-reviews.user",
+        "-reviews.game",
         "-communities.user",
         "-community_users.user",
+        "-games.users",
+        "-games.users",
+        "-games.reviews",
     )
 
     @validates("username")

@@ -46,16 +46,6 @@ export const action = async ({request}) => {
   const formData = await request.formData();
   const values = Object.fromEntries(formData);
   console.log(values);
-  // fetch(`api/signup`, {
-  //   method: "POST",
-  //   headers: {"Content-Type": "application/json"},
-  //   body: JSON.stringify(values),
-  // })
-  //   .then(response => response.json())
-  //   .then(newUser => {
-  //     return newUser;
-  //     // navigate('/editformpageything')
-  //   });
 
   try {
     const newUser = await createUser(values);
@@ -64,7 +54,6 @@ export const action = async ({request}) => {
   } catch (error) {
     return {error: "Error creating a new user."};
   }
-  console.log("right before redirect");
 };
 export default function SignUpForm({onLogin}) {
   const [show, setShow] = React.useState(false);

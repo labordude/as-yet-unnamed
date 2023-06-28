@@ -118,3 +118,19 @@ export async function createUser(values) {
       // navigate('/editformpageything')
     });
 }
+
+export async function updateUser(id, values) {
+  return fetch(`/api/users/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(values),
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}

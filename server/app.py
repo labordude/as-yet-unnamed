@@ -432,26 +432,24 @@ class Users(Resource):
 
 class UsersById(Resource):
     def get(self, id):
-        try:
-            user = (
-                User.query.filter(User.id == id)
-                .first()
-                .to_dict(
-                    only=(
-                        "id",
-                        "username",
-                        "name",
-                        "email",
-                        "pfp_image",
-                        "bio",
-                        "active",
-                        "reviews",
-                    )
-                )
-            )
-            return user, 200
-        except:
+        user = User.query.filter(User.id == id).first()
+        if not user:
             return {"error": "404: User not found"}, 404
+        return (
+            user.to_dict(
+                only=(
+                    "id",
+                    "username",
+                    "name",
+                    "email",
+                    "pfp_image",
+                    "bio",
+                    "active",
+                    "reviews",
+                )
+            ),
+            200,
+        )
 
     def patch(self, id):
         data = request.get_json()

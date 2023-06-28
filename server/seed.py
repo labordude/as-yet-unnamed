@@ -55,21 +55,42 @@ with app.app_context():
 
 def create_reviews():
     with app.app_context():
+        Review.query.delete()
+        # CommunityUser.query.delete()
         users = [user.id for user in User.query.all()]
         games = [game.id for game in Game.query.all()]
-        reviews = []
 
+        reviews = []
+        # community_users = []
         for i in range(500):
+            game_id = fake.random_element(elements=games)
+            user_id = fake.random_element(elements=users)
             review = Review(
                 body=fake.paragraph(
                     nb_sentences=5, variable_nb_sentences=False
                 ),
                 rating=fake.random_int(min=1, max=5),
-                user_id=fake.random_element(elements=users),
-                game_id=fake.random_element(elements=games),
+                user_id=user_id,
+                game_id=game_id,
             )
             reviews.append(review)
+
+            # platforms = [
+            #     game.platform for game in Game.query.filter(Game.id == game_id)
+            # ]
+            # platforms = ",".join(str(e) for e in platforms)
+            # platforms_list = [platform for platform in platforms.split(",")]
+            # for j in range(len(platforms_list)):
+            #     pc = PlatformCommunity.query.filter(
+            #         PlatformCommunity.platform_id == platforms_list[j]
+            #     ).first()
+            #     print(pc.community_id)
+            #     cu = CommunityUser(
+            #         community_id=pc.community_id, user_id=user_id
+            #     )
+            #     community_users.append(cu)
         db.session.add_all(reviews)
+        # db.session.add_all(community_users)
         db.session.commit()
     return reviews
 
@@ -200,26 +221,26 @@ if __name__ == "__main__":
     # create_users()
     # print("users loaded")
     #  print("loading communities")
-    create_communities()
-    print("communities loaded")
-    print("Opening CSV...")
-    with open("platform_communities.csv", newline="") as csvfile:
-        rows = [
-            row for row in csv.reader(csvfile, delimiter=",", quotechar='"')
-        ]
-        print("Seeding platform communities...")
-        platform_communities = create_platform_communities(rows)
-        print("Complete!")
+    # create_communities()
+    # print("communities loaded")
+    # print("Opening CSV...")
+    # with open("platform_communities.csv", newline="") as csvfile:
+    #     rows = [
+    #         row for row in csv.reader(csvfile, delimiter=",", quotechar='"')
+    #     ]
+    #     print("Seeding platform communities...")
+    #     platform_communities = create_platform_communities(rows)
+    #     print("Complete!")
 
-    print("opening games.csv")
-    with open("games.csv", newline="") as csvfile:
-        rows = [
-            row for row in csv.reader(csvfile, delimiter=",", quotechar='"')
-        ]
-        print("Seeding games...")
-        games = create_games(rows)
-        print("Complete!")
+    # print("opening games.csv")
+    # with open("games.csv", newline="") as csvfile:
+    #     rows = [
+    #         row for row in csv.reader(csvfile, delimiter=",", quotechar='"')
+    #     ]
+    #     print("Seeding games...")
+    #     games = create_games(rows)
+    #     print("Complete!")
 
-    # print("loading reviews")
-    # create_reviews()
-    # print("reviews loaded")
+    print("loading reviews")
+    create_reviews()
+    print("reviews loaded")

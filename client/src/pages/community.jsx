@@ -3,7 +3,11 @@ import {getCommunities} from "../features/ui/helpers";
 import CommunityCard from "../components/community-card";
 import {Link, useParams} from "react-router-dom";
 
-export default function Communities() {
+export async function loader({params}) {
+  const  = await getUserByID(params.id);
+  return {newUser};
+}
+export default function Community({community}) {
   const [communities, setCommunities] = useState([]);
   const {community} = useParams();
 
@@ -14,7 +18,7 @@ export default function Communities() {
   function communityChoice() {
     if (community === "all") {
       return communities.map(community => (
-        <Link to={`/communities/${community.id}`} key={community.id}>
+        <Link to={`/communities/${community.name}`} key={community.id}>
           <CommunityCard key={community.id} community={community} />
         </Link>
       ));
