@@ -26,7 +26,7 @@ const validationSchema = Yup.object().shape({
   platform: Yup.string().required("Platform is required"),
   rating: Yup.number().label("rating").min(0).max(100).required(""),
 });
-export default function AddGame({toggleInput}) {
+export default function AddGame({onClose}) {
   function postGame(values) {
     const platformArray = values.platform
       .split(",")
@@ -54,7 +54,7 @@ export default function AddGame({toggleInput}) {
       .then(() => {
         console.log(updatedValues);
         console.log("game posted");
-        toggleInput()
+        onClose();
         return redirect("/");
       })
       .catch(error => {
