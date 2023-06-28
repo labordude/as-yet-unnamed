@@ -228,6 +228,7 @@ class Games(Resource):
     def post(self):
         data = request.get_json()
         try:
+            # platform = [int(item.strip()) for item in data.get("platform").split(",") if item.strip().isdigit()]
             new_game = Game(
                 title=data.get("title"),
                 description=data.get("description"),
