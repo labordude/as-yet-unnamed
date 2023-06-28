@@ -1,7 +1,8 @@
 import React, {useState, useEffect, useMemo, useTransition} from "react";
-import {getGames} from "../features/ui/helpers";
+import {getGames,} from "../features/ui/helpers";
 import GameCard from "../components/game-card";
-import {SimpleGrid, GridItem, Button} from "@chakra-ui/react";
+import AddGameModal from "../features/games/add-game-modal";
+import {SimpleGrid, GridItem, Button, useDisclosure} from "@chakra-ui/react";
 // import ReactPaginate from "react-paginate";
 // Components needed: Search, GameCard
 import AddGame from "../features/games/add-game-form";
@@ -25,13 +26,18 @@ export default function Games() {
     });
   }, [currentPage]);
 
+  function toggleShowInputs() {
+    setShowInputs(prev => !prev)
+  }
+
   return (
     <div>
-      {showInputs ? <AddGame /> : null}
+      {showInputs && (<AddGameModal isOpen={showInputs} onOpen={toggleShowInputs} onClose={toggleShowInputs}/>)}
       <div>
-        <Button onClick={() => setShowInputs(!showInputs)}>
+        <Button onClick={toggleShowInputs}>
           {showInputs ? "Hide Inputs" : "Show Inputs"}
         </Button>
+        
       </div>
       <div className="my-4">
         <div className="mx-auto join w-1/3 grid grid-cols-2">
