@@ -21,12 +21,13 @@ function NewGameAccordionItem({game}) {
       </h2>
       <AccordionPanel pb={4}>
         <span className="text-sm">{game.description}</span>
-
-        <Link
-          to={`/games/${game.id}`}
-          className="text-sm underline text-center">
-          Click here for more details
-        </Link>
+        <div>
+          <Link
+            to={`/games/${game.id}`}
+            className="text-sm underline text-center">
+            Click here for more details
+          </Link>
+        </div>
       </AccordionPanel>
     </AccordionItem>
   );

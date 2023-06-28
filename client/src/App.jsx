@@ -15,6 +15,7 @@ function App() {
         if (response.ok) {
           response.json().then(user => {
             setUser(user);
+
             // navigate("/home");
           });
         }
@@ -22,6 +23,9 @@ function App() {
       .catch(error => {
         console.log(error);
       });
+    if (user === null) {
+      navigate("/home");
+    }
   }, []);
   function onLogout(loggedOut) {
     setUser(loggedOut);

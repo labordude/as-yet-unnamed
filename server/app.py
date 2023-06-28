@@ -163,22 +163,19 @@ class Signup(Resource):
 class CheckSession(Resource):
     def get(self):
         # please leave this code for testing purposes
-        if not session.get("user_id"):
-            session["user_id"] = 1
-        user = User.query.filter(User.id == session["user_id"]).first()
+        # if not session.get("user_id"):
+        #     session["user_id"] = 1
+        # user = User.query.filter(User.id == session["user_id"]).first()
 
-        return user_schema.dump(user), 200
+        # return user_schema.dump(user), 200
 
-        # if session.get("user_id"):
-        #     print(session["user_id"])
-        #     user = (
-        #         User.query.filter(User.id == session.get("user_id"))
-        #         .first()
-        #         .to_dict()
-        #     )
-        #     return user, 200
+        if session.get("user_id"):
+            print(session["user_id"])
+            user = User.query.filter(User.id == session["user_id"]).first()
 
-        # return ({"error": "unauthorized"}, 401)
+            return user_schema.dump(user), 200
+
+        return ({"error": "unauthorized"}, 401)
 
     pass
 
@@ -341,13 +338,8 @@ class GamesById(Resource):
 
 class NewestGames(Resource):
     def get(self):
-        newest_games = [
-            game.to_dict()
-            for game in Game.query.order_by(Game.release_date.desc())
-            .limit(10)
-            .all()
-        ]
-        return newest_games, 200
+        newest_games = [game for game in Game.query.limit(10).all()]
+        return games_schema.dump(newest_games), 200
 
 
 class Reviews(Resource):
