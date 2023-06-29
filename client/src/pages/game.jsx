@@ -5,6 +5,7 @@ import {Container, Image, Button} from "@chakra-ui/react";
 import ReviewCardDetailed from "../components/review-card-detailed";
 import NewReviewForm from "../components/NewReviewForm";
 import GameEdit from "../features/games/edit-game-form";
+import AddReviewModal from "../features/games/add-review-modal";
 export async function loader({params}) {
   const game_loader = await getGamesByID(params.id);
   return {game_loader};
@@ -76,6 +77,12 @@ export default function Game() {
       </Container>
       <Container>
         <h2 className="text-center text-2xl font-bold">Game Reviews</h2>
+        {toggle && (<AddReviewModal game_loader={game_loader} isOpen={toggle} onOpen={toggled} onClose={toggled}/>)}
+        <div>
+          <Button onClick={toggled}>
+            {toggle ? "Hide Inputs" : "Show Inputs"}
+          </Button>
+        </div>
         {game_loader.reviews && game_loader.reviews.length > 0 ? (
           <div>
             {game_loader.reviews.map(review => (
@@ -89,11 +96,7 @@ export default function Game() {
         ) : (
           <p>"No reviews yet"</p>
         )}
-        {!toggle ? (
-          <Button onClick={toggled}>Add Review</Button>
-        ) : (
-          <NewReviewForm toggled={toggled} game_loader={game_loader} />
-        )}
+        
       </Container>
     </Container>
   );

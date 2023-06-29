@@ -6,25 +6,46 @@ import {
   useOutletContext,
 } from "react-router-dom";
 import {getCurrentUser} from "../features/ui/helpers";
-import {Container, Image, Box, SimpleGrid} from "@chakra-ui/react";
+import {Container, Image, Box, SimpleGrid, Button} from "@chakra-ui/react";
 // import GameCard from "../components/game-card"
 import UserReviewCard from "../components/user-review-card";
-
+import GameEdit from "../features/games/edit-game-form";
+import EditUser from "./edituser";
 export async function loader() {
   const currentUser = await getCurrentUser();
   return {currentUser};
 }
+// export const action = async ({request}) => {
+//   console.log("in the action");
+//   const formData = await request.formData();
+//   console.log(formData);
+//   const values = Object.fromEntries(formData);
+//   console.log(values);
 
+//   try {
+//     console.log("in try block");
+//     const updatedUser = await updateUser(params.id, values);
+//     console.log(updatedUser);
+//     return redirect(`../profile`);
+//   } catch (error) {
+//     return {error: "Error creating a new user."};
+//   }
+// };
 export default function Profile({}) {
   const [profileData, setProfileData] = useState();
   const [user, setUser] = useOutletContext();
   const {currentUser} = useLoaderData();
+  const [showForm, setShowForm] = useState(false);
   useEffect(() => {
     //check for a current session
     fetch("/api/check_session")
       .then(response => {
         if (response.ok) {
           response.json().then(user => {
+            console.log(user);
+            if (user == null) {
+              navigate("/home");
+            }
             setUser(user);
             setProfileData(currentUser);
             // navigate("/home");
@@ -36,7 +57,10 @@ export default function Profile({}) {
       });
   }, []);
 
-  console.log(user);
+  function toggleForm() {
+    setShowForm(prevShowForm => !prevShowForm);
+  }
+  
 
   return (
     <Container p="0" mx="auto">
@@ -51,25 +75,36 @@ export default function Profile({}) {
             alt="Pfp Image"
             boxSize="250px"
             borderRadius="full"
-          />
+          />{" "}
+          <div className="text-bold text-2xl text-center">
+            {!showForm ? (
+              <Button onClick={toggleForm}>Edit User</Button>
+            ) : (
+              <Button onClick={toggleForm}>Cancel Edit</Button>
+            )}
+          </div>
           <div className="text-bold text-2xl text-center">
             {currentUser.username || "username would go here"}
           </div>
           <div>Followers: {currentUser.followers}</div>
           <div>Following: {currentUser.followed}</div>
         </Container>
-        <Container>
+        {!showForm ? (
           <Container>
-            <p>Name: {currentUser.name}</p>
-            <p>Bio: {currentUser.bio}</p>
-            <p>Communities: </p>
+            <Container>
+              <p>Name: {currentUser.name}</p>
+              <p>Bio: {currentUser.bio}</p>
+              <p>Communities: </p>
+            </Container>
+            <Container className="mt-8">
+              <p>Total Reviews: {currentUser.reviews.length}</p>
+              <p>Total Games: {currentUser.reviews.length}</p>
+              <p>Total Ratings: {currentUser.reviews.length} </p>
+            </Container>
           </Container>
-          <Container className="mt-8">
-            <p>Total Reviews: {currentUser.reviews.length}</p>
-            <p>Total Games: {currentUser.reviews.length}</p>
-            <p>Total Ratings: {currentUser.reviews.length} </p>
-          </Container>
-        </Container>
+        ) : (
+          <EditUser user={currentUser} toggleForm={toggleForm} />
+        )}
       </Container>
 
       <Container className="flex flex-col">

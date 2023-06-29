@@ -10,8 +10,14 @@ function Home() {
   const [message, setMessage] = useState({});
   const [errors, setErrors] = useState([]);
   const [user, setUser] = useOutletContext();
+  // conditional to check if user exisits then runs login code
+  //       {!user ? (
+  // <Login onLogin={setUser} />
+  // ) : (
+
   return (
     <div className="px-4">
+
       {!user ? (
         <Login onLogin={setUser} />
       ) : (

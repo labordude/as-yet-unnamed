@@ -48,7 +48,9 @@ export const action = async ({request}) => {
   console.log(values);
 
   try {
+    console.log("hello");
     const newUser = await createUser(values);
+
     return redirect("../profile");
   } catch (error) {
     return {error: "Error creating a new user."};

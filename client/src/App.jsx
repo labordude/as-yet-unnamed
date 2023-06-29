@@ -23,9 +23,6 @@ function App() {
       .catch(error => {
         console.log(error);
       });
-    if (user === null) {
-      navigate("/home");
-    }
   }, []);
   function onLogout(loggedOut) {
     setUser(loggedOut);
