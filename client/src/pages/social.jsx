@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useTransition} from "react";
-import {getUsers} from "../features/ui/helpers";
+import {getUsers, searchGames, searchUsers} from "../features/ui/helpers";
 import {Container, Image, Box, InputGroup, SimpleGrid} from "@chakra-ui/react";
 import Search from "../components/Search";
 import UserCard from "../components/user-card";
@@ -23,7 +23,14 @@ export default function Social() {
     });
   }, [currentPage]);
 
-  function handleSearch() {}
+  function handleSearch(search) {
+    setSearchQuery(search.toLowerCase());
+    if (searchQuery.length > 2) {
+      searchGames(searchQuery).then(users => setSearchResults(users));
+    } else {
+      setSearchResults("");
+    }
+  }
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <div>

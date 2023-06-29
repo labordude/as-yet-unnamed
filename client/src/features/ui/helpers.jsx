@@ -167,6 +167,16 @@ export async function searchGames(search) {
     .catch(error => setErrors(error));
 }
 
+export async function searchUsers(search) {
+  return fetch(`/api/search_users/${search}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
+
 export async function getAllGames() {
   return fetch(`/api/games`)
     .then(response => {
