@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Image, Icon, Input, Textarea, Button} from "@chakra-ui/react";
+import {Image, Icon, Input, Textarea, Button, Box, Flex} from "@chakra-ui/react";
 import {FaHeart, FaRegComments} from "react-icons/fa";
 
 export default function ReviewCardDetailed({review, game}) {
@@ -54,6 +54,10 @@ export default function ReviewCardDetailed({review, game}) {
       .catch((error) => console.error(error));
   }
 
+  function cancelEdit() {
+    setIsEditing(false);
+  }
+
   return (
     <div className="w-full border-2 flex flex-col px-2">
       <div className="font-bold text-lg">
@@ -95,11 +99,32 @@ export default function ReviewCardDetailed({review, game}) {
             Likes <Icon as={FaRegComments} />2 See full review
           </div>
           {isEditing ? (
-            <Button onClick={editReview}>Save Changes</Button>
+            <Flex>
+              <button
+                type="button"
+                onClick={cancelEdit}
+                className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300 mr-2">
+                Cancel
+              </button>
+              <button
+                onClick={editReview}
+                type="button"
+                className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
+                Save Changes
+              </button>
+            </Flex>
           ) : (
-            <Button onClick={() => setIsEditing(true)}>Edit Review</Button>
+            // <Button onClick={() => setIsEditing(true)}>Edit Review</Button>
+            <button
+                onClick={() => setIsEditing(true)}
+                type="button"
+                className="w-[175px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
+                Edit Review
+            </button>
           )}
-          <Button onClick={deleteReview}>Delete Review</Button>
+          <Button size="xs" colorScheme="red" onClick={deleteReview}>
+            Delete Review
+          </Button>
         </div>
       </div>
     </div>
