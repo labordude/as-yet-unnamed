@@ -205,15 +205,14 @@ class Follow(Resource):
         user = User.query.filter(User.username == username).first()
         print(user.username)
         if not user:
-            flash("User {} not found.".format(username))
-            return redirect(url_for("/api/users/<int:id>"))
-        if user == current_user:
-            flash("You cannot follow yourself!")
-            return redirect(url_for("/api/users/<int:id>", username=username))
+            return {"error": "User not found"}, 404
+        # if user == current_user:
+        #     flash("You cannot follow yourself!")
+        #     return redirect(url_for("/api/users/<int:id>", username=username))
         current_user.follow(user)
         db.session.commit()
-        flash("You are following {}!".format(username))
-        return redirect(url_for("/api/users/<int:id>", username=username))
+        # flash("You are following {}!".format(username))
+        return ({"message": "successfully followed"}, 200)
         # else:
         #     return redirect(url_for("/api/users/<int:id>"))
 
@@ -231,15 +230,16 @@ class UnFollow(Resource):
         username = request.get_json()["username"]
         user = User.query.filter(User.username == username).first()
         if not user:
-            flash("User {} not found.".format(username))
-            return redirect(url_for("/api/users/<int:id>"))
-        if user == current_user:
-            flash("You cannot unfollow yourself!")
-            return redirect(url_for("user", username=username))
+            return {"error": "User not found"}, 404
+        # if user == current_user:
+        #     flash("You cannot follow yourself!")
+        #     return redirect(url_for("/api/users/<int:id>", username=username))
         current_user.unfollow(user)
         db.session.commit()
-        flash("You are not following {}.".format(username))
-        return redirect(url_for("user", username=username))
+        # flash("You are following {}!".format(username))
+        return ({"message": "successfully unfollowed"}, 200)
+        # else:
+        #     return redirect(url_for("/api/users/<int:id>"))
         # else:
         #     return redirect(url_for("index"))
 
@@ -305,9 +305,9 @@ class CheckSession(Resource):
 
         if session.get("user_id"):
             print(session["user_id"])
-            login_user(user)
-            user = User.query.filter(User.id == session["user_id"]).first()
 
+            user = User.query.filter(User.id == session["user_id"]).first()
+            login_user(user)
             return user_schema.dump(user), 200
 
         return ({"error": "unauthorized"}, 401)
