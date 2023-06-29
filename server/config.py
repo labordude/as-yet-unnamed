@@ -34,8 +34,8 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_POOL_RECYCLE"] = int(
     os.environ.get("SQLALCHEMY_POOL_RECYCLE", 300)
 )
-app.config["JWT_SECRET_KEY"] = os.urandom(24)
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+# app.config["JWT_SECRET_KEY"] = os.urandom(24)
+# app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
 
 app.config["SQLALCHEMY_ECHO"] = False
 app.json.compact = False
@@ -58,9 +58,9 @@ db.init_app(app)
 migrate = Migrate(app, db)
 CORS(app, support_credentials=True)
 bcrypt = Bcrypt(app)
-# login = LoginManager(app)
-# login_manager.session_protection = "strong"
-# login_manager.login_view = "login"
-# login_manager.login_message_category = "info"
-jwt = JWTManager(app)
+login = LoginManager(app)
+login_manager.session_protection = "strong"
+login_manager.login_view = "login"
+login_manager.login_message_category = "info"
+# jwt = JWTManager(app)
 api = Api(app)
