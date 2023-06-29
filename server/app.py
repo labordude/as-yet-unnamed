@@ -132,6 +132,7 @@ def get_current_user():
     if not user_id:
         return jsonify({"error": "unauthorized"}), 401
     user = User.query.filter_by(id=user_id).first()
+    login_user(user)
     return user_schema.dump(user), 200
 
 
@@ -223,6 +224,8 @@ api.add_resource(Follow, "/api/follow/<string:username>")
 # @app.route("/unfollow/<username>", methods=["POST"])
 # @login_required
 class UnFollow(Resource):
+    method_decorators = [login_required]
+
     def post(self, username):
         # form = EmptyForm()
         # if form.validate_on_submit():
@@ -248,7 +251,7 @@ api.add_resource(UnFollow, "/api/unfollow/<string:username>")
 
 
 class Home(Resource):
-    # method_decorators = [login_required]
+    method_decorators = [login_required]
 
     def get(self):
         return {"message": "hello world"}
@@ -353,7 +356,6 @@ class Games(Resource):
     def post(self):
         data = request.get_json()
         try:
-            # platform = [int(item.strip()) for item in data.get("platform").split(",") if item.strip().isdigit()]
             new_game = Game(
                 title=data.get("title"),
                 description=data.get("description"),
@@ -367,19 +369,8 @@ class Games(Resource):
             db.session.add(new_game)
             db.session.commit()
 
-            return (
-                new_game.to_dict(
-                    only=(
-                        "title",
-                        "description",
-                        "platform",
-                        "background_image",
-                        "release_date",
-                        "rating",
-                    )
-                ),
-                201,
-            )
+            return game_schema.dump(new_game), 201
+
         except:
             return {"error": "400: Validation error"}, 400
 

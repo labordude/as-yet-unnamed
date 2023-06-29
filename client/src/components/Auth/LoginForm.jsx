@@ -9,13 +9,14 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import {redirect} from "react-router-dom";
+import {redirect, useNavigate} from "react-router-dom";
 
 export default function LoginForm({onLogin}) {
   const [formData, setFormData] = useState({username: "", password: ""});
   const [errors, setErrors] = useState([]);
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+  const navigate = useNavigate();
   function handleChange(event) {
     const name = event.target.name;
     let value = event.target.value;

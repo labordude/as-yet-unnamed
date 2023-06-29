@@ -6,7 +6,14 @@ import {
   useOutletContext,
 } from "react-router-dom";
 import {getCurrentUser} from "../features/ui/helpers";
-import {Container, Image, Box, SimpleGrid, Button} from "@chakra-ui/react";
+import {
+  Container,
+  Image,
+  Box,
+  SimpleGrid,
+  Button,
+  Divider,
+} from "@chakra-ui/react";
 // import GameCard from "../components/game-card"
 import UserReviewCard from "../components/user-review-card";
 import GameEdit from "../features/games/edit-game-form";
@@ -63,7 +70,6 @@ export default function Profile({}) {
   function toggleForm() {
     setShowForm(prevShowForm => !prevShowForm);
   }
-  
 
   return (
     <Container p="0" mx="auto">
@@ -78,31 +84,32 @@ export default function Profile({}) {
             alt="Pfp Image"
             boxSize="250px"
             borderRadius="full"
-          />{" "}
-          <div className="text-bold text-2xl text-center">
+          />
+
+          <div className="text-bold text-2xl text-center mt-4 items-center">
             {!showForm ? (
-              <Button onClick={toggleForm}>Edit User</Button>
+              <Button onClick={toggleForm}>Edit Profile</Button>
             ) : (
               <Button onClick={toggleForm}>Cancel Edit</Button>
             )}
           </div>
-          <div className="text-bold text-2xl text-center">
-            {currentUser.username || "username would go here"}
-          </div>
-          <div>Followers: {currentUser.followers}</div>
-          <div>Following: {currentUser.followed}</div>
         </Container>
         {!showForm ? (
           <Container>
             <Container>
-              <p>Name: {currentUser.name}</p>
+              <div className="text-bold text-2xl">
+                {currentUser.username || "username would go here"}
+              </div>
               <p>Bio: {currentUser.bio}</p>
               <p>Communities: </p>
             </Container>
             <Container className="mt-8">
               <p>Total Reviews: {currentUser.reviews.length}</p>
-              <p>Total Games: {currentUser.reviews.length}</p>
-              <p>Total Ratings: {currentUser.reviews.length} </p>
+
+              <div>Followers: {currentUser.followers}</div>
+              <div>Following: {currentUser.followed}</div>
+              {/* <p>Total Games: {currentUser.reviews.length}</p>
+              <p>Total Ratings: {currentUser.reviews.length} </p> */}
             </Container>
           </Container>
         ) : (
@@ -176,4 +183,3 @@ export default function Profile({}) {
     </Container>
   );
 }
-

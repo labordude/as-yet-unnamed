@@ -147,8 +147,8 @@ export async function deleteUser(id) {
   });
 }
 
-export async function getUsers(page=1) {
-  return fetch(`/api/users`)
+export async function getUsers(page = 1) {
+  return fetch(`/api/users?page=${page}`)
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -176,7 +176,7 @@ export async function getAllGames() {
     })
     .catch(error => setErrors(error));
 }
-export async function followUser(username)  {
+export async function followUser(username) {
   return fetch(`/api/follow/${username}`, {
     method: "POST",
     headers: {"Content-Type": "application/json"},
@@ -184,7 +184,7 @@ export async function followUser(username)  {
   })
     .then(response => response.json())
     .then(newFollow => {
-      console.log(newFollow)
+      console.log(newFollow);
       // return newFollow;
     });
 }
@@ -197,7 +197,7 @@ export async function unFollowUser(username) {
   })
     .then(response => response.json())
     .then(newUnFollow => {
-      console.log(newUnFollow)
+      console.log(newUnFollow);
       // return newUnFollow;
     });
 }

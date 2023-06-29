@@ -5,7 +5,7 @@ import ReactDOM from "react-dom/client";
 // React
 import App from "./App.jsx";
 // chakra UI
-import {ChakraProvider} from "@chakra-ui/react";
+import {ChakraProvider, extendTheme} from "@chakra-ui/react";
 // tailwind
 import "./index.css";
 // React Router
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
         errorElement: <div>Whoops!</div>,
       },
       {
-        path: "signup",
+        path: "/signup",
         element: <SignUpForm />,
         errorElement: <div>Whoops!</div>,
         action: SignUpAction,
@@ -108,6 +108,7 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ChakraProvider>
