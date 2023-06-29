@@ -83,24 +83,28 @@ api.add_resource(Following, "/api/users/<int:id>/following")
 
 
 # @app.route("/follow/<username>", methods=["POST"])
-# @login_required
+@login_required
 class Follow(Resource):
     def post(self, username):
-        form = EmptyForm()
-        if form.validate_on_submit():
-            user = User.query.filter(User.username == username).first()
-            if not user:
-                flash("User {} not found.".format(username))
-                return redirect(url_for("/api/users/<int:id>"))
-            if user == current_user:
-                flash("You cannot follow yourself!")
-                return redirect(url_for("/api/users/<int:id>", username=username))
-            current_user.follow(user)
-            db.session.commit()
-            flash("You are following {}!".format(username))
-            return redirect(url_for("/api/users/<int:id>", username=username))
-        else:
+        # form = EmptyForm()
+        # if form.validate_on_submit():
+        # print(request.get_json()['username'])
+        username = request.get_json()['username']
+        print(username)
+        user = User.query.filter(User.username == username).first()
+        print(user.username)
+        if not user:
+            flash("User {} not found.".format(username))
             return redirect(url_for("/api/users/<int:id>"))
+        if user == current_user:
+            flash("You cannot follow yourself!")
+            return redirect(url_for("/api/users/<int:id>", username=username))
+        current_user.follow(user)
+        db.session.commit()
+        flash("You are following {}!".format(username))
+        return redirect(url_for("/api/users/<int:id>", username=username))
+        # else:
+        #     return redirect(url_for("/api/users/<int:id>"))
 
 api.add_resource(Follow, "/api/follow/<string:username>")
 
@@ -109,21 +113,23 @@ api.add_resource(Follow, "/api/follow/<string:username>")
 # @login_required
 class UnFollow(Resource):
     def post(self, username):
-        form = EmptyForm()
-        if form.validate_on_submit():
-            user = User.query.filter(User.username == username).first()
-            if not user:
-                flash("User {} not found.".format(username))
-                return redirect(url_for("/api/users/<int:id>"))
-            if user == current_user:
-                flash("You cannot unfollow yourself!")
-                return redirect(url_for("user", username=username))
-            current_user.unfollow(user)
-            db.session.commit()
-            flash("You are not following {}.".format(username))
+        # form = EmptyForm()
+        # if form.validate_on_submit():
+        print(request.get_json())
+        username = request.get_json()['username']
+        user = User.query.filter(User.username == username).first()
+        if not user:
+            flash("User {} not found.".format(username))
+            return redirect(url_for("/api/users/<int:id>"))
+        if user == current_user:
+            flash("You cannot unfollow yourself!")
             return redirect(url_for("user", username=username))
-        else:
-            return redirect(url_for("index"))
+        current_user.unfollow(user)
+        db.session.commit()
+        flash("You are not following {}.".format(username))
+        return redirect(url_for("user", username=username))
+        # else:
+        #     return redirect(url_for("index"))
 
 api.add_resource(UnFollow, "/api/unfollow/<string:username>")
 

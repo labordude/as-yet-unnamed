@@ -11,10 +11,13 @@ import {Container, Image, Box, SimpleGrid, Button} from "@chakra-ui/react";
 import UserReviewCard from "../components/user-review-card";
 import GameEdit from "../features/games/edit-game-form";
 import EditUser from "./edituser";
+
 export async function loader() {
   const currentUser = await getCurrentUser();
   return {currentUser};
 }
+// export current_user
+
 // export const action = async ({request}) => {
 //   console.log("in the action");
 //   const formData = await request.formData();
@@ -173,3 +176,4 @@ export default function Profile({}) {
     </Container>
   );
 }
+
