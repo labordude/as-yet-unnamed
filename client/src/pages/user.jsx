@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {Link, useLoaderData, useParams} from "react-router-dom";
-import { getUserByID } from '../features/ui/helpers'
-import {Container, Image, Box, SimpleGrid} from "@chakra-ui/react";
+import { getUserByID, getCurrentUser, followUser, unFollowUser} from '../features/ui/helpers'
+import {Container, Button, Image, Box, SimpleGrid} from "@chakra-ui/react";
 // import GameCard from "../components/game-card"
 // import ReviewCard from '../components/review-card';
 import UserReviewCard from '../components/user-review-card'
@@ -10,14 +10,33 @@ export async function loader({params}) {
     return {user_loader};
 }
 
+
+
 export default function User() {
     const [userData, setUserData] = useState();
     const {user_loader} = useLoaderData();
+    const current_user = getCurrentUser();
+    const [following, setFollowing] = useState(false);
+    
     useEffect(() => {
         setUserData(user_loader)
     }, [])
 
     console.log(user_loader)
+
+    const toggleFollow = () => {
+        setFollowing((prev) => !prev)
+        // if (following === false) {
+        //     // followUser(user_loader.username)
+        //     // current_user.username.followed.append(user_loader.username)
+        //     current_user.followed.append(user_loader)
+        // }
+        // else if (following === true) {
+        //     // unFollowUser(user_loader.username)
+        //     // current_user.username.followed.remove(user_loader.username)
+        //     current_user.followed.remove(user_loader)
+        // }
+    }
 
     return (
         <Container p="0" mx="auto">
@@ -49,6 +68,11 @@ export default function User() {
                         <p>Total Reviews: {user_loader.reviews.length}</p>
                         <p>Total Games: {user_loader.reviews.length}</p>
                         <p>Total Ratings: {user_loader.reviews.length} </p>
+                    </Container>
+                    <Container className="mt-8">
+                        <Button colorScheme={following ? "blue" : "green"} onClick={toggleFollow}>
+                            {following ? 'Unfollow' : 'Follow'}
+                        </Button>
                     </Container>
                 </Container>
             </Container>

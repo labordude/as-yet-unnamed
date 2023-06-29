@@ -145,3 +145,27 @@ export async function getUsers() {
     })
     .catch(error => setErrors(error));
 }
+
+export async function followUser(username)  {
+  return fetch(`/api/follow/${username}`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(username),
+  })
+    .then(response => response.json())
+    .then(newFollow => {
+      return newFollow;
+    });
+}
+
+export async function unFollowUser(username) {
+  return fetch(`/api/unfollow/${username}`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(username),
+  })
+    .then(response => response.json())
+    .then(newUnFollow => {
+      return newUnFollow;
+    });
+}

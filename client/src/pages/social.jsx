@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {getUsers} from "../features/ui/helpers";
-import {Container, Image, Box} from "@chakra-ui/react";
+import {SimpleGrid, Container, Image, Box} from "@chakra-ui/react";
 import UserCard from "../components/user-card"
 export default function Social() {
   const [usersList, setUsersList] = useState([]);
@@ -15,10 +15,12 @@ export default function Social() {
       </Container>
       <Container>
         <div>
-          {usersList.map(user => (
-            // <p>{user.username}</p>
-            <UserCard key={user.id} user={user}/>
-          ))}
+          <SimpleGrid columns={{sm: 2, md: 3}}>
+            {usersList.map(user => (
+              // <p>{user.username}</p>
+              <UserCard key={user.id} user={user}/>
+            ))}
+          </SimpleGrid>
         </div>
       </Container>
     </Container>
