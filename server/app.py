@@ -579,35 +579,6 @@ class SearchGames(Resource):
         return {"message": "no games found"}
 
 
-# class SearchGames(Resource):
-#     def get(self):
-#         searchedGames = Game.query.filter(Game.title.like("%title%")).all()
-#         if not searchedGames:
-#             return {"error": "Game not found"}, 404
-#         return [
-#                 game.to_dict(
-#                     only=(
-#                         "id",
-#                         "title",
-#                         "rating",
-#                         "release_date",
-#                         "description",
-#                         "background_image",
-#                         "platform",
-#                         )
-#                     )
-#                     for game in searchedGames
-#             ], 200
-
-
-class SearchGames(Resource):
-    def get(self, search):
-        games = Game.query.filter(Game.title.like(f"%{search}%")).all()
-        if games:
-            return games_schema.dump(games), 200
-        return {"message": "no games found"}
-
-
 api.add_resource(Communities, "/api/communities")
 api.add_resource(CommunitiesByID, "/api/communities/<int:id>")
 api.add_resource(Games, "/api/games")
