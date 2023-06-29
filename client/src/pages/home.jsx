@@ -16,14 +16,18 @@ function Home() {
   // ) : (
 
   return (
-    <div className="px-4">
+    <div className="px-4 bg-smokey">
       <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-        <GridItem w="100%">
-          Newest Reviews
+        <GridItem w="100%" style={{marginTop:"20px"}}>
+          <div style={{marginBottom:"10px", fontSize:"25px"}}>
+          <b>Newest Reviews</b>
+          </div>
           <NewestReviews />
         </GridItem>
-        <GridItem w="100%">
-          Newest Games
+        <GridItem w="100%" style={{marginTop:"20px"}}>
+          <div style={{marginBottom:"10px", fontSize:"25px"}}>
+          <b>Newest Games</b>
+          </div>
           <NewestGames />
         </GridItem>
       </Grid>

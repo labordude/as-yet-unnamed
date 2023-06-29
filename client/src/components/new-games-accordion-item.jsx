@@ -11,17 +11,19 @@ import {Link} from "react-router-dom";
 function NewGameAccordionItem({game}) {
   return (
     <AccordionItem>
-      <h2>
+      <h2 >
         <AccordionButton>
           <Box as="span" flex="1" textAlign="left">
+            <b>
             {game.title}
+            </b>
           </Box>
           <AccordionIcon />
         </AccordionButton>
       </h2>
       <AccordionPanel pb={4}>
         <span className="text-sm">{game.description}</span>
-        <div>
+        <div style={{marginTop: "10px"}}>
           <Link
             to={`/games/${game.id}`}
             className="text-sm underline text-center">
