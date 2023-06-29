@@ -173,6 +173,7 @@ class Signup(Resource):
         session["user_id"] = new_user.id
         return user_schema.dump(new_user), 201
 
+
 # checks session for user
 class CheckSession(Resource):
     def get(self):
@@ -549,6 +550,64 @@ class CommunityGamesByID(Resource):
         return game_communities_schema.dump(c_games), 200
 
 
+# class SearchGames(Resource):
+#     def get(self):
+#         searchedGames = Game.query.filter(Game.title.like("%title%")).all()
+#         if not searchedGames:
+#             return {"error": "Game not found"}, 404
+#         return [
+#                 game.to_dict(
+#                     only=(
+#                         "id",
+#                         "title",
+#                         "rating",
+#                         "release_date",
+#                         "description",
+#                         "background_image",
+#                         "platform",
+#                         )
+#                     )
+#                     for game in searchedGames
+#             ], 200
+
+
+class SearchGames(Resource):
+    def get(self, search):
+        games = Game.query.filter(Game.title.like(f"%{search}%")).all()
+        if games:
+            return games_schema.dump(games), 200
+        return {"message": "no games found"}
+
+
+# class SearchGames(Resource):
+#     def get(self):
+#         searchedGames = Game.query.filter(Game.title.like("%title%")).all()
+#         if not searchedGames:
+#             return {"error": "Game not found"}, 404
+#         return [
+#                 game.to_dict(
+#                     only=(
+#                         "id",
+#                         "title",
+#                         "rating",
+#                         "release_date",
+#                         "description",
+#                         "background_image",
+#                         "platform",
+#                         )
+#                     )
+#                     for game in searchedGames
+#             ], 200
+
+
+class SearchGames(Resource):
+    def get(self, search):
+        games = Game.query.filter(Game.title.like(f"%{search}%")).all()
+        if games:
+            return games_schema.dump(games), 200
+        return {"message": "no games found"}
+
+
 api.add_resource(Communities, "/api/communities")
 api.add_resource(CommunitiesByID, "/api/communities/<int:id>")
 api.add_resource(Games, "/api/games")
@@ -566,6 +625,7 @@ api.add_resource(Login, "/api/login", endpoint="login")
 api.add_resource(Logout, "/api/logout", endpoint="logout")
 api.add_resource(CommunityUsersByID, "/api/community_users/<int:id>")
 api.add_resource(CommunityGamesByID, "/api/community_games/<int:id>")
+api.add_resource(SearchGames, "/api/search/<string:search>", endpoint="search")
 # api.add_resource(CurrentUser, "/api/current_user")
 
 if __name__ == "__main__":
