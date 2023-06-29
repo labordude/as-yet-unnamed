@@ -2,7 +2,16 @@ import React, {useState, useEffect, useMemo, useTransition} from "react";
 import {getGames, searchGames, getAllGames} from "../features/ui/helpers";
 import GameCard from "../components/game-card";
 import AddGameModal from "../features/games/add-game-modal";
-import {SimpleGrid, GridItem, Button, useDisclosure, Input, InputGroup, InputRightElement, Box} from "@chakra-ui/react";
+import {
+  SimpleGrid,
+  GridItem,
+  Button,
+  useDisclosure,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Box,
+} from "@chakra-ui/react";
 // import ReactPaginate from "react-paginate";
 // Components needed: Search, GameCard
 import Search from "../components/Search";
@@ -18,6 +27,7 @@ export default function Games() {
   const [showInputs, setShowInputs] = useState(false);
   const [currentPage, setCurrentPage] = useState();
   const [isPending, startTransition] = useTransition();
+  const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   useEffect(() => {
     getGames(currentPage).then(data => {
@@ -30,48 +40,45 @@ export default function Games() {
     });
   }, [currentPage]);
 
-  useEffect(() => {
-    getAllGames().then(data => {
-      setAllGames(data.games)
-    })
-  }, [])
-
   // useEffect(() => {
-  //   const filteredList = allGames.filter((game) => {
-  //     const gameTitle = game.title ? game.title.toLowerCase() : "";
-  //     return gameTitle.includes(searchQuery.toLowerCase());
+  //   getAllGames().then(data => {
+  //     setAllGames(data.games);
   //   });
+  // }, []);
 
-  //   setFilteredGamesList(filteredList);
-  // }, [allGames, searchQuery]);
+  function handleSearch(search) {
+    setSearchQuery(search.toLowerCase());
 
-  const handleSearch = (e) => {
-    const searchValue = e.target.value.toLowerCase()
-    // const query = e.target.value
-    // setSearchQuery(searchQuery);
-    // const searchValue = searchGames(searchQuery)
-    const filteredList = allGames.filter((game) => {
-      const gameTitle = game.title ? game.title.toLowerCase() : "";
-      return gameTitle.includes(searchValue);
-      })
-      setGamesList(filteredList);
-      setSearchQuery(searchValue)
+    if (searchQuery.length > 2) {
+      searchGames(searchQuery).then(games => setSearchResults(games));
+    } else {
+      setSearchResults("");
+    }
   }
 
   function toggleShowInputs() {
-    setShowInputs(prev => !prev)
+    setShowInputs(prev => !prev);
   }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      {showInputs && (<AddGameModal isOpen={showInputs} onOpen={toggleShowInputs} onClose={toggleShowInputs}/>)}
+      {showInputs && (
+        <AddGameModal
+          isOpen={showInputs}
+          onOpen={toggleShowInputs}
+          onClose={toggleShowInputs}
+        />
+      )}
       <div>
         <Button onClick={toggleShowInputs}>
           {showInputs ? "Hide Inputs" : "Show Inputs"}
         </Button>
         <Box>
-          <InputGroup mt={4} width={{ base:"90%", md: "md" }} textAlign={"center"}>
-            <Search value={searchQuery} onChange={handleSearch}/>
+          <InputGroup
+            mt={4}
+            width={{base: "90%", md: "md"}}
+            textAlign={"center"}>
+            <Search search={searchQuery} handleSearch={handleSearch} />
           </InputGroup>
         </Box>
       </div>
@@ -96,24 +103,23 @@ export default function Games() {
             Next
           </button>
         </div>
+
         {isPending ? (
           <div className="text-center text-4xl">
             Loading...
             <span className="loading loading-bars loading-lg"></span>
           </div>
+        ) : !searchResults || searchResults.length < 2 ? (
+          <SimpleGrid columns={{sm: 2, md: 3}}>
+            {gamesList.map(game => (
+              <GameCard key={game.id} game={game} />
+            ))}
+          </SimpleGrid>
         ) : (
           <SimpleGrid columns={{sm: 2, md: 3}}>
-            {searchQuery === "" ? (
-              gamesList.map((game) => <GameCard key={game.id} game={game}/>)
-            ) : (
-              gamesList.filter((game) =>
-                game.title.toLowerCase().includes(searchQuery)
-              )
-              .map((game) => <GameCard key={game.id} game={game}/>)
-            )}
-            {/* {(filteredGamesList > 0 ? filteredGamesList : gamesList).map(game => (
+            {searchResults.map(game => (
               <GameCard key={game.id} game={game} />
-            ))} */}
+            ))}
           </SimpleGrid>
         )}
       </div>

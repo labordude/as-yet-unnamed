@@ -148,8 +148,8 @@ export async function getUsers() {
     .catch(error => setErrors(error));
 }
 
-export async function searchGames(title) {
-  return fetch(`/api/search_games/${title}`)
+export async function searchGames(search) {
+  return fetch(`/api/search/${search}`)
     .then(response => {
       if (response.ok) {
         return response.json();
