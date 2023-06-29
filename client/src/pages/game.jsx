@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link, useLoaderData, useParams} from "react-router-dom";
 import {getGamesByID} from "../features/ui/helpers";
-import {Container, Image, Button} from "@chakra-ui/react";
+import {Container, Image, Button, Box} from "@chakra-ui/react";
 import ReviewCardDetailed from "../components/review-card-detailed";
 import NewReviewForm from "../components/NewReviewForm";
 import GameEdit from "../features/games/edit-game-form";
@@ -42,7 +42,8 @@ export default function Game() {
   }
 
   return (
-    <Container>
+    <Box bg="#334139" minHeight="92.2vh" >
+    <Container centerContent>
       <Container className="my-4 flex">
         <Container boxSize="250px" className="flex flex-col">
           <Image src={game_loader.background_image} alt={game_loader.title} />
@@ -58,6 +59,7 @@ export default function Game() {
             <button
               onClick={toggleShowEdit}
               type="button"
+              style={{marginBottom: "10px"}}
               className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
               Edit Game
             </button>
@@ -88,6 +90,7 @@ export default function Game() {
           <button
             onClick={toggled}
             type="button"
+            style={{marginTop: "10px", marginBottom: "10px"}}
             className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
             Add Review
           </button>
@@ -108,5 +111,6 @@ export default function Game() {
         
       </Container>
     </Container>
+    </Box>
   );
 }

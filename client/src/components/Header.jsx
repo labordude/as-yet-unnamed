@@ -21,7 +21,7 @@ export default function Header({onLogout, user}) {
       .catch(error => console.log("error", error.message));
   }
   return (
-    <div className="navbar bg-slate-600 ">
+    <div className="navbar" style={{backgroundColor:"#1e2d24"}}>
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -30,7 +30,7 @@ export default function Header({onLogout, user}) {
               className="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
-              stroke="currentColor">
+              stroke="white">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
