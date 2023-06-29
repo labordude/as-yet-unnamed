@@ -29,6 +29,7 @@ flask-wtf = "*"
 wtforms = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
+redis = "*"
 
 [dev-packages]
 

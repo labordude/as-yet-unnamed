@@ -27,10 +27,7 @@ from models import (
     Review,
     Community,
     followers,
-    PlatformCommunity,
     CommunityUser,
-    UserSchema,
-    GameSchema,
     user_schema,
     users_schema,
     game_schema,
@@ -39,8 +36,11 @@ from models import (
     reviews_schema,
     communities_schema,
     community_schema,
+    user_community_schema,
+    CommunityGame,
+    game_communities_schema,
 )
-import requests
+
 import datetime
 from flask_login import LoginManager
 from flask_login import UserMixin
@@ -51,6 +51,19 @@ from flask_login import logout_user
 from flask_wtf import FlaskForm
 from wtforms import SubmitField
 import datetime
+from flask import Blueprint, request, jsonify
+from werkzeug import exceptions
+
+bp_name = "exceptions"
+bp = Blueprint(bp_name, __name__)
+
+
+@bp.app_errorhandler(exceptions.InternalServerError)
+def _handle_internal_server_error(ex):
+    if request.path.startswith("/api/"):
+        return jsonify(message=str(ex)), ex.code
+    else:
+        return ex
 
 
 # import jsonify
@@ -481,14 +494,59 @@ class CommunitiesByID(Resource):
 # add routes for platform games?
 class CommunityUsersByID(Resource):
     def get(self, id):
-        cu = [
-            community.user_id
-            for community in CommunityUser.query.filter(
-                CommunityUser.id == id
-            ).all()
-        ]
-        c_users = [user for user in cu]
-        return users_schema.dump(c_users), 200
+        page = int(request.args.get("page", 1))
+        per_page = 15
+
+        users = User.query.join(
+            CommunityUser, CommunityUser.user_id == User.id
+        ).filter(CommunityUser.community_id == id)
+        total = users.count()
+        users = users.paginate()
+
+        return {
+            "users": [
+                user_community_schema.dump(user) for user in users.items
+            ],
+            "total": total,
+            "has_next": users.has_next,
+            "has_prev": users.has_prev,
+            "page": page,
+            "per_page": per_page,
+        }, 200
+
+
+class CommunityGamesByID(Resource):
+    def get(self, id):
+        # gc = [
+        #     game.game_id
+        #     for game in CommunityGame.query.filter(
+        #         CommunityGame.community_id == id
+        #     ).all()
+        # ]
+        # unique = list(set(gc))
+        # c_games = []
+        # for i in range(len(unique)):
+        #     game = Game.query.filter(Game.id == unique[i]).first()
+        #     c_games.append(game)
+
+        page = int(request.args.get("page", 1))
+        per_page = 15
+
+        games = Game.query.join(
+            CommunityGame, CommunityGame.game_id == Game.id
+        ).filter(CommunityGame.community_id == id)
+        total = games.count()
+        games = games.paginate()
+
+        return {
+            "games": [game_schema.dump(game) for game in games.items],
+            "total": total,
+            "has_next": games.has_next,
+            "has_prev": games.has_prev,
+            "page": page,
+            "per_page": per_page,
+        }, 200
+        return game_communities_schema.dump(c_games), 200
 
 
 api.add_resource(Communities, "/api/communities")
@@ -507,6 +565,7 @@ api.add_resource(CheckSession, "/api/check_session", endpoint="check_session")
 api.add_resource(Login, "/api/login", endpoint="login")
 api.add_resource(Logout, "/api/logout", endpoint="logout")
 api.add_resource(CommunityUsersByID, "/api/community_users/<int:id>")
+api.add_resource(CommunityGamesByID, "/api/community_games/<int:id>")
 # api.add_resource(CurrentUser, "/api/current_user")
 
 if __name__ == "__main__":
