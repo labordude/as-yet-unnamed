@@ -72,7 +72,7 @@ def _handle_internal_server_error(ex):
 # user loader
 @login.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return db.session.get(User, int(user_id))
 
 
 @login_required
@@ -133,6 +133,7 @@ def get_current_user():
         return jsonify({"error": "unauthorized"}), 401
     user = User.query.filter_by(id=user_id).first()
     login_user(user)
+    print("user logged in")
     return user_schema.dump(user), 200
 
 
@@ -438,7 +439,7 @@ class NewestGames(Resource):
 
 
 class Reviews(Resource):
-    # method_decorators = [login_required]
+    method_decorators = [login_required]
 
     def get(self):
         reviews = Review.query.all()
@@ -465,7 +466,7 @@ class Reviews(Resource):
 
 
 class ReviewsById(Resource):
-    # method_decorators = [login_required]
+    method_decorators = [login_required]
 
     def get(self, id):
         review = Review.query.filter_by(id=id).first()
@@ -525,7 +526,7 @@ class NewestReviews(Resource):
 
 
 class Users(Resource):
-    # method_decorators = [login_required]
+    method_decorators = [login_required]
 
     def get(self):
         page = int(request.args.get("page", 1))
@@ -547,7 +548,7 @@ class Users(Resource):
 
 
 class UsersById(Resource):
-    # method_decorators = [login_required]
+    method_decorators = [login_required]
 
     def get(self, id):
         user = User.query.filter(User.id == id).first()
@@ -588,7 +589,7 @@ class Communities(Resource):
 
 
 class CommunitiesByID(Resource):
-    # method_decorators = [login_required]
+    method_decorators = [login_required]
 
     def get(self, id):
         community = Community.query.filter(Community.id == id).first()
@@ -599,7 +600,7 @@ class CommunitiesByID(Resource):
 
 # add routes for platform games?
 class CommunityUsersByID(Resource):
-    # method_decorators = [login_required]
+    method_decorators = [login_required]
 
     def get(self, id):
         page = int(request.args.get("page", 1))
@@ -624,7 +625,7 @@ class CommunityUsersByID(Resource):
 
 
 class CommunityGamesByID(Resource):
-    # method_decorators = [login_required]
+    method_decorators = [login_required]
 
     def get(self, id):
         # gc = [

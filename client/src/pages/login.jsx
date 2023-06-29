@@ -5,6 +5,9 @@ import SignUpForm from "../components/Auth/SignUpForm";
 
 export default function Login({onLogin}) {
   const [showLoginForm, setShowLoginForm] = useState(true);
+  function toggleLoginForm() {
+    setShowLoginForm(prevShowLoginForm => !prevShowLoginForm);
+  }
   return (
     <div>
       {showLoginForm ? (
@@ -20,7 +23,7 @@ export default function Login({onLogin}) {
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center my-4">
-          <SignUpForm onLogin={onLogin} />
+          <SignUpForm onLogin={onLogin} toggleLoginForm={toggleLoginForm} />
           <Divider className="my-4" />
           <p>
             Already have an account? &nbsp;

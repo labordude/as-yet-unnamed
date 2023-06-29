@@ -47,7 +47,14 @@ export default function Game() {
         <Container boxSize="250px" className="flex flex-col">
           <Image src={game_loader.background_image} alt={game_loader.title} />
           <div>
-            Rating: {game_loader.rating && game_loader.rating.toFixed(2)}{" "}
+            Rating:{" "}
+            <div
+              className="radial-progress text-primary"
+              style={{
+                "--value": game_loader.rating && game_loader.rating.toFixed(2),
+              }}>
+              {game_loader.rating && game_loader.rating.toFixed(2)}
+            </div>
           </div>
         </Container>
         <Container>
@@ -77,7 +84,14 @@ export default function Game() {
       </Container>
       <Container>
         <h2 className="text-center text-2xl font-bold">Game Reviews</h2>
-        {toggle && (<AddReviewModal game_loader={game_loader} isOpen={toggle} onOpen={toggled} onClose={toggled}/>)}
+        {toggle && (
+          <AddReviewModal
+            game_loader={game_loader}
+            isOpen={toggle}
+            onOpen={toggled}
+            onClose={toggled}
+          />
+        )}
         <div>
           <Button onClick={toggled}>
             {toggle ? "Hide Inputs" : "Show Inputs"}
@@ -96,7 +110,6 @@ export default function Game() {
         ) : (
           <p>"No reviews yet"</p>
         )}
-        
       </Container>
     </Container>
   );

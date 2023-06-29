@@ -74,7 +74,7 @@ export default function Profile({}) {
   return (
     <Container p="0" mx="auto">
       <Container className="my-4 flex">
-        <Container className="flex flex-col px-0 items-center">
+        <Container className="flex flex-col px-0 items-center bg-white">
           <Image
             src={
               currentUser.pfp_image
