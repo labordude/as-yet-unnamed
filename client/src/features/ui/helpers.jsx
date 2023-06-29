@@ -35,6 +35,7 @@ export async function getCommunities() {
     .catch(error => setErrors(error));
 }
 
+// get Games on Page Load ???
 export async function getGames(page = 1) {
   return fetch(`/api/games?page=${page}`)
     .then(response => {
@@ -45,6 +46,7 @@ export async function getGames(page = 1) {
     .catch(error => setErrors(error));
 }
 
+// Get Games by ID
 export async function getGamesByID(id) {
   return fetch(`/api/games/${id}`)
     .then(response => {
@@ -99,6 +101,7 @@ export async function getUserByID(id) {
     .catch(error => setErrors(error));
 }
 
+// Check for Current User
 export async function getCurrentUser() {
   return fetch(`/api/check_session`)
     .then(response => {
@@ -109,6 +112,7 @@ export async function getCurrentUser() {
     .catch(error => setErrors(error));
 }
 
+// Post user a.k.a creat a user
 export async function createUser(values) {
   return fetch(`/api/signup`, {
     method: "POST",
@@ -122,6 +126,7 @@ export async function createUser(values) {
     });
 }
 
+// Update/PATCH user by ID
 export async function updateUser(id, values) {
   return fetch(`/api/users/${id}`, {
     method: "PATCH",
@@ -138,12 +143,73 @@ export async function updateUser(id, values) {
     .catch(error => setErrors(error));
 }
 
-export async function getUsers() {
-  return fetch(`/api/users`)
+// Delete User by ID
+export async function deleteUser(id) {
+  return fetch(`/api/users/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+
+// get User per page load??
+export async function getUsers(page = 1) {
+  return fetch(`/api/users?page=${page}`)
     .then(response => {
       if (response.ok) {
         return response.json();
       }
     })
     .catch(error => setErrors(error));
+}
+
+// get for a search For GAMES
+export async function searchGames(search) {
+  return fetch(`/api/search/${search}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
+
+// Get all Games
+export async function getAllGames() {
+  return fetch(`/api/games`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
+
+// Post for followers in User
+export async function followUser(username) {
+  return fetch(`/api/follow/${username}`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({username: username}),
+  })
+    .then(response => response.json())
+    .then(newFollow => {
+      console.log(newFollow);
+      // return newFollow;
+    });
+}
+
+// Post for Following in User
+export async function unFollowUser(username) {
+  return fetch(`/api/unfollow/${username}`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({username: username}),
+  })
+    .then(response => response.json())
+    .then(newUnFollow => {
+      console.log(newUnFollow);
+      // return newUnFollow;
+    });
 }
