@@ -33,6 +33,7 @@ import Profile, {loader as profileLoader} from "./pages/profile.jsx";
 import User, {loader as useridLoader} from "./pages/user.jsx";
 import EditUser from "./pages/edituser.jsx";
 import NewReviewForm from "./components/NewReviewForm.jsx";
+import Community, {loader as communityLoader} from "./pages/community.jsx";
 // React Router
 const router = createBrowserRouter([
   {
@@ -73,10 +74,17 @@ const router = createBrowserRouter([
         errorElement: <div>Whoops!</div>,
       },
       {
-        path: "/communities/:community",
+        path: "/communities/:id",
+        element: <Community />,
+        loader: communityLoader,
+        errorElement: <div>Whoops!</div>,
+      },
+      {
+        path: "/communities",
         element: <Communities />,
         errorElement: <div>Whoops!</div>,
       },
+
       {
         path: "/profile",
         element: <Profile />,

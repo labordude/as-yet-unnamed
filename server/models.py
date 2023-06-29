@@ -85,6 +85,8 @@ class User(db.Model, UserMixin):
         "-games.users",
         "-games.reviews",
     )
+    threads = db.relationship("Thread", back_populates="user")
+    comments = db.relationship("Comment", back_populates="user")
 
     @validates("username")
     def validate_username(self, key, username):
@@ -261,7 +263,9 @@ class Community(db.Model, SerializerMixin):
         "-community_users.community",
         "-community_games.community",
         "-platforms.community",
+        "-threads.community",
     )
+    threads = db.relationship("Thread", back_populates="community")
 
 
 class CommunityUser(db.Model, SerializerMixin):
@@ -349,9 +353,40 @@ class CommunityGame(db.Model, SerializerMixin):
     serialize_rules = ("-community.community_games", "-game.game_communities")
 
 
-# class Thread(db.Model, SerializerMixin):
-#     __tablename__ = "threads"
-#     id = db.Column(db.Integer, primary_key=True)
+class Thread(db.Model, SerializerMixin):
+    __tablename__ = "threads"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String, nullable=False)
+    description = db.Column(db.String, nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+    community_id = db.Column(
+        db.Integer, db.ForeignKey("communities.id"), nullable=False
+    )
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    likes = db.Column(db.Integer, default=0)
+
+    community = db.relationship("Community", back_populates="threads")
+    user = db.relationship("User", back_populates="threads")
+    comments = db.relationship(
+        "Comment", back_populates="thread", cascade="delete-orphan, all"
+    )
+
+
+class Comment(db.Model, SerializerMixin):
+    __tablename__ = "comments"
+    id = db.Column(db.Integer, primary_key=True)
+    thread_id = db.Column(
+        db.Integer, db.ForeignKey("threads.id"), nullable=False
+    )
+    description = db.Column(db.String, nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    likes = db.Column(db.Integer, default=0)
+
+    thread = db.relationship("Thread", back_populates="comments")
+    user = db.relationship("User", back_populates="comments")
 
 
 ##### SCHEMAS #####
@@ -440,6 +475,46 @@ review_schema = ReviewSchema()
 reviews_schema = ReviewSchema(many=True)
 
 
+class CommentSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Comment
+        include_relationships = True
+        load_instance = True
+        include_fk = True
+
+    _links = ma.Hyperlinks(
+        {
+            "self": ma.URLFor("comments", values=dict(id="<id>")),
+            "collection": ma.URLFor("comments"),
+        }
+    )
+
+
+comment_schema = CommentSchema()
+comments_schema = CommentSchema(many=True)
+
+
+class ThreadSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Thread
+        include_relationships = True
+        load_instance = True
+        include_fk = True
+
+    comments = ma.Nested(CommentSchema, many=True)
+
+    _links = ma.Hyperlinks(
+        {
+            "self": ma.URLFor("threads", values=dict(id="<id>")),
+            "collection": ma.URLFor("threads"),
+        }
+    )
+
+
+thread_schema = ThreadSchema()
+threads_schema = ThreadSchema(many=True)
+
+
 class CommunitySchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Community
@@ -448,6 +523,7 @@ class CommunitySchema(ma.SQLAlchemyAutoSchema):
 
         # fields = ("id", "name", "image", "_links")
 
+    threads = ma.Nested(ThreadSchema, many=True)
     _links = ma.Hyperlinks(
         {
             "self": ma.URLFor("communities", values=dict(id="<id>")),
@@ -548,6 +624,8 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         #     "pfp_image",
         # )
 
+    comments = ma.Nested(CommentSchema, many=True)
+    threads = ma.Nested(ThreadSchema, many=True)
     communities = ma.Nested(CommunitySchema, many=True)
     games = ma.Nested(GameSchema, many=True)
     reviews = ma.Nested(ReviewSchema, many=True)

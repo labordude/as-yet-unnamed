@@ -201,3 +201,14 @@ export async function unFollowUser(username) {
       // return newUnFollow;
     });
 }
+
+// community threads
+export async function getCommunityThreads(id) {
+  return fetch(`/api/community_threads/${id}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
