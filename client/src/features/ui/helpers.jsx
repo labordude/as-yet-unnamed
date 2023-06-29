@@ -147,3 +147,23 @@ export async function getUsers() {
     })
     .catch(error => setErrors(error));
 }
+
+export async function searchGames(title) {
+  return fetch(`/api/search_games/${title}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
+
+export async function getAllGames() {
+  return fetch(`/api/games`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
