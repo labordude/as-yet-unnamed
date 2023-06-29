@@ -147,8 +147,28 @@ export async function deleteUser(id) {
   });
 }
 
-export async function getUsers() {
+export async function getUsers(page=1) {
   return fetch(`/api/users`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
+
+export async function searchGames(search) {
+  return fetch(`/api/search/${search}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}
+
+export async function getAllGames() {
+  return fetch(`/api/games`)
     .then(response => {
       if (response.ok) {
         return response.json();
