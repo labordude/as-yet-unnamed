@@ -59,7 +59,8 @@ export default function ReviewCardDetailed({review, game}) {
   }
 
   return (
-    <div className="w-full border-2 flex flex-col px-2">
+    <div style={{backgroundColor:"#1E2D24", boxShadow:"2px 5px 8px rgba(0, 0, 0, 1)"}}>
+    <div className="w-full border-2 flex flex-col px-2" style={{border:"none"}}>
       <div className="font-bold text-lg">
         {game.title}{" "}
         <span className="font-medium text-sm">
@@ -77,6 +78,7 @@ export default function ReviewCardDetailed({review, game}) {
               <Textarea 
                 className="text-sm"
                 value={editedReview}
+                style={{marginTop: "10px", borderRadius: "5px", borderWidth: "2px", backgroundColor:""}}
                 onChange={(e) => setEditedReview(e.target.value)}
                 _hover={{ borderColor: "blue.400" }}
               />
@@ -84,13 +86,14 @@ export default function ReviewCardDetailed({review, game}) {
                 type="number"
                 className="text-sm"
                 value={editedRating}
+                style={{marginTop: "10px", marginBottom: "10px", borderRadius: "5px", borderWidth: "2px"}}
                 onChange={(e) => setEditedRating(e.target.value)}
                 _hover={{ borderColor: "blue.400" }}
               />
             </div>
           ) : (
             <>
-              <div className="text-sm font-bold">{review.rating} /5</div>
+              <div className="text-sm font-bold" >{review.rating} /5</div>
               <div className="text-sm">{review.body}</div>
             </>
           )}
@@ -118,15 +121,23 @@ export default function ReviewCardDetailed({review, game}) {
             <button
                 onClick={() => setIsEditing(true)}
                 type="button"
+                style={{marginTop: "10px"}}
                 className="w-[175px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
                 Edit Review
             </button>
           )}
-          <Button size="xs" colorScheme="red" onClick={deleteReview}>
+          <button
+            onClick={deleteReview}
+            type="button"
+            style={{backgroundColor: "#fe654f", marginTop: "10px", marginBottom: "10px"}}
+            onMouseEnter={(e) => e.target.style.backgroundColor = "#fe3d20"}
+            onMouseLeave={(e) => e.target.style.backgroundColor = "#fe654f"}
+            className="w-[100%] text-white text-sm font-bold py-1 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
             Delete Review
-          </Button>
+          </button>
         </div>
       </div>
+    </div>
     </div>
   );
 }

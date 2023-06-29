@@ -21,7 +21,7 @@ export default function Header({onLogout, user}) {
       .catch(error => console.log("error", error.message));
   }
   return (
-    <div className="navbar bg-slate-600 ">
+    <div className="navbar" style={{backgroundColor:"#1e2d24", borderBottom:""}}>
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -30,7 +30,7 @@ export default function Header({onLogout, user}) {
               className="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
-              stroke="currentColor">
+              stroke="white">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -42,15 +42,21 @@ export default function Header({onLogout, user}) {
           <ul
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+            <b>
             <li>
-              <Link to="/games">Games</Link>
+              <Link to="/games" style={{color:"#1E2D24"}}>Games</Link>
             </li>
+            </b>
+            <b>
             <li>
-              <Link to="/communities/all">Communities</Link>
+              <Link to="/communities/all" style={{color:"#1E2D24"}}>Communities</Link>
             </li>
+            </b>
+            <b>
             <li>
-              <Link to="/social">Social</Link>
+              <Link to="/social" style={{color:"#1E2D24"}}>Social</Link>
             </li>
+            </b>
           </ul>
         </div>
         <Link to="/" className="btn btn-ghost normal-case text-3xl text-white">
@@ -81,7 +87,7 @@ export default function Header({onLogout, user}) {
           {!user ? (
             <>
               <li>
-                <Link to="/" className="text-xl text-white">
+                <Link to="/" className="text-xl text-white" >
                   Login
                 </Link>
               </li>
@@ -117,18 +123,24 @@ export default function Header({onLogout, user}) {
             <ul
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+              <b>
               <li>
-                <Link to={`/profile`} className="justify-between">
+                <Link to={`/profile`} className="justify-between" style={{color:"#1E2D24"}}>
                   Profile
                 </Link>
                 {/* <span className="badge">New</span> */}
               </li>
+              </b>
+              <b>
               <li>
-                <a>Settings</a>
+                <a style={{color:"#1E2D24"}}>Settings</a>
               </li>
-              <li onClick={handleLogoutClick}>
+              </b>
+              <b>
+              <li onClick={handleLogoutClick} style={{color:"#1E2D24"}}>
                 <a>Logout</a>
               </li>
+              </b>
             </ul>
           </div>
         </div>

@@ -52,15 +52,17 @@ export default function GameEdit({game, toggleShowEdit}) {
       <form
         onSubmit={formik.handleSubmit}
         method="post"
+        style={{backgroundColor:"#1E2D24", boxShadow:"2px 5px 8px rgba(0, 0, 0, 1)", marginBottom:"10px"}}
         className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">
         <div className="flex justify-end place-items-end">
           <Button size="sm" colorScheme="red" onClick={handleDelete}>
             Delete Game
           </Button>
         </div>
-        <div className="mb-2">
+        <div className="mb-2" style={{paddingBottom:"10px"}}>
           <label
             htmlFor="title"
+            style={{color: 'white'}}
             className="block text-gray-700 text-sm font-bold mb-2">
             Name
           </label>
@@ -70,18 +72,21 @@ export default function GameEdit({game, toggleShowEdit}) {
             type="text"
             onChange={formik.handleChange}
             value={formik.values.title}
+            style={{borderRadius: "8px", borderWidth: "2px"}}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
           />
           {formik.errors.title ? <div>{formik.errors.title}</div> : null}
         </div>
-        <div className="mb-2">
+        <div className="mb-2" style={{paddingBottom:"10px"}}>
           <label
             htmlFor="description"
+            style={{color: 'white'}}
             className="block text-gray-700 text-sm font-bold mb-2">
             Description
           </label>
           <Textarea
             name="description"
+            style={{borderRadius: "8px", borderWidth: "2px"}}
             value={formik.values.description}
             onChange={formik.handleChange}
             size="sm"
@@ -106,9 +111,10 @@ export default function GameEdit({game, toggleShowEdit}) {
           />
           {formik.errors.email ? <div>{formik.errors.email}</div> : null}
         </div> */}
-        <div className="mb-2">
+        <div className="mb-2" style={{paddingBottom:"10px"}}>
           <label
             htmlFor="release_date"
+            style={{color: 'white'}}
             className="block text-gray-700 text-sm font-bold mb-2">
             Release Date
           </label>
@@ -118,15 +124,17 @@ export default function GameEdit({game, toggleShowEdit}) {
             type="date"
             onChange={formik.handleChange}
             value={formik.values.release_date}
+            style={{borderRadius: "8px", borderWidth: "2px"}}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
           />
           {formik.errors.release_date ? (
             <div>{formik.errors.release_date}</div>
           ) : null}
         </div>
-        <div className="mb-2">
+        <div className="mb-2" style={{paddingBottom:"20px"}}>
           <label
             htmlFor="background_image"
+            style={{color: 'white'}}
             className="block text-gray-700 text-sm font-bold mb-2">
             Image
           </label>
@@ -134,13 +142,14 @@ export default function GameEdit({game, toggleShowEdit}) {
             id="background_image"
             name="background_image"
             type="file"
+            style={{backgroundColor:"#1E2D24", color:"white", borderRadius: "8px", borderWidth: "2px"}}
             onChange={event =>
               formik.setFieldValue(
                 "background_image",
                 URL.createObjectURL(event.currentTarget.files[0]),
               )
             }
-            className="block w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg file:mr-4 file:py-2 file:px-4 file:bg-slate-600 file:text-white file:rounded-md"
+            className="block w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg file:mr-4 file:py-2 file:px-4 file:bg-indigo-500 file:text-white file:rounded-md"
           />
           {formik.errors.background_image ? (
             <div>{formik.errors.background_image}</div>
@@ -151,8 +160,9 @@ export default function GameEdit({game, toggleShowEdit}) {
           <button
             className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300"
             type="submit"
-            disabled={navigation.state === "submitting"}>
-            {navigation.state === "submitting" && <Spinner />}
+            style={{marginRight: "10px"}}
+            disabled={navigate.state === "submitting"}>
+            {navigate.state === "submitting" && <Spinner />}
             Save
           </button>
           <button

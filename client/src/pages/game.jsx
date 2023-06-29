@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link, useLoaderData, useParams} from "react-router-dom";
 import {getGamesByID} from "../features/ui/helpers";
-import {Container, Image, Button} from "@chakra-ui/react";
+import {Container, Image, Button, Box, Flex} from "@chakra-ui/react";
 import ReviewCardDetailed from "../components/review-card-detailed";
 import NewReviewForm from "../components/NewReviewForm";
 import GameEdit from "../features/games/edit-game-form";
@@ -42,9 +42,11 @@ export default function Game() {
   }
 
   return (
-    <Container>
+    <Box bg="#334139" minHeight="92.2vh" >
+    <Container centerContent>
       <Container className="my-4 flex">
         <Container boxSize="250px" className="flex flex-col">
+
           <Image src={game_loader.background_image} alt={game_loader.title} />
           <div>
             Rating:{" "}
@@ -65,14 +67,16 @@ export default function Game() {
             <button
               onClick={toggleShowEdit}
               type="button"
+              style={{marginBottom: "10px", boxShadow:"2px 2px 8px rgba(0, 0, 0, 1)"}}
               className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
               Edit Game
             </button>
           )}
-          <p>{game_loader.title}</p>
-          <p>Released on {game_loader.release_date}</p>
+          <p style={{fontSize:"25px", marginBottom:"10px"}}><b>{game_loader.title}</b></p>
+          <p><b>Released on {game_loader.release_date}</b></p>
 
-          <p>
+          <p style={{marginBottom:"10px"}}>
+            <b>
             Communities:{"Coming Soon "}
             {/* {Object.values(communities).map(community => (
               <span key={community}>
@@ -84,28 +88,25 @@ export default function Game() {
                 </Link>{" "}
               </span>
             ))} */}
+            </b>
           </p>
           <p>Game description: {game_loader.description}</p>
         </Container>
       </Container>
       <Container>
-        <h2 className="text-center text-2xl font-bold">Game Reviews</h2>
-        {toggle && (
-          <AddReviewModal
-            game_loader={game_loader}
-            isOpen={toggle}
-            onOpen={toggled}
-            onClose={toggled}
-          />
-        )}
+        <Flex justifyContent={"space-between"}>
+        <h2 className="text-center text-2xl font-bold" style={{fontSize:"30px"}}>Game Reviews</h2>
+        {toggle && (<AddReviewModal game_loader={game_loader} isOpen={toggle} onOpen={toggled} onClose={toggled}/>)}
         <div>
           <button
             onClick={toggled}
             type="button"
+            style={{marginTop: "10px", marginBottom: "20px", boxShadow:"2px 2px 8px rgba(0, 0, 0, 1)"}}
             className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
             Add Review
           </button>
         </div>
+        </Flex>
         {game_loader.reviews && game_loader.reviews.length > 0 ? (
           <div>
             {game_loader.reviews.map(review => (
@@ -121,5 +122,6 @@ export default function Game() {
         )}
       </Container>
     </Container>
+    </Box>
   );
 }
