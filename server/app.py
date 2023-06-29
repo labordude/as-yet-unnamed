@@ -97,6 +97,7 @@ class Login(Resource):
             if user.authenticate(password):
                 print("successful login")
                 session["user_id"] = user.id
+                login_user(user)
                 print(f"successfully logged in: {user.id}")
                 return user_schema.dump(user), 200
 
@@ -268,6 +269,7 @@ class Signup(Resource):
         try:
             db.session.add(new_user)
             db.session.commit()
+            login_user(new_user)
         except IntegrityError:
             return ({"error": "Unprocessable entry"}, 422)
         session["user_id"] = new_user.id
@@ -286,6 +288,7 @@ class CheckSession(Resource):
 
         if session.get("user_id"):
             print(session["user_id"])
+            login_user(user)
             user = User.query.filter(User.id == session["user_id"]).first()
 
             return user_schema.dump(user), 200
@@ -296,7 +299,7 @@ class CheckSession(Resource):
 
 
 class Games(Resource):
-    # method_decorators = [login_required]
+    method_decorators = [login_required]
 
     def get(self):
         # response = requests.get(
@@ -365,7 +368,7 @@ class Games(Resource):
 
 
 class GamesById(Resource):
-    # method_decorators = [login_required]
+    method_decorators = [login_required]
 
     def get(self, id):
         game = Game.query.filter(Game.id == id).first()
@@ -419,7 +422,7 @@ class GamesById(Resource):
 
 
 class NewestGames(Resource):
-    # method_decorators = [login_required]
+    method_decorators = [login_required]
 
     def get(self):
         newest_games = [game for game in Game.query.limit(10).all()]
@@ -496,7 +499,7 @@ class ReviewsById(Resource):
 
 
 class NewestReviews(Resource):
-    # method_decorators = [login_required]
+    method_decorators = [login_required]
 
     def get(self):
         # newest_reviews = [
@@ -569,7 +572,7 @@ class UsersById(Resource):
 
 # adding Communities and CommunitiesByID endpoint
 class Communities(Resource):
-    # method_decorators = [login_required]
+    method_decorators = [login_required]
 
     def get(self):
         communities = [community for community in Community.query.all()]
