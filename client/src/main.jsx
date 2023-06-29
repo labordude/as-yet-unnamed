@@ -41,13 +41,12 @@ const router = createBrowserRouter([
     id: "root",
     children: [
       {
-        path: "/home",
         index: true,
         element: <Home />,
         errorElement: <div>Whoops!</div>,
       },
       {
-        path: "/signup",
+        path: "signup",
         element: <SignUpForm />,
         errorElement: <div>Whoops!</div>,
         action: SignUpAction,
@@ -99,6 +98,11 @@ const router = createBrowserRouter([
       {
         path: "/new_review_form",
         element: <NewReviewForm />,
+        errorElement: <div>Whoops!</div>,
+      },
+      {
+        path: "/*",
+        element: <Home />,
         errorElement: <div>Whoops!</div>,
       },
     ],

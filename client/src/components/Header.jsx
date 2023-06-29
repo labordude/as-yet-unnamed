@@ -54,7 +54,7 @@ export default function Header({onLogout, user}) {
           </ul>
         </div>
         <Link
-          to="/home"
+          to="/"
           className="btn btn-ghost normal-case text-3xl text-white">
           GameXperience
         </Link>
@@ -81,7 +81,7 @@ export default function Header({onLogout, user}) {
           {!user ? (
             <>
               <li>
-                <Link to="/home" className="text-xl text-white">
+                <Link to="/" className="text-xl text-white">
                   Login
                 </Link>
               </li>

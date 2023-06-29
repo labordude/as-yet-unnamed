@@ -1,8 +1,10 @@
 import {useState, useEffect} from "react";
 import {Outlet, useNavigate, redirect} from "react-router-dom";
 import Header from "./components/Header";
+import {Grid, GridItem} from "@chakra-ui/react";
 import Login from "./pages/login";
-import Home from "./pages/home";
+import NewestGames from "./components/newest-games";
+import NewestReviews from "./components/newest-reviews";
 import "./index.css";
 
 function App() {
@@ -32,6 +34,25 @@ function App() {
     <>
       <main>
         <Header user={user} onLogout={onLogout} />
+        {/* <div className="px-4">
+          {!user ? (
+            <Login onLogin={setUser} />
+          ) : (
+            <>
+              <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+                <GridItem w="100%">
+                  Newest Reviews
+                  <NewestReviews />
+                </GridItem>
+                <GridItem w="100%">
+                  Newest Games
+                  <NewestGames />
+                </GridItem>
+              </Grid>
+            </>
+          )}
+          {/* <Games /> */}
+        {/* </div> */}
         <Outlet context={[user, setUser]} />
       </main>
     </>

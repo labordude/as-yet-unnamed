@@ -17,7 +17,6 @@ function Home() {
 
   return (
     <div className="px-4">
-
       {!user ? (
         <Login onLogin={setUser} />
       ) : (
@@ -34,7 +33,6 @@ function Home() {
           </Grid>
         </>
       )}
-
       {/* <Games /> */}
     </div>
   );
