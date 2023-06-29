@@ -132,7 +132,7 @@ export default function ReviewCardDetailed({review, game}) {
             style={{backgroundColor: "#fe654f", marginTop: "10px", marginBottom: "10px"}}
             onMouseEnter={(e) => e.target.style.backgroundColor = "#fe3d20"}
             onMouseLeave={(e) => e.target.style.backgroundColor = "#fe654f"}
-            className="w-[175px] text-white text-sm font-bold py-1 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
+            className="w-[100%] text-white text-sm font-bold py-1 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
             Delete Review
           </button>
         </div>

@@ -61,6 +61,7 @@ export default function NewReviewForm({toggled, game_loader, onClose}) {
     }
 
     return (
+        <div >
         <Box>
             {submittedReview ? (
                 <Box>
@@ -71,20 +72,21 @@ export default function NewReviewForm({toggled, game_loader, onClose}) {
             ) : (
                 <form onSubmit={formik.handleSubmit}>
                     <Box>
-                        <label htmlFor="review">Review Body:</label>
+                        <label htmlFor="review"><b>Review Body:</b></label>
                         <Textarea
                             id="review"
                             name="review"
                             onChange={formik.handleChange}
                             value={formik.values.review}
                             _hover={{ borderColor: "blue.400" }}
+                            style={{marginTop: "10px", marginBottom: "10px", borderRadius: "5px", borderWidth: "2px"}}
                         />
                         {formik.errors.review && formik.touched.review && (
                             <Text>{formik.errors.review}</Text>
                         )}
                     </Box>
                     <Box>
-                        <label htmlFor="rating">Rating:</label>
+                        <label htmlFor="rating"><b>Rating:</b></label>
                         <Input
                             type="number"
                             id="rating"
@@ -92,6 +94,7 @@ export default function NewReviewForm({toggled, game_loader, onClose}) {
                             onChange={formik.handleChange}
                             value={formik.values.rating}
                             _hover={{ borderColor: "blue.400" }}
+                            style={{ borderRadius: "5px", borderWidth: "2px"}}
                         />
                         {formik.errors.rating && formik.touched.rating && (
                             <div>{formik.errors.rating}</div>
@@ -100,6 +103,7 @@ export default function NewReviewForm({toggled, game_loader, onClose}) {
                     <Box textAlign="center" paddingTop="3vh">
                     <button
                         type="submit"
+                        style={{boxShadow:"2px 2px 8px rgba(0, 0, 0, .7)"}}
                         className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
                         Submit
                     </button>
@@ -107,6 +111,7 @@ export default function NewReviewForm({toggled, game_loader, onClose}) {
                 </form>
             )}
             </Box>
+            </div>
         );
     }
 

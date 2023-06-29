@@ -27,15 +27,12 @@ export default function AddReviewModal({ game_loader, isOpen, onOpen, onClose })
         closeOnOverlayClick={false}
       >
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Add Review</ModalHeader>
+        <ModalContent style={{ backgroundColor: "#334139" }}>
+          <ModalHeader style={{fontSize:"30px", fontWeight:"bold"}}>Add Review</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
               <NewReviewForm game_loader={game_loader} onClose={onClose}/>
           </ModalBody>
-          <ModalFooter>
-            {/* <Button onClick={onClose}>Cancel</Button> */}
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>
