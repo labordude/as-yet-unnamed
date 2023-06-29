@@ -158,7 +158,7 @@ export async function getUsers(page = 1) {
 }
 
 export async function searchGames(search) {
-  return fetch(`/api/search/${search}`)
+  return await fetch(`/api/search/${search}`)
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -200,4 +200,15 @@ export async function unFollowUser(username) {
       console.log(newUnFollow);
       // return newUnFollow;
     });
+}
+
+// community threads
+export async function getCommunityThreads(id) {
+  return await fetch(`/api/community_threads/${id}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
 }

@@ -34,6 +34,16 @@ from models import (
     user_community_schema,
     CommunityGame,
     game_communities_schema,
+    ThreadSchema,
+    threads_schema,
+    thread_schema,
+    CommentSchema,
+    comment_schema,
+    comments_schema,
+    Thread,
+    Comment,
+    user_login_schema,
+    users__loginschema,
 )
 
 from datetime import timezone, timedelta, datetime
@@ -45,6 +55,7 @@ from flask_login import (
     login_required,
     login_user,
     logout_user,
+    login_fresh,
 )
 import datetime
 from flask import Blueprint, request, jsonify
@@ -95,10 +106,9 @@ class Login(Resource):
         user = User.query.filter(User.username == username).first()
         if user:
             if user.authenticate(password):
-                print("successful login")
                 session["user_id"] = user.id
                 login_user(user)
-                print(f"successfully logged in: {user.id}")
+
                 return user_schema.dump(user), 200
 
         return ({"error": "invalid login"}, 401)
@@ -132,7 +142,8 @@ def get_current_user():
     if not user_id:
         return jsonify({"error": "unauthorized"}), 401
     user = User.query.filter_by(id=user_id).first()
-    login_user(user)
+    if not login_fresh():
+        login_user(user, remember=True)
     print("user logged in")
     return user_schema.dump(user), 200
 
@@ -213,8 +224,11 @@ class Follow(Resource):
         #     return redirect(url_for("/api/users/<int:id>", username=username))
         current_user.follow(user)
         db.session.commit()
+        user = User.query.filter(User.id == current_user.id).first()
+        print("successful follow")
         # flash("You are following {}!".format(username))
-        return ({"message": "successfully followed"}, 200)
+        return user_schema.dump(user), 200
+
         # else:
         #     return redirect(url_for("/api/users/<int:id>"))
 
@@ -688,6 +702,49 @@ class SearchGames(Resource):
             return games_schema.dump(games), 200
         return {"message": "no games found"}
 
+
+class Threads(Resource):
+    def get(self):
+        threads = Thread.query.all()
+        return threads_schema.dump(threads), 200
+
+
+class Comments(Resource):
+    def get(self):
+        comments = Comment.query.all()
+        return comments_schema.dump(comments), 200
+
+
+class CommentsByThread(Resource):
+    def get(self, id):
+        comments = Comment.query.filter(Comment.thread_id == id).all()
+        if not comments:
+            return ({"error": "no comments on this thread"}, 200)
+        return comments_schema(comments), 200
+
+
+class ThreadsByCommunity(Resource):
+    def get(self, id):
+        threads = Thread.query.filter(Thread.community_id == id).all()
+        if not threads:
+            return ({"error": "no threads here yet"}), 404
+
+        return threads_schema.dump(threads), 200
+
+
+class ThreadByID(Resource):
+    def get(self, id):
+        thread = Thread.query.filter(Thread.id == id).first()
+        if not thread:
+            return ({"error": "no thread"}, 200)
+        return thread_schema(thread), 200
+
+
+api.add_resource(Threads, "/api/threads")
+api.add_resource(ThreadByID, "/api/threads/<int:id>")
+api.add_resource(ThreadsByCommunity, "/api/community_threads/<int:id>")
+api.add_resource(Comments, "/api/comments")
+api.add_resource(CommentsByThread, "/api/comments/<int:id>")
 
 api.add_resource(Communities, "/api/communities")
 api.add_resource(CommunitiesByID, "/api/communities/<int:id>")

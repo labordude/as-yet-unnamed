@@ -12,6 +12,8 @@ from models import (
     PlatformCommunity,
     PlatformGames,
     CommunityGame,
+    Thread,
+    Comment,
 )
 from datetime import datetime
 from faker import Faker
@@ -216,6 +218,50 @@ def create_games(rows):
     return games
 
 
+def create_threads():
+    with app.app_context():
+        Comment.query.delete()
+        Thread.query.delete()
+
+        communities = [community.id for community in Community.query.all()]
+        users = [user.id for user in User.query.all()]
+        threads = []
+        for i in range(250):
+            thread = Thread(
+                community_id=fake.random_element(elements=communities),
+                user_id=fake.random_element(elements=users),
+                title=fake.sentence(nb_words=8, variable_nb_words=True),
+                description=fake.paragraph(
+                    nb_sentences=4, variable_nb_sentences=True
+                ),
+                likes=fake.random_int(min=0, max=100),
+            )
+            threads.append(thread)
+        db.session.add_all(threads)
+        db.session.commit()
+
+
+def create_comments():
+    with app.app_context():
+        Comment.query.delete()
+
+        threads = [thread.id for thread in Thread.query.all()]
+        users = [user.id for user in User.query.all()]
+        comments = []
+        for i in range(1500):
+            comment = Comment(
+                thread_id=fake.random_element(elements=threads),
+                user_id=fake.random_element(elements=users),
+                description=fake.paragraph(
+                    nb_sentences=4, variable_nb_sentences=True
+                ),
+                likes=fake.random_int(min=0, max=100),
+            )
+            comments.append(comment)
+        db.session.add_all(comments)
+        db.session.commit()
+
+
 if __name__ == "__main__":
     # print("loading users")
     # create_users()
@@ -241,6 +287,14 @@ if __name__ == "__main__":
     #     games = create_games(rows)
     #     print("Complete!")
 
-    print("loading reviews")
-    create_reviews()
-    print("reviews loaded")
+    # print("loading reviews")
+    # create_reviews()
+    # print("reviews loaded")
+
+    print("loading threads")
+    create_threads()
+    print("threads loaded")
+
+    print("loading comments")
+    create_comments()
+    print("comments loaded")

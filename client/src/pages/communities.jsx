@@ -31,5 +31,13 @@ export default function Communities() {
     }
   }
 
-  return <div id="community_page">{communityChoice()}</div>;
+  return (
+    <div id="community_page">
+      {communities.map(community => (
+        <Link to={`/communities/${community.id}`} key={community.id}>
+          <CommunityCard key={community.id} community={community} />
+        </Link>
+      ))}
+    </div>
+  );
 }
