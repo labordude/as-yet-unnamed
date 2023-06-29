@@ -55,7 +55,7 @@ export default function GameEdit({game, toggleShowEdit}) {
         style={{backgroundColor:"#1E2D24", boxShadow:"2px 5px 8px rgba(0, 0, 0, 1)", marginBottom:"10px"}}
         className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">
         <div className="flex justify-end place-items-end">
-          <Button size="sm" colorScheme="red" onClick={handleDelete}>
+          <Button size="sm" backgroundColor="#FE654F" _hover={{backgroundColor:"#FE3D20"}} transition=".2s" onClick={handleDelete}>
             Delete Game
           </Button>
         </div>
@@ -149,7 +149,7 @@ export default function GameEdit({game, toggleShowEdit}) {
                 URL.createObjectURL(event.currentTarget.files[0]),
               )
             }
-            className="block w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg file:mr-4 file:py-2 file:px-4 file:bg-indigo-500 file:text-white file:rounded-md"
+            className="block w-full cursor-pointer border border-gray-300 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg file:mr-4 file:py-2 file:px-4 file:bg-playstation_blue file:text-white file:rounded-md"
           />
           {formik.errors.background_image ? (
             <div>{formik.errors.background_image}</div>
@@ -158,7 +158,7 @@ export default function GameEdit({game, toggleShowEdit}) {
 
         <div className="flex justify-around">
           <button
-            className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300"
+            className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300"
             type="submit"
             style={{marginRight: "10px"}}
             disabled={navigate.state === "submitting"}>
@@ -167,7 +167,7 @@ export default function GameEdit({game, toggleShowEdit}) {
           </button>
           <button
             type="button"
-            className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300"
+            className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300"
             onClick={toggleShowEdit}>
             Cancel
           </button>

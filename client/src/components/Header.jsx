@@ -24,7 +24,7 @@ export default function Header({onLogout, user}) {
     <div className="navbar" style={{backgroundColor:"#1e2d24", borderBottom:""}}>
       <div className="navbar-start">
         <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost lg:hidden">
+          <label tabIndex={0} className="btn btn-ghost lg:hidden hover:bg-smokey">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -41,7 +41,7 @@ export default function Header({onLogout, user}) {
           </label>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 ">
             <b>
             <li>
               <Link to="/games" style={{color:"#1E2D24"}}>Games</Link>
@@ -59,7 +59,7 @@ export default function Header({onLogout, user}) {
             </b>
           </ul>
         </div>
-        <Link to="/" className="btn btn-ghost normal-case text-3xl text-white">
+        <Link to="/" className="btn btn-ghost normal-case text-3xl text-white hover:bg-smokey">
           GameXperience
         </Link>
       </div>
@@ -106,23 +106,23 @@ export default function Header({onLogout, user}) {
       </div>
       {user ? (
         <div className="navbar navbar-end">
-          <div className="form-control">
+          {/* <div className="form-control">
             <input
               type="text"
               placeholder="Search"
               className="input input-bordered w-24 md:w-auto"
             />
-          </div>
+          </div> */}
 
-          <div className="dropdown dropdown-end mx-4">
+          <div className="dropdown dropdown-end mx-4 ">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-              <div className="w-16 rounded-full">
+              <div className="w-16 rounded-full transform transition-transform hover:scale-110">
                 <img src={"https://placekitten.com/100/100"} />
               </div>
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 ">
               <b>
               <li>
                 <Link to={`/profile`} className="justify-between" style={{color:"#1E2D24"}}>

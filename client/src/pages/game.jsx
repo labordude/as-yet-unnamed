@@ -47,16 +47,18 @@ export default function Game() {
       <Container className="my-4 flex">
         <Container boxSize="250px" className="flex flex-col">
 
-          <Image src={game_loader.background_image} alt={game_loader.title} />
-          <div>
+          <Image src={game_loader.background_image} alt={game_loader.title} style={{boxShadow:"2px 2px 8px rgba(0, 0, 0, 1)", marginBottom:"10px"}}/>
+          <div >
             Rating:{" "}
-            <div
-              className="radial-progress text-primary"
+            <Box
+              className="radial-progress text-primary text-tomato"
               style={{
                 "--value": game_loader.rating && game_loader.rating.toFixed(2),
+                marginLeft: "30px",
+                marginTop: "20px"
               }}>
               {game_loader.rating && game_loader.rating.toFixed(2)}
-            </div>
+            </Box>
           </div>
         </Container>
         <Container>
@@ -68,7 +70,7 @@ export default function Game() {
               onClick={toggleShowEdit}
               type="button"
               style={{marginBottom: "10px", boxShadow:"2px 2px 8px rgba(0, 0, 0, 1)"}}
-              className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
+              className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300">
               Edit Game
             </button>
           )}
@@ -102,7 +104,7 @@ export default function Game() {
             onClick={toggled}
             type="button"
             style={{marginTop: "10px", marginBottom: "20px", boxShadow:"2px 2px 8px rgba(0, 0, 0, 1)"}}
-            className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
+            className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300">
             Add Review
           </button>
         </div>
