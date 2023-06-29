@@ -440,11 +440,22 @@ class NewestReviews(Resource):
 
 class Users(Resource):
     def get(self):
-        try:
-            users = User.query.all()
-            return users_schema.dump(users), 200
-        except:
-            return {"error": "Bad request"}, 400
+        page = int(request.args.get("page", 1))
+        per_page = 20
+        total = User.query.count()
+        users = User.query.order_by(User.created_at.desc())
+        users = users.paginate()
+
+        return {
+            "users": [
+                user_community_schema.dump(user) for user in users.items
+            ],
+            "total": users.total,
+            "has_next": users.has_next,
+            "has_prev": users.has_prev,
+            "page": page,
+            "per_page": per_page,
+        }, 200
 
 
 class UsersById(Resource):

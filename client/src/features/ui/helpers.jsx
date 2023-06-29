@@ -147,7 +147,7 @@ export async function deleteUser(id) {
   });
 }
 
-export async function getUsers() {
+export async function getUsers(page=1) {
   return fetch(`/api/users`)
     .then(response => {
       if (response.ok) {
