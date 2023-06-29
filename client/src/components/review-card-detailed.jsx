@@ -106,13 +106,13 @@ export default function ReviewCardDetailed({review, game}) {
               <button
                 type="button"
                 onClick={cancelEdit}
-                className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300 mr-2">
+                className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300 mr-2">
                 Cancel
               </button>
               <button
                 onClick={editReview}
                 type="button"
-                className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
+                className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300">
                 Save Changes
               </button>
             </Flex>
@@ -122,7 +122,7 @@ export default function ReviewCardDetailed({review, game}) {
                 onClick={() => setIsEditing(true)}
                 type="button"
                 style={{marginTop: "10px"}}
-                className="w-[175px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
+                className="w-[175px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300">
                 Edit Review
             </button>
           )}

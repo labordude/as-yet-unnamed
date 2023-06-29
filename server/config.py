@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 import os
-import redis
+# import redis
 
 from flask import Flask
 from flask_bcrypt import Bcrypt

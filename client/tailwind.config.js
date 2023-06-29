@@ -10,8 +10,10 @@ export default {
   theme: {
     colors: {
       playstation_blue: "#6366F1",
+      darker_blue: "#4346EF",
       lightgray: "#F5F5F5",
       tomato: "#FE654F",
+      darker_red: "#FE3D20",
       charcoal: "#1E2D24",
       smokey: "#334139",
     },
