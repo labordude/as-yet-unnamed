@@ -9,6 +9,7 @@ export default function Search({handleSearch}) {
     <Input
       placeholder="Search Games"
       onChange={event => handleChange(event)}
+      style={{color: '#1E2D24'}}
     />
   );
 }

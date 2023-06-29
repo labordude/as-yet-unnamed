@@ -701,6 +701,13 @@ class SearchGames(Resource):
         if games:
             return games_schema.dump(games), 200
         return {"message": "no games found"}
+    
+class SearchUsers(Resource):
+    def get(self, search):
+        users = User.query.filter(User.uesrname.like(f"%{search}%")).all()
+        if users:
+            return users_schema.dump(users), 200
+        return {"message": "no users found"}
 
 
 class Threads(Resource):
@@ -764,6 +771,7 @@ api.add_resource(Logout, "/api/logout", endpoint="logout")
 api.add_resource(CommunityUsersByID, "/api/community_users/<int:id>")
 api.add_resource(CommunityGamesByID, "/api/community_games/<int:id>")
 api.add_resource(SearchGames, "/api/search/<string:search>", endpoint="search")
+api.add_resource(SearchUsers, "/api/search_users/<string:search>", endpoint="search_users")
 # api.add_resource(CurrentUser, "/api/current_user")
 
 if __name__ == "__main__":
