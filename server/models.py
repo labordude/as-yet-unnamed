@@ -492,6 +492,38 @@ game_schema = GameSchema()
 games_schema = GameSchema(many=True)
 
 
+class GameCommunitySchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Game
+        include_fk = True
+
+        load_instance = True
+        fields = (
+            "id",
+            "title",
+            "description",
+            "platform",
+            "page_banner",
+            "background_image",
+            "release_date",
+            "rating",
+            "_links",
+        )
+
+    reviews = ma.Nested(ReviewSchema, many=True)
+
+    _links = ma.Hyperlinks(
+        {
+            "self": ma.URLFor("games", values=dict(id="<id>")),
+            "collection": ma.URLFor("games"),
+        }
+    )
+
+
+game_community_schema = GameCommunitySchema()
+game_communities_schema = GameCommunitySchema(many=True)
+
+
 class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = User
@@ -499,20 +531,20 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         include_fk = True
         # show these
-        fields = (
-            "id",
-            "username",
-            "name",
-            "email",
-            "bio",
-            "active",
-            "is_admin",
-            "_links",
-            "reviews",
-            "games",
-            "communities",
-            "pfp_image",
-        )
+        # fields = (
+        #     "id",
+        #     "username",
+        #     "name",
+        #     "email",
+        #     "bio",
+        #     "active",
+        #     "is_admin",
+        #     "_links",
+        #     "reviews",
+        #     "games",
+        #     "communities",
+        #     "pfp_image",
+        # )
 
     communities = ma.Nested(CommunitySchema, many=True)
     games = ma.Nested(GameSchema, many=True)
@@ -527,3 +559,37 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
+
+
+class CommunityUsersSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+
+        load_instance = True
+        include_fk = True
+        # show these
+        fields = (
+            "id",
+            "username",
+            "name",
+            "email",
+            "bio",
+            "active",
+            "is_admin",
+            "_links",
+            "pfp_image",
+        )
+
+    communities = ma.Nested(CommunitySchema, many=True)
+    games = ma.Nested(GameSchema, many=True)
+    reviews = ma.Nested(ReviewSchema, many=True)
+    _links = ma.Hyperlinks(
+        {
+            "self": ma.URLFor("users", values=dict(id="<id>")),
+            "collection": ma.URLFor("users"),
+        }
+    )
+
+
+user_community_schema = CommunityUsersSchema()
+user_communities_schema = CommunityUsersSchema(many=True)

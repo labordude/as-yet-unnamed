@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {getUserByID, updateUser} from "../features/ui/helpers";
+import {getUserByID, updateUser, deleteUser} from "../features/ui/helpers";
 import {
   useLoaderData,
   useNavigate,
@@ -11,64 +11,77 @@ import {
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
-import {Input, Textarea, Spinner} from "@chakra-ui/react";
+import {Input, Textarea, Spinner, Button} from "@chakra-ui/react";
 YupPassword(Yup);
 const EditUserSchema = Yup.object().shape({
   name: Yup.string().min(2, "Too Short!").max(50, "Too Long!"),
   email: Yup.string().email().required("Required"),
   username: Yup.string().min(6, "Too short").required("Required"),
 });
-export async function loader({params}) {
-  const newUser = await getUserByID(params.id);
-  return {newUser};
-}
+// export async function loader({params}) {
+//   const newUser = await getUserByID(params.id);
+//   return {newUser};
+// }
 // navigated in here from signup form
 // lead to profile when done editing
-export const action = async ({request}) => {
-  console.log("in the action");
-  const formData = await request.formData();
-  console.log(formData);
-  const values = Object.fromEntries(formData);
-  console.log(values);
+// export const action = async ({request}) => {
+//   console.log("in the action");
+//   const formData = await request.formData();
+//   console.log(formData);
+//   const values = Object.fromEntries(formData);
+//   console.log(values);
 
-  try {
-    console.log("in try block");
-    const updatedUser = await updateUser(params.id, values);
-    console.log(updatedUser);
-    return redirect(`../profile`);
-  } catch (error) {
-    return {error: "Error creating a new user."};
-  }
-};
-export default function EditUser() {
+//   try {
+//     console.log("in try block");
+//     const updatedUser = await updateUser(params.id, values);
+//     console.log(updatedUser);
+//     return redirect(`../profile`);
+//   } catch (error) {
+//     return {error: "Error creating a new user."};
+//   }
+// };
+export default function EditUser({user, toggleForm}) {
   const [userData, setUserData] = useState();
-  const {newUser} = useLoaderData();
-  const submit = useSubmit();
   const navigate = useNavigate();
   const navigation = useNavigation();
-  const actionData = useActionData();
-  const {error} = actionData || {};
+
   // useEffect(() => {
   //   setUserData(newUser);
   // }, []);
 
   //
+  function handleDelete() {
+    deleteUser(user.id).then(deleted => {
+      fetch(`/api/logout`, {
+        method: "DELETE",
+        headers: {"Content-Type": "application/json"},
+      })
+        .then(response => {
+          return navigate("../home");
+        })
+        .catch(error => console.log(error));
+    });
+  }
+
   function handleSubmit(id, values) {
-    const updatedUser = updateUser(id, values);
-    return navigate("../profile");
+    updateUser(id, values)
+      .then(toggleForm())
+      .then(last => {
+        navigate("../profile");
+      });
   }
   const formik = useFormik({
     initialValues: {
-      name: newUser.name,
-      username: newUser.username,
+      name: user.name,
+      username: user.username,
 
-      email: newUser.email,
-      bio: newUser.bio,
-      pfp_image: newUser.pfp_image,
+      email: user.email,
+      bio: user.bio,
+      pfp_image: user.pfp_image,
     },
     validationSchema: EditUserSchema,
     onSubmit: async values => {
-      handleSubmit(newUser.id, values);
+      handleSubmit(user.id, values);
     },
   });
   return (
@@ -76,6 +89,11 @@ export default function EditUser() {
       <form
         onSubmit={formik.handleSubmit}
         className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">
+        <div className="flex justify-end place-items-end">
+          <Button size="sm" colorScheme="red" onClick={handleDelete}>
+            Delete Profile
+          </Button>
+        </div>
         <div className="mb-2">
           <label
             htmlFor="firstName"
@@ -173,6 +191,7 @@ export default function EditUser() {
           </button>
           <button
             type="button"
+            onClick={toggleForm}
             className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
             Cancel
           </button>
