@@ -46,11 +46,17 @@ export default function Game() {
     <Container centerContent>
       <Container className="my-4 flex">
         <Container boxSize="250px" className="flex flex-col">
-          <Image src={game_loader.background_image} alt={game_loader.title} style={{boxShadow:"2px 2px 8px rgba(0, 0, 0, 1)"}}/>
-          <div style={{marginTop:"10px"}}>
-            <b>
-              Rating: {game_loader.rating && game_loader.rating.toFixed(2)}{" "}
-            </b>
+
+          <Image src={game_loader.background_image} alt={game_loader.title} />
+          <div>
+            Rating:{" "}
+            <div
+              className="radial-progress text-primary"
+              style={{
+                "--value": game_loader.rating && game_loader.rating.toFixed(2),
+              }}>
+              {game_loader.rating && game_loader.rating.toFixed(2)}
+            </div>
           </div>
         </Container>
         <Container>
@@ -114,7 +120,6 @@ export default function Game() {
         ) : (
           <p>"No reviews yet"</p>
         )}
-        
       </Container>
     </Container>
     </Box>

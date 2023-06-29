@@ -84,7 +84,7 @@ export default function Games() {
       </div>
       <div className="my-4">
         <div className="mx-auto join w-1/3 grid grid-cols-2">
-          <button
+          <Button
             className={
               hasPrev
                 ? "join-item btn btn-outline"
@@ -92,7 +92,7 @@ export default function Games() {
             }
             onClick={() => setCurrentPage(current => current - 1)}>
             Previous page
-          </button>
+          </Button>
           <button
             className={
               hasNext

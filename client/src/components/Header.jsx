@@ -59,9 +59,7 @@ export default function Header({onLogout, user}) {
             </b>
           </ul>
         </div>
-        <Link
-          to="/"
-          className="btn btn-ghost normal-case text-3xl text-white">
+        <Link to="/" className="btn btn-ghost normal-case text-3xl text-white">
           GameXperience
         </Link>
       </div>
@@ -80,7 +78,9 @@ export default function Header({onLogout, user}) {
                 </Link>
               </li>
               <li>
-                <Link to="/social"  className="text-xl text-white">Social</Link>
+                <Link to="/social" className="text-xl text-white">
+                  Social
+                </Link>
               </li>
             </>
           ) : null}
