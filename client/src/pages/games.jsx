@@ -31,12 +31,10 @@ export default function Games() {
   const [searchQuery, setSearchQuery] = useState("");
   useEffect(() => {
     getGames(currentPage).then(data => {
-      startTransition(() => {
-        setGamesList(data.games);
-        setHasNext(data.has_next);
-        setHasPrev(data.has_prev);
-        setCurrentPage(data.page);
-      });
+      setGamesList(data.games);
+      setHasNext(data.has_next);
+      setHasPrev(data.has_prev);
+      setCurrentPage(data.page);
     });
   }, [currentPage]);
 
@@ -47,10 +45,11 @@ export default function Games() {
   // }, []);
 
   function handleSearch(search) {
-    setSearchQuery(search.toLowerCase());
+    // setSearchQuery(search.toLowerCase());
 
-    if (searchQuery.length > 2) {
-      searchGames(searchQuery).then(games => setSearchResults(games));
+    if (search.length > 2) {
+      console.log(searchResults);
+      searchGames(search.toLowerCase()).then(games => setSearchResults(games));
     } else {
       setSearchResults("");
     }
@@ -109,7 +108,9 @@ export default function Games() {
             Loading...
             <span className="loading loading-bars loading-lg"></span>
           </div>
-        ) : !searchResults || searchResults.length < 2 ? (
+        ) : !searchResults ||
+          searchResults.length < 2 ||
+          searchResults == "" ? (
           <SimpleGrid columns={{sm: 2, md: 3}}>
             {gamesList.map(game => (
               <GameCard key={game.id} game={game} />

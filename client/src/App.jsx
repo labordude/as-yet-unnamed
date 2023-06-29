@@ -12,19 +12,21 @@ function App() {
   const navigate = useNavigate();
   useEffect(() => {
     //check for a current session
-    fetch("/api/@me")
-      .then(response => {
-        if (response.ok) {
-          response.json().then(user => {
-            setUser(user);
+    if (user == null) {
+      fetch("/api/@me")
+        .then(response => {
+          if (response.ok) {
+            response.json().then(user => {
+              setUser(user);
 
-            // navigate("/home");
-          });
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+              // navigate("/home");
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   }, []);
   function onLogout(loggedOut) {
     setUser(loggedOut);

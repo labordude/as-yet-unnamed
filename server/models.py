@@ -673,3 +673,29 @@ class CommunityUsersSchema(ma.SQLAlchemyAutoSchema):
 
 user_community_schema = CommunityUsersSchema()
 user_communities_schema = CommunityUsersSchema(many=True)
+
+
+class UserLoginSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+        load_instance = True
+
+        # show these
+        # fields = (
+        #     "id",
+        #     "username",
+        #     "name",
+        #     "email",
+        #     "bio",
+        #     "active",
+        #     "is_admin",
+        #     "_links",
+        #     "reviews",
+        #     "games",
+        #     "communities",
+        #     "pfp_image",
+        # )
+
+
+user_login_schema = UserLoginSchema()
+users__loginschema = UserLoginSchema(many=True)
