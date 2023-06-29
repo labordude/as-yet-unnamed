@@ -1,7 +1,10 @@
-import React from 'react'
+import React from "react";
 
-export default function ErrorElement() {
+export default function ErrorElement({error, resetErrorBoundary}) {
+  resetErrorBoundary();
   return (
-    <div>ErrorElement</div>
-  )
+    <div className="text-charcoal">
+      An error has occurred...whoops<p>{error.message}</p>
+    </div>
+  );
 }
