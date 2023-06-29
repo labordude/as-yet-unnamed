@@ -56,7 +56,7 @@ export const action = async ({request}) => {
     return {error: "Error creating a new user."};
   }
 };
-export default function SignUpForm({onLogin}) {
+export default function SignUpForm({onLogin, toggleLoginForm}) {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const actionData = useActionData();
@@ -221,6 +221,7 @@ export default function SignUpForm({onLogin}) {
           </button>
           <button
             type="button"
+            onClick={toggleLoginForm}
             className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
             Cancel
           </button>

@@ -17,22 +17,17 @@ function Home() {
 
   return (
     <div className="px-4">
-      {!user ? (
-        <Login onLogin={setUser} />
-      ) : (
-        <>
-          <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-            <GridItem w="100%">
-              Newest Reviews
-              <NewestReviews />
-            </GridItem>
-            <GridItem w="100%">
-              Newest Games
-              <NewestGames />
-            </GridItem>
-          </Grid>
-        </>
-      )}
+      <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+        <GridItem w="100%">
+          Newest Reviews
+          <NewestReviews />
+        </GridItem>
+        <GridItem w="100%">
+          Newest Games
+          <NewestGames />
+        </GridItem>
+      </Grid>
+
       {/* <Games /> */}
     </div>
   );

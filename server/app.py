@@ -1,9 +1,5 @@
 # app.py
 
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
 from flask import (
     Flask,
     request,
@@ -14,13 +10,12 @@ from flask import (
     url_for,
     jsonify,
 )
-from flask_migrate import Migrate
 from flask_restful import Resource
-from flask_cors import CORS
+
 
 # from flask_paginate import Pagination
 from sqlalchemy.exc import IntegrityError
-from config import db, api, app, ma
+from config import db, api, app, login
 from models import (
     User,
     Game,
@@ -41,18 +36,26 @@ from models import (
     game_communities_schema,
 )
 
+from datetime import timezone, timedelta, datetime
+import json
 import datetime
-from flask_login import LoginManager
-from flask_login import UserMixin
-from flask_login import current_user
-from flask_login import login_required
-from flask_login import login_user
-from flask_login import logout_user
-from flask_wtf import FlaskForm
-from wtforms import SubmitField
+from flask_login import (
+    UserMixin,
+    current_user,
+    login_required,
+    login_user,
+    logout_user,
+)
 import datetime
 from flask import Blueprint, request, jsonify
 from werkzeug import exceptions
+from flask_jwt_extended import (
+    create_access_token,
+    get_jwt,
+    get_jwt_identity,
+    unset_jwt_cookies,
+    jwt_required,
+)
 
 bp_name = "exceptions"
 bp = Blueprint(bp_name, __name__)
@@ -66,7 +69,114 @@ def _handle_internal_server_error(ex):
         return ex
 
 
-# import jsonify
+# user loader
+@login.user_loader
+def load_user(user_id):
+    return db.session.get(User, int(user_id))
+
+
+@login_required
+def create_session():
+    login_user(user)
+
+
+@login_required
+def logout():
+    logout_user()
+
+
+class Login(Resource):
+    def post(self):
+        # session["user_id"] = 1
+        # return {"message": ["successful login", session]}, 200
+        username = request.get_json()["username"]
+        password = request.get_json()["password"]
+
+        user = User.query.filter(User.username == username).first()
+        if user:
+            if user.authenticate(password):
+                print("successful login")
+                session["user_id"] = user.id
+                login_user(user)
+                print(f"successfully logged in: {user.id}")
+                return user_schema.dump(user), 200
+
+        return ({"error": "invalid login"}, 401)
+
+    pass
+
+
+class Logout(Resource):
+    def delete(self):
+        if session.get("user_id"):
+            session["user_id"] = None
+            return {"message": "logged out"}, 204
+
+        return {"error": "401 unauthorized"}, 401
+
+    def post(self):
+        if session.get("user_id"):
+            session["user_id"] = None
+
+            return {"message": "logged out"}, 200
+
+        return {"error": "401 unauthorized"}, 401
+
+    pass
+
+
+@app.route("/api/@me", methods=["GET"])
+def get_current_user():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return jsonify({"error": "unauthorized"}), 401
+    user = User.query.filter_by(id=user_id).first()
+    login_user(user)
+    print("user logged in")
+    return user_schema.dump(user), 200
+
+
+# @app.after_request
+# def refresh_expiring_jwts(response):
+#     try:
+#         exp_timestamp = get_jwt()["exp"]
+#         now = datetime.now(timezone.utc)
+#         target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+#         if target_timestamp > exp_timestamp:
+#             access_token = create_access_token(identity=get_jwt_identity())
+#             data = response.get_json()
+#             if type(data) is dict:
+#                 data["access_token"] = access_token
+#                 response.data = json.dumps(data)
+#         return response
+#     except (RuntimeError, KeyError):
+#         # if there is no valid JWT
+#         return response
+
+
+# class Token(Resource):
+#     def post(self):
+#         username = request.get_json()["username"]
+#         password = request.get_json()["password"]
+
+#         user = User.query.filter(User.username == username).first()
+#         if user:
+#             if user.authenticate(password):
+#                 print("successful login")
+#                 session["user_id"] = user.id
+#                 print(f"successfully logged in: {user.id}")
+#                 access_token = create_access_token(
+#                     identity=user_schema.dump(user)
+#                 )
+#                 return (
+#                     {
+#                         "access_token": access_token,
+#                         "user": user_schema.dump(user),
+#                     }
+#                 ), 200
+
+#         return ({"error": "invalid login"}, 401)
 
 
 class Following(Resource):
@@ -82,59 +192,68 @@ class Following(Resource):
 api.add_resource(Following, "/api/users/<int:id>/following")
 
 
-@app.route("/follow/<username>", methods=["POST"])
-@login_required
-def follow(username):
-    form = EmptyForm()
-    if form.validate_on_submit():
+# @app.route("/follow/<username>", methods=["POST"])
+
+
+class Follow(Resource):
+    method_decorators = [login_required]
+
+    def post(self, username):
+        # form = EmptyForm()
+        # if form.validate_on_submit():
+        # print(request.get_json()['username'])
+        username = request.get_json()["username"]
+        print(username)
         user = User.query.filter(User.username == username).first()
+        print(user.username)
         if not user:
-            flash("User {} not found.".format(username))
-            return redirect(url_for("/api/users/<int:id>"))
-        if user == current_user:
-            flash("You cannot follow yourself!")
-            return redirect(url_for("/api/users/<int:id>", username=username))
+            return {"error": "User not found"}, 404
+        # if user == current_user:
+        #     flash("You cannot follow yourself!")
+        #     return redirect(url_for("/api/users/<int:id>", username=username))
         current_user.follow(user)
         db.session.commit()
-        flash("You are following {}!".format(username))
-        return redirect(url_for("/api/users/<int:id>", username=username))
-    else:
-        return redirect(url_for("/api/users/<int:id>"))
+        # flash("You are following {}!".format(username))
+        return ({"message": "successfully followed"}, 200)
+        # else:
+        #     return redirect(url_for("/api/users/<int:id>"))
 
 
-@app.route("/unfollow/<username>", methods=["POST"])
-@login_required
-def unfollow(username):
-    form = EmptyForm()
-    if form.validate_on_submit():
+api.add_resource(Follow, "/api/follow/<string:username>")
+
+
+# @app.route("/unfollow/<username>", methods=["POST"])
+# @login_required
+class UnFollow(Resource):
+    method_decorators = [login_required]
+
+    def post(self, username):
+        # form = EmptyForm()
+        # if form.validate_on_submit():
+        print(request.get_json())
+        username = request.get_json()["username"]
         user = User.query.filter(User.username == username).first()
         if not user:
-            flash("User {} not found.".format(username))
-            return redirect(url_for("/api/users/<int:id>"))
-        if user == current_user:
-            flash("You cannot unfollow yourself!")
-            return redirect(url_for("user", username=username))
+            return {"error": "User not found"}, 404
+        # if user == current_user:
+        #     flash("You cannot follow yourself!")
+        #     return redirect(url_for("/api/users/<int:id>", username=username))
         current_user.unfollow(user)
         db.session.commit()
-        flash("You are not following {}.".format(username))
-        return redirect(url_for("user", username=username))
-    else:
-        return redirect(url_for("index"))
+        # flash("You are following {}!".format(username))
+        return ({"message": "successfully unfollowed"}, 200)
+        # else:
+        #     return redirect(url_for("/api/users/<int:id>"))
+        # else:
+        #     return redirect(url_for("index"))
 
 
-# app = Flask(
-#     __name__,
-#     static_url_path="",
-#     static_folder="../client/dist",
-#     template_folder="../client/dist",
-# )
-# @app.route("/")
-# @app.route("/<int:id>")
-# def index(id=0):
-#     # return send_from_directory("../client/dist", "index.html")
-#     # return send_from_directory("../client", "index.html")
-#     return {"message": "hello world"}
+api.add_resource(UnFollow, "/api/unfollow/<string:username>")
+
+
 class Home(Resource):
+    method_decorators = [login_required]
+
     def get(self):
         return {"message": "hello world"}
 
@@ -157,6 +276,9 @@ class Signup(Resource):
         name = data.get("name")
         email = data.get("email")
         bio = data.get("bio")
+        user_exists = User.query.filter_by(email=email).first is not None
+        if user_exists:
+            return jsonify({"error": "User already exists"}, 409)
         new_user = User(
             username=username,
             name=name,
@@ -168,6 +290,7 @@ class Signup(Resource):
         try:
             db.session.add(new_user)
             db.session.commit()
+            login_user(new_user)
         except IntegrityError:
             return ({"error": "Unprocessable entry"}, 422)
         session["user_id"] = new_user.id
@@ -186,8 +309,9 @@ class CheckSession(Resource):
 
         if session.get("user_id"):
             print(session["user_id"])
-            user = User.query.filter(User.id == session["user_id"]).first()
 
+            user = User.query.filter(User.id == session["user_id"]).first()
+            login_user(user)
             return user_schema.dump(user), 200
 
         return ({"error": "unauthorized"}, 401)
@@ -195,44 +319,9 @@ class CheckSession(Resource):
     pass
 
 
-# class CurrentUser(Resource):
-#     def get(self):
-
-#         user = User.query.filter(User.id == session.get("user_id")).first().to_dict()
-#         return user, 200
-
-
-class Login(Resource):
-    def post(self):
-        # session["user_id"] = 1
-        # return {"message": ["successful login", session]}, 200
-        username = request.get_json()["username"]
-        password = request.get_json()["password"]
-
-        user = User.query.filter(User.username == username).first()
-        if user:
-            if user.authenticate(password):
-                print("successful login")
-                session["user_id"] = user.id
-                print(f"successfully logged in: {user.id}")
-                return user_schema.dump(user), 200
-
-        return ({"error": "invalid login"}, 401)
-
-    pass
-
-
-class Logout(Resource):
-    def delete(self):
-        if session.get("user_id"):
-            session["user_id"] = None
-            return ({"message": "logged out"}, 204)
-        return ({"error": "401 unauthorized"}, 401)
-
-    pass
-
-
 class Games(Resource):
+    method_decorators = [login_required]
+
     def get(self):
         # response = requests.get(
         #     "https://api.rawg.io/api/games?key=3eba459197494e8993ce88773ab7736c"
@@ -268,7 +357,6 @@ class Games(Resource):
     def post(self):
         data = request.get_json()
         try:
-            # platform = [int(item.strip()) for item in data.get("platform").split(",") if item.strip().isdigit()]
             new_game = Game(
                 title=data.get("title"),
                 description=data.get("description"),
@@ -282,24 +370,15 @@ class Games(Resource):
             db.session.add(new_game)
             db.session.commit()
 
-            return (
-                new_game.to_dict(
-                    only=(
-                        "title",
-                        "description",
-                        "platform",
-                        "background_image",
-                        "release_date",
-                        "rating",
-                    )
-                ),
-                201,
-            )
+            return game_schema.dump(new_game), 201
+
         except:
             return {"error": "400: Validation error"}, 400
 
 
 class GamesById(Resource):
+    method_decorators = [login_required]
+
     def get(self, id):
         game = Game.query.filter(Game.id == id).first()
         if not game:
@@ -352,12 +431,16 @@ class GamesById(Resource):
 
 
 class NewestGames(Resource):
+    method_decorators = [login_required]
+
     def get(self):
         newest_games = [game for game in Game.query.limit(10).all()]
         return games_schema.dump(newest_games), 200
 
 
 class Reviews(Resource):
+    method_decorators = [login_required]
+
     def get(self):
         reviews = Review.query.all()
         return reviews_schema.dump(reviews), 200
@@ -383,6 +466,8 @@ class Reviews(Resource):
 
 
 class ReviewsById(Resource):
+    method_decorators = [login_required]
+
     def get(self, id):
         review = Review.query.filter_by(id=id).first()
         return review_schema.dump(review), 200
@@ -423,6 +508,8 @@ class ReviewsById(Resource):
 
 
 class NewestReviews(Resource):
+    method_decorators = [login_required]
+
     def get(self):
         # newest_reviews = [
         #     review_schema.dump(review)
@@ -439,6 +526,8 @@ class NewestReviews(Resource):
 
 
 class Users(Resource):
+    method_decorators = [login_required]
+
     def get(self):
         page = int(request.args.get("page", 1))
         per_page = 20
@@ -459,6 +548,8 @@ class Users(Resource):
 
 
 class UsersById(Resource):
+    method_decorators = [login_required]
+
     def get(self, id):
         user = User.query.filter(User.id == id).first()
         if not user:
@@ -490,12 +581,16 @@ class UsersById(Resource):
 
 # adding Communities and CommunitiesByID endpoint
 class Communities(Resource):
+    method_decorators = [login_required]
+
     def get(self):
         communities = [community for community in Community.query.all()]
         return communities_schema.dump(communities), 200
 
 
 class CommunitiesByID(Resource):
+    method_decorators = [login_required]
+
     def get(self, id):
         community = Community.query.filter(Community.id == id).first()
         if not community:
@@ -505,6 +600,8 @@ class CommunitiesByID(Resource):
 
 # add routes for platform games?
 class CommunityUsersByID(Resource):
+    method_decorators = [login_required]
+
     def get(self, id):
         page = int(request.args.get("page", 1))
         per_page = 15
@@ -528,6 +625,8 @@ class CommunityUsersByID(Resource):
 
 
 class CommunityGamesByID(Resource):
+    method_decorators = [login_required]
+
     def get(self, id):
         # gc = [
         #     game.game_id
