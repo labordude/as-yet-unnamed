@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { getGamesByID } from '../features/ui/helpers';
+import { Box, Button, Textarea, Input, Flex } from '@chakra-ui/react';
 
 const validation = Yup.object().shape({
     review: Yup.string().required('Review body is required'),
@@ -50,7 +51,8 @@ export default function NewReviewForm({toggled, game_loader, onClose}) {
             setSubmittedReview(data)
             console.log('review posted')
             onClose()
-            navigate(`/games/${game_loader.id}`);
+            window.location.reload()
+            // navigate(`/games/${game_loader.id}`);
             // getGamesByID(game_loader.id)
         })
         .catch((error) => {
@@ -59,44 +61,52 @@ export default function NewReviewForm({toggled, game_loader, onClose}) {
     }
 
     return (
-        <div>
+        <Box>
             {submittedReview ? (
-                <div>
-                    <h2>Submitted Review:</h2>
-                    <p>Review: {submittedReview.review}</p>
-                    <p>Rating: {submittedReview.rating}</p>
-                </div>
+                <Box>
+                    <Text>Submitted Review:</Text>
+                    <Text>Review: {submittedReview.review}</Text>
+                    <Text>Rating: {submittedReview.rating}</Text>
+                </Box>
             ) : (
                 <form onSubmit={formik.handleSubmit}>
-                    <div>
+                    <Box>
                         <label htmlFor="review">Review Body:</label>
-                        <textarea
+                        <Textarea
                             id="review"
                             name="review"
                             onChange={formik.handleChange}
                             value={formik.values.review}
+                            _hover={{ borderColor: "blue.400" }}
                         />
                         {formik.errors.review && formik.touched.review && (
-                            <div>{formik.errors.review}</div>
+                            <Text>{formik.errors.review}</Text>
                         )}
-                    </div>
-                    <div>
+                    </Box>
+                    <Box>
                         <label htmlFor="rating">Rating:</label>
-                        <input
+                        <Input
                             type="number"
                             id="rating"
                             name="rating"
                             onChange={formik.handleChange}
                             value={formik.values.rating}
+                            _hover={{ borderColor: "blue.400" }}
                         />
                         {formik.errors.rating && formik.touched.rating && (
                             <div>{formik.errors.rating}</div>
                         )}
-                    </div>
-                    <button type="submit">Submit</button>
+                    </Box>
+                    <Box textAlign="center" paddingTop="3vh">
+                    <button
+                        type="submit"
+                        className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
+                        Submit
+                    </button>
+                    </Box>
                 </form>
             )}
-            </div>
+            </Box>
         );
     }
 

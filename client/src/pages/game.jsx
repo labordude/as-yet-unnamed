@@ -54,7 +54,13 @@ export default function Game() {
           {showEdit ? (
             <GameEdit game={game_loader} toggleShowEdit={toggleShowEdit} />
           ) : (
-            <Button onClick={toggleShowEdit}>Edit Game</Button>
+            // <Button onClick={toggleShowEdit}>Edit Game</Button>
+            <button
+              onClick={toggleShowEdit}
+              type="button"
+              className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
+              Edit Game
+            </button>
           )}
           <p>{game_loader.title}</p>
           <p>Released on {game_loader.release_date}</p>
@@ -79,9 +85,12 @@ export default function Game() {
         <h2 className="text-center text-2xl font-bold">Game Reviews</h2>
         {toggle && (<AddReviewModal game_loader={game_loader} isOpen={toggle} onOpen={toggled} onClose={toggled}/>)}
         <div>
-          <Button onClick={toggled}>
-            {toggle ? "Hide Inputs" : "Show Inputs"}
-          </Button>
+          <button
+            onClick={toggled}
+            type="button"
+            className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
+            Add Review
+          </button>
         </div>
         {game_loader.reviews && game_loader.reviews.length > 0 ? (
           <div>
