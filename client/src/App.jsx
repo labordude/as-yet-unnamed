@@ -12,7 +12,7 @@ function App() {
   const navigate = useNavigate();
   useEffect(() => {
     //check for a current session
-    fetch("/api/check_session")
+    fetch("/api/@me")
       .then(response => {
         if (response.ok) {
           response.json().then(user => {
@@ -53,7 +53,11 @@ function App() {
           )}
           {/* <Games /> */}
         {/* </div> */}
-        <Outlet context={[user, setUser]} />
+        {user != null ? (
+          <Outlet context={[user, setUser]} />
+        ) : (
+          <Login onLogin={setUser} />
+        )}
       </main>
     </>
   );

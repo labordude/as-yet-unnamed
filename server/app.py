@@ -1,9 +1,5 @@
 # app.py
 
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
 from flask import (
     Flask,
     request,
@@ -14,13 +10,12 @@ from flask import (
     url_for,
     jsonify,
 )
-from flask_migrate import Migrate
 from flask_restful import Resource
-from flask_cors import CORS
+
 
 # from flask_paginate import Pagination
 from sqlalchemy.exc import IntegrityError
-from config import db, api, app, ma
+from config import db, api, app
 from models import (
     User,
     Game,
@@ -41,18 +36,26 @@ from models import (
     game_communities_schema,
 )
 
+from datetime import timezone, timedelta, datetime
+import json
 import datetime
-from flask_login import LoginManager
-from flask_login import UserMixin
-from flask_login import current_user
-from flask_login import login_required
-from flask_login import login_user
-from flask_login import logout_user
-from flask_wtf import FlaskForm
-from wtforms import SubmitField
+from flask_login import (
+    UserMixin,
+    current_user,
+    login_required,
+    login_user,
+    logout_user,
+)
 import datetime
 from flask import Blueprint, request, jsonify
 from werkzeug import exceptions
+from flask_jwt_extended import (
+    create_access_token,
+    get_jwt,
+    get_jwt_identity,
+    unset_jwt_cookies,
+    jwt_required,
+)
 
 bp_name = "exceptions"
 bp = Blueprint(bp_name, __name__)
@@ -66,7 +69,62 @@ def _handle_internal_server_error(ex):
         return ex
 
 
-# import jsonify
+# # user loader
+# @login.user_loader
+# def load_user(user_id):
+#     return User.query.get(int(user_id))
+
+
+@app.route("/api/@me", methods=["GET"])
+def get_current_user():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return jsonify({"error": "unauthorized"}), 401
+    user = User.query.filter_by(id=user_id).first()
+    return user_schema.dump(user), 200
+
+
+@app.after_request
+def refresh_expiring_jwts(response):
+    try:
+        exp_timestamp = get_jwt()["exp"]
+        now = datetime.now(timezone.utc)
+        target_timestamp = datetime.timestamp(now + timedelta(minutes=30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(identity=get_jwt_identity())
+            data = response.get_json()
+            if type(data) is dict:
+                data["access_token"] = access_token
+                response.data = json.dumps(data)
+        return response
+    except (RuntimeError, KeyError):
+        # if there is no valid JWT
+        return response
+
+
+class Token(Resource):
+    def post(self):
+        username = request.get_json()["username"]
+        password = request.get_json()["password"]
+
+        user = User.query.filter(User.username == username).first()
+        if user:
+            if user.authenticate(password):
+                print("successful login")
+                session["user_id"] = user.id
+                print(f"successfully logged in: {user.id}")
+                access_token = create_access_token(
+                    identity=user_schema.dump(user)
+                )
+                return (
+                    {
+                        "access_token": access_token,
+                        "user": user_schema.dump(user),
+                    }
+                ), 200
+
+        return ({"error": "invalid login"}, 401)
 
 
 class Following(Resource):
@@ -122,18 +180,6 @@ def unfollow(username):
         return redirect(url_for("index"))
 
 
-# app = Flask(
-#     __name__,
-#     static_url_path="",
-#     static_folder="../client/dist",
-#     template_folder="../client/dist",
-# )
-# @app.route("/")
-# @app.route("/<int:id>")
-# def index(id=0):
-#     # return send_from_directory("../client/dist", "index.html")
-#     # return send_from_directory("../client", "index.html")
-#     return {"message": "hello world"}
 class Home(Resource):
     def get(self):
         return {"message": "hello world"}
@@ -157,6 +203,9 @@ class Signup(Resource):
         name = data.get("name")
         email = data.get("email")
         bio = data.get("bio")
+        user_exists = User.query.filter_by(email=email).first is not None
+        if user_exists:
+            return jsonify({"error": "User already exists"}, 409)
         new_user = User(
             username=username,
             name=name,
@@ -172,6 +221,7 @@ class Signup(Resource):
             return ({"error": "Unprocessable entry"}, 422)
         session["user_id"] = new_user.id
         return user_schema.dump(new_user), 201
+
 
 # checks session for user
 class CheckSession(Resource):
@@ -192,13 +242,6 @@ class CheckSession(Resource):
         return ({"error": "unauthorized"}, 401)
 
     pass
-
-
-# class CurrentUser(Resource):
-#     def get(self):
-
-#         user = User.query.filter(User.id == session.get("user_id")).first().to_dict()
-#         return user, 200
 
 
 class Login(Resource):
@@ -225,13 +268,27 @@ class Logout(Resource):
     def delete(self):
         if session.get("user_id"):
             session["user_id"] = None
-            return ({"message": "logged out"}, 204)
+            response = jsonify({"message": "logged out"})
+            unset_jwt_cookies(response)
+            return (response, 204)
+
+        return ({"error": "401 unauthorized"}, 401)
+
+    def post(self):
+        if session.get("user_id"):
+            session["user_id"] = None
+            response = jsonify({"message": "logged out"})
+            unset_jwt_cookies(response)
+            return response
+
         return ({"error": "401 unauthorized"}, 401)
 
     pass
 
 
 class Games(Resource):
+    method_decorators = [jwt_required()]
+
     def get(self):
         # response = requests.get(
         #     "https://api.rawg.io/api/games?key=3eba459197494e8993ce88773ab7736c"
@@ -549,6 +606,16 @@ class CommunityGamesByID(Resource):
         return game_communities_schema.dump(c_games), 200
 
 
+class SearchGames(Resource):
+    def get(self, search):
+        games = Game.query.filter(Game.title.like("%search%"))
+        if games:
+            return games_schema.dump(games), 200
+        return {"message": "no games found"}
+
+
+api.add_resource(Token, "/api/token")
+api.add_resource(SearchGames, "/api/search/<string:search>")
 api.add_resource(Communities, "/api/communities")
 api.add_resource(CommunitiesByID, "/api/communities/<int:id>")
 api.add_resource(Games, "/api/games")

@@ -30,6 +30,11 @@ wtforms = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 redis = "*"
+flask-session = "*"
+uuid = "*"
+python-decouple = "*"
+pyjwt = "*"
+flask-jwt-extended = "*"
 
 [dev-packages]
 
