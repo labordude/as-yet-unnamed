@@ -42,15 +42,21 @@ export default function Header({onLogout, user}) {
           <ul
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+            <b>
             <li>
-              <Link to="/games">Games</Link>
+              <Link to="/games" style={{color:"#1E2D24"}}>Games</Link>
             </li>
+            </b>
+            <b>
             <li>
               <Link to="/communities" style={{color:"#1E2D24"}}>Communities</Link>
             </li>
+            </b>
+            <b>
             <li>
-              <Link to="/social">Social</Link>
+              <Link to="/social" style={{color:"#1E2D24"}}>Social</Link>
             </li>
+            </b>
           </ul>
         </div>
         <Link
