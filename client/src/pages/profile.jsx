@@ -187,8 +187,11 @@ export default function Profile({}) {
 
   return (
     // Top part wrapped in this div
-    <div className="bg-smokey" style={{minHeight:"100vh"}}>
-      <Container maxW="600px" centerContent style={{paddingTop:"70px", paddingBottom:"40px"}}>
+    <div className="bg-smokey" style={{minHeight: "100vh"}}>
+      <Container
+        maxW="600px"
+        centerContent
+        style={{paddingTop: "70px", paddingBottom: "40px"}}>
         <SimpleGrid className="my-4 flex" columns={[2]} spacing="20px">
           {/* pfp and followers and follwing + Name */}
           <Box
@@ -209,7 +212,9 @@ export default function Profile({}) {
                 objectFit="cover"
                 borderRadius="full"
               />{" "}
-              <div className="text-bold text-2xl text-center" style={{paddingTop:"10px", paddingBottom:"10px"}}>
+              <div
+                className="text-bold text-2xl text-center"
+                style={{paddingTop: "10px", paddingBottom: "10px"}}>
                 {!showForm ? (
                   <Button
                     onClick={toggleForm}
@@ -235,18 +240,35 @@ export default function Profile({}) {
                     //   boxShadow:
                     //     "0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)",
                     // }}
-                    onMouseEnter={(e) => e.target.style.backgroundColor = "#4346EF"}
-                    onMouseLeave={(e) => e.target.style.backgroundColor = "#6366F1"}
-                    style={{height:"3vh", backgroundColor:"#6366F1", color:"white"}}
-                    >
+                    onMouseEnter={e =>
+                      (e.target.style.backgroundColor = "#4346EF")
+                    }
+                    onMouseLeave={e =>
+                      (e.target.style.backgroundColor = "#6366F1")
+                    }
+                    style={{
+                      height: "3vh",
+                      backgroundColor: "#6366F1",
+                      color: "white",
+                    }}>
                     Edit User
                   </Button>
                 ) : (
-                  <Button 
-                    onClick={toggleForm} 
-                    onMouseEnter={(e) => e.target.style.backgroundColor = "#FE3D20"}
-                    onMouseLeave={(e) => e.target.style.backgroundColor = "#FE654F"}
-                    style={{height:"3vh", backgroundColor:"#FE654F", color:"white"}}>Cancel Edit</Button>
+                  <Button
+                    onClick={toggleForm}
+                    onMouseEnter={e =>
+                      (e.target.style.backgroundColor = "#FE3D20")
+                    }
+                    onMouseLeave={e =>
+                      (e.target.style.backgroundColor = "#FE654F")
+                    }
+                    style={{
+                      height: "3vh",
+                      backgroundColor: "#FE654F",
+                      color: "white",
+                    }}>
+                    Cancel Edit
+                  </Button>
                 )}
               </div>
               <div className="text-bold text-2xl text-center">
@@ -267,7 +289,7 @@ export default function Profile({}) {
           </Box>
           <Box display="flex" bg="#1E2D24" height="400px" alignItems="center">
             {!showForm ? (
-              <Container >
+              <Container>
                 <Container>
                   <p>
                     {" "}
@@ -332,35 +354,29 @@ export default function Profile({}) {
             <p>"No games yet"</p>
           )}
         </div>
-        {/* <Container className="mt-10 ">
-        <h2 className="text-center text-2xl font-bold">
-          Most recent comments
-        </h2>
-        {user.reviews && user.reviews.length > 0 ? (
-          <SimpleGrid columns={[3, null, 4]} spacing="40px" className="mt-4">
-            {Array.from(user.reviews)
-              .sort(function (a, b) {
-                return b.rating - a.rating;
-              })
-              .slice(0, 4)
-              .map(review => (
-                // <GameCard key={game.id} game={game} />
-                <div
-                  className="flex flex-col items-center"
-                  key={review.game_id}>
-                  <Image
-                    boxSize="100px"
-                    key={review.game_id}
-                    src={user.games[0].background_image}
-                  />
-                  <span className="text-center">Rating:{review.rating}</span>
-                </div>
-              ))}
-          </SimpleGrid>
-        ) : (
-          <p>"No games yet"</p>
-        )}
-      </Container> */}
+        <div>
+          <Text className="text-center font-bold " fontSize={50}>
+            Recent Comments
+          </Text>
+          <div className="overflow-x-auto">
+            <table className="table">
+              <tbody>
+                {/* row 1 */}{" "}
+                {user.comments && user.comments.length > 0 ? (
+                  user.comments.slice(0, 4).map(comment => (
+                    <tr>
+                      <Link to={`../threads/${comment.thread_id}`}>
+                        <td>{comment.description}</td>
+                      </Link>
+                    </tr>
+                  ))
+                ) : (
+                  <p>"No comments yet"</p>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
         <Container centerContent maxW="1000px">
           <Text className="text-center font-bold " fontSize={50}>
             Recent Reviews

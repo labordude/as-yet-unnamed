@@ -142,9 +142,9 @@ export default function Thread() {
       </div>
       <div className="w-full h-screen overflow-auto mx-auto bg-charcoal">
         <div className="w-[80%] mx-auto flex h-full my-auto">
-          <div className="flex flex-col flex-wrap h-full  w-2/3 my-auto">
+          <div className="flex flex-col h-full  w-2/3 my-auto">
             {commentList.map(comment => (
-              <Comment key={comment.id} comment={comment}/>
+              <Comment key={comment.id} comment={comment} />
             ))}
           </div>
           <div className="flex flex-col bg-charcoal w-1/3 items-baseline justify-start align-top pt-2">
