@@ -292,11 +292,11 @@ export default function Profile({}) {
                 <Container>
                   <p>
                     {" "}
-                    <b>Name:</b> {currentUser.name}
+                    <b>Name:</b> {user.name}
                   </p>
                   <p>
                     {" "}
-                    <b>Bio:</b> {currentUser.bio}
+                    <b>Bio:</b> {user.bio}
                   </p>
                   <p>
                     {" "}

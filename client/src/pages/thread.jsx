@@ -71,6 +71,9 @@ export default function Thread() {
       setCommentData(lessLikes);
     });
   }
+  function formatClearComment() {
+    formik.values.description = "";
+  }
   const formik = useFormik({
     initialValues: {
       description: "",
@@ -188,11 +191,12 @@ export default function Thread() {
                     {navigation.state === "submitting" && <Spinner />}
                     Save
                   </button>
-                  <button
+                  {/* <button
+                    onClick={formatClearComment}
                     type="button"
                     className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300">
-                    Cancel
-                  </button>
+                    Clear
+                  </button> */}
                 </div>
               </form>
             </div>
