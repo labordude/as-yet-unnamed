@@ -804,7 +804,7 @@ class LikeComments(Resource):
                 return (
                     {"error": "something went wrong with the comment"}
                 ), 400
-            print(comment_schema.dump(comment))
+
             return comment_schema.dump(comment), 201
 
 
@@ -823,7 +823,7 @@ class LikeThreads(Resource):
                 db.session.commit()
             except:
                 return ({"error": "something went wrong with the post"}), 400
-            print(thread_schema.dump(thread))
+
             return thread_schema.dump(thread), 201
 
 
@@ -844,7 +844,7 @@ class UnlikeComments(Resource):
                 return (
                     {"error": "something went wrong with the comment"}
                 ), 400
-            print(comment_schema.dump(comment))
+
             return comment_schema.dump(comment), 201
 
 
@@ -865,7 +865,7 @@ class UnlikeThreads(Resource):
                 return (
                     {"error": "something went wrong with the comment"}
                 ), 400
-            print(thread_schema.dump(thread))
+
             return thread_schema.dump(thread), 201
 
 

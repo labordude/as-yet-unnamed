@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import NewReviewForm from '../../components/NewReviewForm'
 
-export default function AddReviewModal({ game_loader, isOpen, onOpen, onClose }) {
+export default function AddReviewModal({ game_loader, isOpen, onOpen, onClose, handleNewReview }) {
   const initialRef = React.useRef(null)
   const finalRef = React.useRef(null)
 
@@ -31,7 +31,7 @@ export default function AddReviewModal({ game_loader, isOpen, onOpen, onClose })
           <ModalHeader style={{fontSize:"30px", fontWeight:"bold"}}>Add Review</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-              <NewReviewForm game_loader={game_loader} onClose={onClose}/>
+            <NewReviewForm game_loader={game_loader} onClose={onClose} handleNewReview={handleNewReview} />
           </ModalBody>
         </ModalContent>
       </Modal>
