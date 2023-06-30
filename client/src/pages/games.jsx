@@ -11,6 +11,7 @@ import {
   InputGroup,
   InputRightElement,
   Box,
+  Flex
 } from "@chakra-ui/react";
 // import ReactPaginate from "react-paginate";
 // Components needed: Search, GameCard
@@ -60,7 +61,7 @@ export default function Games() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-smokey">
       {showInputs && (
         <AddGameModal
           isOpen={showInputs}
@@ -69,21 +70,49 @@ export default function Games() {
         />
       )}
       <div>
-        <Button onClick={toggleShowInputs}>
-          {showInputs ? "Hide Inputs" : "Show Inputs"}
-        </Button>
-        <Box>
-          <InputGroup
-            mt={4}
-            width={{base: "90%", md: "md"}}
-            textAlign={"center"}>
-            <Search search={searchQuery} handleSearch={handleSearch} />
-          </InputGroup>
-        </Box>
+        <Flex>
+          <Box>
+          <Button 
+            onClick={toggleShowInputs} 
+            onMouseEnter={(e) => e.target.style.backgroundColor = "#4346EF"}
+            onMouseLeave={(e) => e.target.style.backgroundColor = "#6366F1"}
+            style={{
+              marginTop:"20px",
+              backgroundColor:"#6366F1",
+              paddingRight:"20px",
+              paddingLeft:"20px",
+              boxShadow:"2px 2px 8px rgba(0, 0, 0, 1)"
+            }}>
+            {showInputs ? "Hide Inputs" : "Show Inputs"}
+          </Button>
+          </Box>
+          <Box style={{marginLeft:"50px"}}>
+            <InputGroup
+              mt={4}
+              width={{base: "90%", md: "md"}}
+              style={{
+                marginTop:"20px", 
+                borderWidth:"2px", 
+                borderRadius:"8px",
+                marginBottom:"10px",
+              }}
+              textAlign={"center"}>
+              <Search search={searchQuery} handleSearch={handleSearch} />
+            </InputGroup>
+          </Box>
+        </Flex>
       </div>
       <div className="my-4">
         <div className="mx-auto join w-1/3 grid grid-cols-2">
           <Button
+            onMouseEnter={(e) => e.target.style.backgroundColor = "#101814"}
+            onMouseLeave={(e) => e.target.style.backgroundColor = "#1E2D24"}
+            style={{
+              backgroundColor:"#1E2D24", 
+              color:"white", 
+              borderWidth: "2px",
+              marginBottom: "20px"
+              }}
             className={
               hasPrev
                 ? "join-item btn btn-outline"
@@ -93,6 +122,14 @@ export default function Games() {
             Previous page
           </Button>
           <button
+            onMouseEnter={(e) => e.target.style.backgroundColor = "#101814"}
+            onMouseLeave={(e) => e.target.style.backgroundColor = "#1E2D24"}
+            style={{
+              backgroundColor:"#1E2D24", 
+              color:"white", 
+              borderWidth: "2px",
+              marginBottom: "20px"
+            }}
             className={
               hasNext
                 ? "join-item btn btn-outline"

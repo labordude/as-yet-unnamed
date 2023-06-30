@@ -78,49 +78,77 @@ export default function AddGame({onClose}) {
         onSubmit={postGame}>
         {({isSubmitting}) => (
           <Form>
-            <div className="flex flex-col w-[400px]">
-              <div className="flex flex-row justify-between">
-                <label htmlFor="title">Title</label>
+            <div className="flex flex-col">
+              <div className="flex flex-row justify-end" style={{marginBottom:"10px"}}>
+                <label htmlFor="title"><b>Title</b></label>
                 <Field
                   type="text"
                   name="title"
                   placeholder="Title"
                   className="border-2 w-2/3"
+                  style={{
+                    backgroundColor:"#334139",
+                    marginLeft: "20px",
+                    paddingLeft: "20px",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
+                  }}
                 />
               </div>
-              <ErrorMessage name="title" component="div" />
-              <div className="flex flex-row justify-between">
-                <label htmlFor="description">Description</label>
+              <ErrorMessage name="title" component="div" style={{color:"#FE654F"}} className="flex flex-row justify-end"/>
+              <div className="flex flex-row justify-end" style={{marginBottom:"10px", marginTop:"10px"}}>
+                <label htmlFor="description"><b>Description</b></label>
                 <Field
                   type="text"
                   name="description"
                   placeholder="Description"
                   className="border-2 w-2/3"
+                  style={{
+                    backgroundColor:"#334139",
+                    marginLeft: "20px",
+                    paddingLeft: "20px",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
+                  }}
                 />
               </div>
-              <ErrorMessage name="description" component="div" />
-              <div className="flex flex-row justify-between">
-                <label htmlFor="image">Image</label>
+              <ErrorMessage name="description" component="div" style={{color:"#FE654F"}} className="flex flex-row justify-end"/>
+              <div className="flex flex-row justify-end" style={{marginBottom:"10px", marginTop:"10px"}}>
+                <label htmlFor="image"><b>Image</b></label>
                 <Field
                   type="text"
                   name="background_image"
                   placeholder="Background Image URL"
                   className="border-2 w-2/3"
+                  style={{
+                    backgroundColor:"#334139",
+                    marginLeft: "20px",
+                    paddingLeft: "20px",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
+                  }}
                 />
               </div>
-              <ErrorMessage name="background_image" component="div" />
-              <div className="flex flex-row justify-between">
-                <label htmlFor="release_date">Release Date</label>
+              <ErrorMessage name="background_image" component="div" style={{color:"#FE654F"}} className="flex flex-row justify-end"/>
+              <div className="flex flex-row justify-end" style={{marginBottom:"10px", marginTop:"10px"}}>
+                <label htmlFor="release_date"><b>Release Date</b></label>
                 <Field
                   type="text"
                   name="release_date"
                   placeholder="Release Date"
                   className="border-2 w-2/3"
+                  style={{
+                    backgroundColor:"#334139",
+                    marginLeft: "20px",
+                    paddingLeft: "20px",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
+                  }}
                 />
               </div>
-              <ErrorMessage name="release_date" component="div" />
-              <div className="flex flex-row justify-between">
-                <label htmlFor="rating">Rating</label>
+              <ErrorMessage name="release_date" component="div" style={{color:"#FE654F"}} className="flex flex-row justify-end"/>
+              <div className="flex flex-row justify-end" style={{marginBottom:"10px", marginTop:"10px"}}>
+                <label htmlFor="rating"><b>Rating</b></label>
                 <Field
                   type="number"
                   name="rating"
@@ -128,23 +156,44 @@ export default function AddGame({onClose}) {
                   max="100"
                   min="0"
                   step="0.1"
+                  style={{
+                    backgroundColor:"#334139",
+                    marginLeft: "20px",
+                    paddingLeft: "20px",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
+                  }}
                 />
               </div>
-              <ErrorMessage name="rating" component="div" />
-              <div className="flex flex-row justify-between">
-                <label htmlFor="platform">Platform</label>
+              <ErrorMessage name="rating" component="div" style={{color:"#FE654F"}} className="flex flex-row justify-end"/>
+              <div className="flex flex-row justify-end" style={{marginBottom:"10px", marginTop:"10px"}}>
+                <label htmlFor="platform"><b>Platform</b></label>
                 <Field
                   type="text"
                   name="platform"
                   placeholder="Platform"
                   className="border-2 w-2/3"
+                  style={{
+                    backgroundColor:"#334139",
+                    marginLeft: "20px",
+                    paddingLeft: "20px",
+                    paddingTop: "5px",
+                    paddingBottom: "5px",
+                  }}
                 />
               </div>
-              <ErrorMessage name="platform" component="div" />
+              <ErrorMessage name="platform" component="div" style={{color:"#FE654F"}} className="flex flex-row justify-end"/>
 
-              <Button type="submit" disabled={isSubmitting} colorScheme="blue">
-                Add Game
-              </Button>
+              <Button 
+                type="submit" 
+                onMouseEnter={(e) => e.target.style.backgroundColor = "#4346EF"}
+                onMouseLeave={(e) => e.target.style.backgroundColor = "#6366F1"}
+                style={{
+                  marginTop:"10px", 
+                  backgroundColor:"#6366F1",
+                  color:"white"
+                }} 
+                disabled={isSubmitting} >Add Game</Button>
             </div>
           </Form>
         )}
