@@ -128,12 +128,8 @@ export default function Thread() {
             <div className="stats shadow p-0 bg-charcoal mx-auto">
               <div className="stat place-items-center p-2">
                 <div className="stat-title text-secondary">Users</div>
-                <div className="stat-value text-secondary">
-                  {faker.number.int(5000)}
-                </div>
-                <div className="stat-desc text-secondary">
-                  ↗︎ {faker.number.int({max: 200})} (2%)
-                </div>
+                <div className="stat-value text-secondary">4,200</div>
+                <div className="stat-desc text-secondary">↗︎ 40 (2%)</div>
               </div>
 
               <div className="stat place-items-center p-2">
