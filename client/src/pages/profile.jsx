@@ -326,7 +326,7 @@ export default function Profile({}) {
         </div>
         {/* <Container className="mt-10 ">
         <h2 className="text-center text-2xl font-bold">
-          Highest Rated Games
+          Most recent comments
         </h2>
         {user.reviews && user.reviews.length > 0 ? (
           <SimpleGrid columns={[3, null, 4]} spacing="40px" className="mt-4">

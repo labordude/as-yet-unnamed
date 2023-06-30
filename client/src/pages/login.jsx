@@ -13,7 +13,7 @@ export default function Login({onLogin}) {
     <div>
       {showLoginForm ? (
         <div
-          className="flex flex-col justify-center items-center "
+          className="flex flex-col justify-center items-center bg-charcoal"
           style={{backgroundColor: "#334139", paddingBottom: "60.8vh"}}>
           <LoginForm onLogin={onLogin} />
           <Divider className="my-4" />

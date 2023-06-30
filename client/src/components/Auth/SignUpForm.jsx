@@ -95,11 +95,15 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
     },
   });
   return (
-    <>
+    <div className="bg-smokey">
       <form
         onSubmit={formik.handleSubmit}
         method="post"
-        style={{marginTop: "50px", marginBottom: "50px", boxShadow:"3px 5px 8px rgba(0, 0, 0, 1)"}}
+        style={{
+          marginTop: "50px",
+          marginBottom: "50px",
+          boxShadow: "3px 5px 8px rgba(0, 0, 0, 1)",
+        }}
         className="w-full max-w-sm mx-auto bg-charcoal p-8 rounded-md shadow-md">
         <div className="mb-2">
           <label
@@ -112,9 +116,9 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
             name="name"
             type="text"
             style={{
-              borderWidth:"2px", 
-              borderRadius:"8px",
-              marginBottom:"10px",
+              borderWidth: "2px",
+              borderRadius: "8px",
+              marginBottom: "10px",
             }}
             onChange={formik.handleChange}
             value={formik.values.name}
@@ -133,9 +137,9 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
             name="email"
             type="email"
             style={{
-              borderWidth:"2px", 
-              borderRadius:"8px",
-              marginBottom:"10px",
+              borderWidth: "2px",
+              borderRadius: "8px",
+              marginBottom: "10px",
             }}
             onChange={formik.handleChange}
             value={formik.values.email}
@@ -154,9 +158,9 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
             name="username"
             type="text"
             style={{
-              borderWidth:"2px", 
-              borderRadius:"8px",
-              marginBottom:"10px",
+              borderWidth: "2px",
+              borderRadius: "8px",
+              marginBottom: "10px",
             }}
             onChange={formik.handleChange}
             value={formik.values.username}
@@ -179,20 +183,24 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
               value={formik.values.password}
               onChange={formik.handleChange}
               style={{
-                borderWidth:"2px", 
-                borderRadius:"8px",
-                marginBottom:"10px",
+                borderWidth: "2px",
+                borderRadius: "8px",
+                marginBottom: "10px",
               }}
               name="password"
               id="password"
               autoComplete="current-password"
             />
             <InputRightElement width="4.5rem">
-              <Button 
-                size="md" 
-                onMouseEnter={(e) => e.target.style.backgroundColor = "#4346EF"}
-                onMouseLeave={(e) => e.target.style.backgroundColor = "#6366F1"}
-                style={{backgroundColor:"#6366F1", borderWidth:"2px", color:"white"}}
+              <Button
+                size="md"
+                onMouseEnter={e => (e.target.style.backgroundColor = "#4346EF")}
+                onMouseLeave={e => (e.target.style.backgroundColor = "#6366F1")}
+                style={{
+                  backgroundColor: "#6366F1",
+                  borderWidth: "2px",
+                  color: "white",
+                }}
                 onClick={handleClick}>
                 {show ? "Hide" : "Show"}
               </Button>
@@ -211,10 +219,10 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
             name="pfp_image"
             type="file"
             style={{
-              borderWidth:"2px", 
-              borderRadius:"8px",
-              marginBottom:"10px",
-              color:"white",
+              borderWidth: "2px",
+              borderRadius: "8px",
+              marginBottom: "10px",
+              color: "white",
             }}
             onChange={event =>
               formik.setFieldValue(
@@ -239,9 +247,9 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
             value={formik.values.bio}
             onChange={formik.handleChange}
             style={{
-              borderWidth:"2px", 
-              borderRadius:"8px",
-              marginBottom:"10px",
+              borderWidth: "2px",
+              borderRadius: "8px",
+              marginBottom: "10px",
             }}
             placeholder="Tell us about yourself"
             size="sm"
@@ -252,7 +260,7 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
           <button
             className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300"
             type="submit"
-            style={{marginTop:"10px"}}
+            style={{marginTop: "10px"}}
             disabled={navigation.state === "submitting"}>
             {navigation.state === "submitting" && <Spinner />}
             Save
@@ -260,12 +268,12 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
           <button
             type="button"
             onClick={toggleLoginForm}
-            style={{marginTop:"10px"}}
+            style={{marginTop: "10px"}}
             className="w-[125px] bg-tomato text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_red transition duration-300">
             Cancel
           </button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
