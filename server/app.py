@@ -712,7 +712,12 @@ class SearchGames(Resource):
 
 class SearchUsers(Resource):
     def get(self, search):
-        users = User.query.filter(User.username.like(f"%{search}%")).all()
+        users = User.query.filter(
+            or_(
+                User.username.like(f"%{search}%"),
+                User.name.like(f"%{search}%"),
+            )
+        ).all()
         if users:
             return users_login_schema.dump(users), 200
         return {"message": "no users found"}
@@ -752,7 +757,7 @@ class ThreadByID(Resource):
         thread = Thread.query.filter(Thread.id == id).first()
         if not thread:
             return ({"error": "no thread"}, 200)
-        return thread_schema(thread), 200
+        return thread_schema.dump(thread), 200
 
 
 api.add_resource(Threads, "/api/threads")

@@ -502,7 +502,6 @@ class ThreadSchema(ma.SQLAlchemyAutoSchema):
         include_fk = True
 
     comments = ma.Nested(CommentSchema, many=True)
-
     _links = ma.Hyperlinks(
         {
             "self": ma.URLFor("threads", values=dict(id="<id>")),

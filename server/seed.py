@@ -14,10 +14,12 @@ from models import (
     CommunityGame,
     Thread,
     Comment,
+    followers,
 )
 from datetime import datetime
 from faker import Faker
 import ast
+from sqlalchemy import insert, engine
 
 # db.init_app(app)
 fake = Faker()
@@ -291,10 +293,14 @@ if __name__ == "__main__":
     # create_reviews()
     # print("reviews loaded")
 
-    print("loading threads")
-    create_threads()
-    print("threads loaded")
+    # print("loading threads")
+    # create_threads()
+    # print("threads loaded")
 
-    print("loading comments")
-    create_comments()
-    print("comments loaded")
+    # print("loading comments")
+    # create_comments()
+    # print("comments loaded")
+
+    # print("loading comments")
+    create_followers()
+    # print("comments loaded")
