@@ -33,7 +33,7 @@ export default function Communities() {
 
   return (
     <div style={{backgroundColor:"#334139"}}>
-    <div id="community_page" style={{paddingTop:"50px", paddingBottom:"35.6vh"}}>
+    <div id="community_page" style={{paddingTop:"50px", paddingBottom:"36.4vh"}}>
       {communities.map(community => (
         <Link 
           style={{

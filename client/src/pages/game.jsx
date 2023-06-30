@@ -42,8 +42,8 @@ export default function Game() {
   }
 
   return (
-    <Box bg="#334139" minHeight="92.2vh" >
-    <Container centerContent>
+    <Box bg="#334139" style={{paddingBottom: "25.5vh"}} >
+    <Container centerContent style={{paddingTop:"2vh"}}>
       <Container className="my-4 flex">
         <Container boxSize="250px" className="flex flex-col">
 
