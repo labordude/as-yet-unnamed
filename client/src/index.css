@@ -3,13 +3,19 @@
 @tailwind utilities;
 :root {
   --green: rgb(39, 189, 39);
+  background-color: "#1E2D24";
 }
-
+body {
+  background-color: "#1E2D24";
+  margin: 0;
+  padding: 0;
+}
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   color: white;
+  background-color: "#1E2D24";
 }
 
 #community_page {

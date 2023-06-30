@@ -176,8 +176,8 @@ export default function GameEdit({game, toggleShowEdit, handleGameUpdate}) {
             className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300"
             type="submit"
             style={{marginRight: "10px"}}
-            disabled={navigate.state === "submitting"}>
-            {navigate.state === "submitting" && <Spinner />}
+            disabled={navigation.state === "submitting"}>
+            {navigation.state === "submitting" && <Spinner />}
             Save
           </button>
           <button

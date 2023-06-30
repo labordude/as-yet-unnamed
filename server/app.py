@@ -737,7 +737,11 @@ class Comments(Resource):
 
 class CommentsByThread(Resource):
     def get(self, id):
-        comments = Comment.query.filter(Comment.thread_id == id).all()
+        comments = (
+            Comment.query.filter(Comment.thread_id == id)
+            .order_by(Comment.created_at.desc())
+            .all()
+        )
         if not comments:
             return ({"error": "no comments on this thread"}, 200)
         return comments_schema(comments), 200
@@ -760,12 +764,120 @@ class ThreadByID(Resource):
         return thread_schema.dump(thread), 200
 
 
+class AddThreadComment(Resource):
+    method_decorators = [login_required]
+
+    def post(self, id):
+        if current_user:
+            data = request.get_json()
+            user_id = current_user.id
+            new_comment = Comment(
+                user_id=user_id,
+                thread_id=id,
+                description=data.get("description"),
+            )
+            try:
+                db.session.add(new_comment)
+                db.session.commit()
+            except:
+                return (
+                    {"error": "something went wrong with the comment"}
+                ), 400
+            return comment_schema.dump(new_comment), 201
+
+
+class LikeComments(Resource):
+    method_decorators = [login_required]
+
+    def patch(self, id):
+        if current_user:
+            data = request.get_json()
+            comment = Comment.query.filter(Comment.id == id).first()
+            total_likes = comment.likes + 1
+            setattr(comment, "likes", total_likes)
+            print(comment)
+            try:
+                db.session.add(comment)
+                db.session.commit()
+            except:
+                return (
+                    {"error": "something went wrong with the comment"}
+                ), 400
+            print(comment_schema.dump(comment))
+            return comment_schema.dump(comment), 201
+
+
+class LikeThreads(Resource):
+    method_decorators = [login_required]
+
+    def patch(self, id):
+        if current_user:
+            data = request.get_json()
+            thread = Thread.query.filter(Thread.id == id).first()
+            total_likes = thread.likes + 1
+            setattr(thread, "likes", total_likes)
+
+            try:
+                db.session.add(thread)
+                db.session.commit()
+            except:
+                return ({"error": "something went wrong with the post"}), 400
+            print(thread_schema.dump(thread))
+            return thread_schema.dump(thread), 201
+
+
+class UnlikeComments(Resource):
+    method_decorators = [login_required]
+
+    def patch(self, id):
+        if current_user:
+            data = request.get_json()
+            comment = Comment.query.filter(Comment.id == id).first()
+            total_likes = comment.likes - 1
+            setattr(comment, "likes", total_likes)
+            print(comment)
+            try:
+                db.session.add(comment)
+                db.session.commit()
+            except:
+                return (
+                    {"error": "something went wrong with the comment"}
+                ), 400
+            print(comment_schema.dump(comment))
+            return comment_schema.dump(comment), 201
+
+
+class UnlikeThreads(Resource):
+    method_decorators = [login_required]
+
+    def patch(self, id):
+        if current_user:
+            data = request.get_json()
+            thread = Thread.query.filter(Thread.id == id).first()
+            total_likes = thread.likes - 1
+            setattr(thread, "likes", total_likes)
+
+            try:
+                db.session.add(thread)
+                db.session.commit()
+            except:
+                return (
+                    {"error": "something went wrong with the comment"}
+                ), 400
+            print(thread_schema.dump(thread))
+            return thread_schema.dump(thread), 201
+
+
 api.add_resource(Threads, "/api/threads")
 api.add_resource(ThreadByID, "/api/threads/<int:id>")
 api.add_resource(ThreadsByCommunity, "/api/community_threads/<int:id>")
 api.add_resource(Comments, "/api/comments")
 api.add_resource(CommentsByThread, "/api/comments/<int:id>")
-
+api.add_resource(AddThreadComment, "/api/thread_comments/<int:id>")
+api.add_resource(LikeComments, "/api/like_comment/<int:id>")
+api.add_resource(UnlikeComments, "/api/unlike_comment/<int:id>")
+api.add_resource(LikeThreads, "/api/like_thread/<int:id>")
+api.add_resource(UnlikeThreads, "/api/unlike_thread/<int:id>")
 api.add_resource(Communities, "/api/communities")
 api.add_resource(CommunitiesByID, "/api/communities/<int:id>")
 api.add_resource(Games, "/api/games")

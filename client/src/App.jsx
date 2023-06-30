@@ -61,7 +61,7 @@ function App() {
           {/* <Games /> */}
         {/* </div> */}
         {user != null ? (
-          <Outlet context={[user, setUser]} />
+          <Outlet context={[user, setUser]} className="bg-charcoal" />
         ) : !showSignup ? (
           <Login onLogin={setUser} showSignup={showSignup} />
         ) : (
