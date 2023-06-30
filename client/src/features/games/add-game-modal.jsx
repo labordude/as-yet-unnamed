@@ -1,19 +1,19 @@
-import React from 'react'
+import React from "react";
 import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    Button,
-  } from '@chakra-ui/react'
-  import AddGame from '../games/add-game-form'
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+} from "@chakra-ui/react";
+import AddGame from "../games/add-game-form";
 
-export default function AddGameModal({ isOpen, onOpen, onClose }) {
-    const initialRef = React.useRef(null)
-    const finalRef = React.useRef(null)
+export default function AddGameModal({isOpen, onOpen, onClose, addNewGame}) {
+  const initialRef = React.useRef(null);
+  const finalRef = React.useRef(null);
 
     return (
       <>
@@ -38,6 +38,3 @@ export default function AddGameModal({ isOpen, onOpen, onClose }) {
       </>
   )
 }
-
-
-

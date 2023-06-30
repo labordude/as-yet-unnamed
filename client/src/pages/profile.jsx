@@ -98,7 +98,10 @@ export default function Profile({}) {
           <Container>
             <Container>
               <div className="text-bold text-2xl">
-                {currentUser.username || "username would go here"}
+                Username: {currentUser.username || "username would go here"}
+              </div>
+              <div className="text-xl">
+                Name: {user.name || "username would go here"}
               </div>
               <p>Bio: {currentUser.bio}</p>
               <p>Communities: </p>
@@ -113,7 +116,7 @@ export default function Profile({}) {
             </Container>
           </Container>
         ) : (
-          <EditUser user={currentUser} toggleForm={toggleForm} />
+          <EditUser currentUser={currentUser} toggleForm={toggleForm} />
         )}
       </Container>
 

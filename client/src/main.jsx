@@ -34,6 +34,7 @@ import User, {loader as useridLoader} from "./pages/user.jsx";
 import EditUser from "./pages/edituser.jsx";
 import NewReviewForm from "./components/NewReviewForm.jsx";
 import Community, {loader as communityLoader} from "./pages/community.jsx";
+import Thread, {loader as commentLoader} from "./pages/thread.jsx";
 // React Router
 const router = createBrowserRouter([
   {
@@ -84,7 +85,12 @@ const router = createBrowserRouter([
         element: <Communities />,
         errorElement: <div>Whoops!</div>,
       },
-
+      {
+        path: "/threads/:id",
+        element: <Thread />,
+        loader: commentLoader,
+        errorElement: <div>Whoops!</div>,
+      },
       {
         path: "/profile",
         element: <Profile />,
