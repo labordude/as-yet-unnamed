@@ -41,7 +41,7 @@ export default function Game() {
   }
   return (
     <Box bg="#334139" style={{minHeight: "100vh"}}>
-      <Container centerContent style={{paddingTop: "2vh"}}>
+      <Container centerContent style={{paddingTop: "2vh"}} className="gap-8">
         <Container className="my-4 flex">
           <Container boxSize="250px" className="flex flex-col">
             <Image
@@ -52,10 +52,12 @@ export default function Game() {
                 marginBottom: "10px",
               }}
             />
-            <div>
+            <div className="min-h-24">
               Rating:{" "}
               <Box
-                className="radial-progress text-primary text-tomato"
+                className="radial-progress  text-tomato"
+                minHeight={20}
+                mb={10}
                 style={{
                   "--value":
                     game_loader.rating && game_loader.rating.toFixed(2),
@@ -121,7 +123,7 @@ export default function Game() {
             </p>
           </Container>
         </Container>
-        <Container>
+        <Container className="mt-4">
           <Flex justifyContent={"space-between"}>
             <h2
               className="text-center text-2xl font-bold"
