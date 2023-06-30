@@ -17,6 +17,7 @@ export default {
       charcoal: "#1E2D24",
       dark_charcoal: "#101814",
       smokey: "#334139",
+      white: "white"
     },
     extend: {},
   },
