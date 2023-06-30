@@ -76,17 +76,17 @@ export default function Header({onLogout, user, toggleSignup}) {
           {user ? (
             <>
               <li>
-                <Link to="/games" className="text-xl text-white">
+                <Link to="/games" className="text-xl text-white hover:bg-smokey" style={{color:"white"}}>
                   Games
                 </Link>
               </li>
               <li>
-                <Link to="/communities" className="text-xl text-white">
+                <Link to="/communities" className="text-xl text-white hover:bg-smokey" style={{color:"white"}}>
                   Communities
                 </Link>
               </li>
               <li>
-                <Link to="/social" className="text-xl text-white">
+                <Link to="/social" className="text-xl text-white hover:bg-smokey" style={{color:"white"}}>
                   Social
                 </Link>
               </li>
@@ -100,14 +100,14 @@ export default function Header({onLogout, user, toggleSignup}) {
                 </Link>
               </li>
               <li onClick={toggleSignup}>
-                <Link to="/signup" className="text-xl text-white">
+                <Link to="/signup" className="text-xl text-white ">
                   Signup
                 </Link>
               </li>
             </>
           ) : (
             <li onClick={handleLogoutClick}>
-              <a className="text-xl text-white">Logout</a>
+              <a className="text-xl text-white hover:bg-smokey" style={{color:"white"}}>Logout</a>
             </li>
           )}
         </ul>

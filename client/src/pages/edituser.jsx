@@ -92,11 +92,21 @@ export default function EditUser({currentUser, toggleForm}) {
   return (
     <>
       <form
+      style={{backgroundColor:"#1E2D24", padding:"20px"}}
         onSubmit={formik.handleSubmit}
         className="">
         <div className="flex justify-end place-items-end">
-          <Button centerContent size="sm" colorScheme="red" onClick={handleDelete}>
-            Delete Profile
+          <Button 
+            centerContent 
+            size="md" 
+            onMouseEnter={(e) => e.target.style.backgroundColor = "#FE3D20"}
+            onMouseLeave={(e) => e.target.style.backgroundColor = "#FE654F"}
+            style={{
+              backgroundColor:"#FE654F", 
+              color:"white",
+            }} 
+            onClick={handleDelete}>
+              Delete Profile
           </Button>
         </div>
         <div className="mb-2">
@@ -109,6 +119,7 @@ export default function EditUser({currentUser, toggleForm}) {
             id="name"
             name="name"
             type="text"
+            style={{borderWidth:"2px",}}
             onChange={formik.handleChange}
             value={formik.values.name}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
@@ -125,6 +136,7 @@ export default function EditUser({currentUser, toggleForm}) {
             id="email"
             name="email"
             type="email"
+            style={{borderWidth:"2px",}}
             onChange={formik.handleChange}
             value={formik.values.email}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
@@ -141,6 +153,7 @@ export default function EditUser({currentUser, toggleForm}) {
             id="username"
             name="username"
             type="text"
+            style={{borderWidth:"2px",}}
             onChange={formik.handleChange}
             value={formik.values.username}
             autoComplete="username"
@@ -159,13 +172,14 @@ export default function EditUser({currentUser, toggleForm}) {
             id="pfp_image"
             name="pfp_image"
             type="file"
+            style={{borderWidth:"2px",}}
             onChange={event =>
               formik.setFieldValue(
                 "pfp_image",
                 URL.createObjectURL(event.currentTarget.files[0]),
               )
             }
-            className="block w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg file:mr-4 file:py-2 file:px-4 file:bg-slate-600 file:text-white file:rounded-md"
+            className="block w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg file:mr-4 file:py-2 file:px-4 file:bg-playstation_blue file:text-white file:rounded-md"
           />
           {formik.errors.pfp_image ? (
             <div>{formik.errors.pfp_image}</div>
@@ -181,14 +195,15 @@ export default function EditUser({currentUser, toggleForm}) {
             name="bio"
             value={formik.values.bio}
             onChange={formik.handleChange}
+            style={{borderWidth:"2px", borderRadius:"8px"}}
             placeholder="Tell us about yourself"
             size="sm"
           />
           {formik.errors.bio ? <div>{formik.errors.bio}</div> : null}
         </div>
-        <div className="flex justify-around">
+        <div className="flex justify-around" style={{marginTop:"20px"}}>
           <button
-            className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300"
+            className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300"
             type="submit"
             disabled={navigation.state === "submitting"}>
             {navigation.state === "submitting" && <Spinner />}
@@ -197,7 +212,8 @@ export default function EditUser({currentUser, toggleForm}) {
           <button
             type="button"
             onClick={toggleForm}
-            className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
+            style={{marginLeft:"20px"}}
+            className="w-[125px] bg-tomato text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_red transition duration-300">
             Cancel
           </button>
         </div>

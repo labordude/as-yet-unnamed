@@ -187,13 +187,13 @@ export default function Profile({}) {
 
   return (
     // Top part wrapped in this div
-    <div className="bg-smokey">
-      <Container maxW="600px" centerContent>
+    <div className="bg-smokey" style={{minHeight:"100vh"}}>
+      <Container maxW="600px" centerContent style={{paddingTop:"70px", paddingBottom:"40px"}}>
         <SimpleGrid className="my-4 flex" columns={[2]} spacing="20px">
           {/* pfp and followers and follwing + Name */}
           <Box
             display="flex"
-            bg="#FE654F"
+            bg="#1E2D24"
             height="400px"
             width="300px"
             alignItems="center">
@@ -209,36 +209,44 @@ export default function Profile({}) {
                 objectFit="cover"
                 borderRadius="full"
               />{" "}
-              <div className="text-bold text-2xl text-center">
+              <div className="text-bold text-2xl text-center" style={{paddingTop:"10px", paddingBottom:"10px"}}>
                 {!showForm ? (
                   <Button
                     onClick={toggleForm}
-                    as="button"
-                    height="24px"
-                    lineHeight="1.2"
-                    transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
-                    border="1px"
-                    px="8px"
-                    borderRadius="2px"
-                    fontSize="14px"
-                    fontWeight="semibold"
-                    bg="#f5f6f7"
-                    borderColor="#ccd0d5"
-                    color="#4b4f56"
-                    _hover={{bg: "#ebedf0"}}
-                    _active={{
-                      bg: "#dddfe2",
-                      transform: "scale(0.98)",
-                      borderColor: "#bec3c9",
-                    }}
-                    _focus={{
-                      boxShadow:
-                        "0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)",
-                    }}>
+                    // as="button"
+                    // height="24px"
+                    // lineHeight="1.2"
+                    // transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
+                    // border="1px"
+                    // px="8px"
+                    // borderRadius="2px"
+                    // fontSize="14px"
+                    // fontWeight="semibold"
+                    // bg="#f5f6f7"
+                    // borderColor="#ccd0d5"
+                    // color="#4b4f56"
+                    // _hover={{bg: "#ebedf0"}}
+                    // _active={{
+                    //   bg: "#dddfe2",
+                    //   transform: "scale(0.98)",
+                    //   borderColor: "#bec3c9",
+                    // }}
+                    // _focus={{
+                    //   boxShadow:
+                    //     "0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)",
+                    // }}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = "#4346EF"}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = "#6366F1"}
+                    style={{height:"3vh", backgroundColor:"#6366F1", color:"white"}}
+                    >
                     Edit User
                   </Button>
                 ) : (
-                  <Button onClick={toggleForm}>Cancel Edit</Button>
+                  <Button 
+                    onClick={toggleForm} 
+                    onMouseEnter={(e) => e.target.style.backgroundColor = "#FE3D20"}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = "#FE654F"}
+                    style={{height:"3vh", backgroundColor:"#FE654F", color:"white"}}>Cancel Edit</Button>
                 )}
               </div>
               <div className="text-bold text-2xl text-center">
@@ -257,9 +265,9 @@ export default function Profile({}) {
               </div>
             </Container>
           </Box>
-          <Box display="flex" bg="#FE654F" height="400px" alignItems="center">
+          <Box display="flex" bg="#1E2D24" height="400px" alignItems="center">
             {!showForm ? (
-              <Container>
+              <Container >
                 <Container>
                   <p>
                     {" "}

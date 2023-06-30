@@ -53,8 +53,9 @@ export default function AddGame({onClose, addNewGame}) {
       })
       .then(newGame => {
         console.log("game posted");
-        addNewGame(newGame);
         onClose();
+        addNewGame(newGame);
+        
       })
       .catch(error => {
         console.error(error);

@@ -61,10 +61,11 @@ export default function GameEdit({game, toggleShowEdit, handleGameUpdate}) {
         className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">
         <div className="flex justify-end place-items-end">
           <Button
-            size="sm"
+            size="md"
             backgroundColor="#FE654F"
             _hover={{backgroundColor: "#FE3D20"}}
             transition=".2s"
+            style={{color: "white"}}
             onClick={handleDelete}>
             Delete Game
           </Button>
@@ -182,7 +183,7 @@ export default function GameEdit({game, toggleShowEdit, handleGameUpdate}) {
           </button>
           <button
             type="button"
-            className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300"
+            className="w-[125px] bg-tomato text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_red transition duration-300"
             onClick={toggleShowEdit}>
             Cancel
           </button>
