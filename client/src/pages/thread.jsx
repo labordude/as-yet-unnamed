@@ -12,6 +12,7 @@ import Comment from "../features/threads/discussion-card";
 import {ChatIcon} from "@chakra-ui/icons";
 import {useFormik} from "formik";
 import * as Yup from "yup";
+import {faker} from "@faker-js/faker";
 // Yup schema for game validation
 const CommentSchema = Yup.object().shape({
   description: Yup.string()
@@ -111,7 +112,7 @@ export default function Thread() {
               <div className="text-md">{comments.description}</div>
               <div className="text-md flex">
                 <ChatIcon className="mr-2" />
-                {"  "} {`${comments.comments.length}`} comments
+                {"  "} {`${commentList.length}`} comments
               </div>
             </div>
           </div>
@@ -127,8 +128,12 @@ export default function Thread() {
             <div className="stats shadow p-0 bg-charcoal mx-auto">
               <div className="stat place-items-center p-2">
                 <div className="stat-title text-secondary">Users</div>
-                <div className="stat-value text-secondary">4,200</div>
-                <div className="stat-desc text-secondary">↗︎ 40 (2%)</div>
+                <div className="stat-value text-secondary">
+                  {faker.number.int(5000)}
+                </div>
+                <div className="stat-desc text-secondary">
+                  ↗︎ {faker.number.int({max: 200})} (2%)
+                </div>
               </div>
 
               <div className="stat place-items-center p-2">
