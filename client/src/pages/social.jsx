@@ -77,7 +77,7 @@ export default function Social() {
                 : "join-item btn btn-outline btn-disabled"
             }
             onClick={() => setCurrentPage(current => current - 1)}>
-            Previous page
+            Previous
           </button>
           <button
             onMouseEnter={(e) => e.target.style.backgroundColor = "#101814"}

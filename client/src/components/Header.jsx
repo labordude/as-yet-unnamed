@@ -95,12 +95,12 @@ export default function Header({onLogout, user, toggleSignup}) {
           {!user ? (
             <>
               <li onClick={toggleSignup}>
-                <Link to="/" className="text-xl text-white">
+                <Link to="/" className="text-xl text-white hover:bg-smokey" style={{color:"white"}}>
                   Login
                 </Link>
               </li>
               <li onClick={toggleSignup}>
-                <Link to="/signup" className="text-xl text-white ">
+                <Link to="/signup" className="text-xl text-white hover:bg-smokey" style={{color:"white"}}>
                   Signup
                 </Link>
               </li>

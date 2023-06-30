@@ -107,7 +107,7 @@ export default function Games() {
               boxShadow:"2px 2px 8px rgba(0, 0, 0, 1)",
               color:"white"
             }}>
-            {showInputs ? "Hide Inputs" : "Show Inputs"}
+            {showInputs ? "Add Game" : "Add Game"}
           </Button>
           </Box>
           <Box style={{marginLeft:"50px"}}>
@@ -143,7 +143,7 @@ export default function Games() {
                 : "join-item btn btn-outline btn-disabled"
             }
             onClick={() => setCurrentPage(current => current - 1)}>
-            Previous page
+            Previous
           </Button>
           <button
             onMouseEnter={(e) => e.target.style.backgroundColor = "#101814"}
