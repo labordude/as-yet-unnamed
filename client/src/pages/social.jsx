@@ -1,8 +1,11 @@
-import React, {useState, useEffect, useTransition} from "react";
+import React, {useState, useEffect, useTransition, Suspense} from "react";
 import {getUsers, searchGames, searchUsers} from "../features/ui/helpers";
 import {Container, Image, Box, InputGroup, SimpleGrid} from "@chakra-ui/react";
 import Search from "../components/Search";
 import UserCard from "../components/user-card";
+import {ErrorBoundary} from "react-error-boundary";
+import ErrorElement from "./error";
+import Loading from "./loading";
 export default function Social() {
   const [usersList, setUsersList] = useState([]);
   const [hasPrev, setHasPrev] = useState(false);
@@ -12,6 +15,7 @@ export default function Social() {
   const [isPending, startTransition] = useTransition();
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [noResults, setNoResults] = useState(false);
   useEffect(() => {
     getUsers(currentPage).then(data => {
       startTransition(() => {
@@ -24,9 +28,16 @@ export default function Social() {
   }, [currentPage]);
 
   function handleSearch(search) {
-    setSearchQuery(search.toLowerCase());
-    if (searchQuery.length > 2) {
-      searchGames(searchQuery).then(users => setSearchResults(users));
+    if (search.length > 2) {
+      searchUsers(search.toLowerCase()).then(users => {
+        if (users.message) {
+          setNoResults(prev => !prev);
+          setSearchResults("");
+        } else {
+          setNoResults(prev => !prev);
+          setSearchResults(users);
+        }
+      });
     } else {
       setSearchResults("");
     }
@@ -39,7 +50,7 @@ export default function Social() {
             mt={4}
             width={{base: "90%", md: "md"}}
             textAlign={"center"}>
-            <Search search={searchQuery} handleSearch={handleSearch} />
+            <Search handleSearch={handleSearch} />
           </InputGroup>
         </Box>
       </div>
@@ -81,11 +92,19 @@ export default function Social() {
             <div>No users found</div>
           )
         ) : (
-          <SimpleGrid columns={{sm: 2, md: 3}}>
-            {searchResults.map(user => (
-              <UserCard key={user.id} user={user} />
-            ))}
-          </SimpleGrid>
+          <ErrorBoundary FallbackComponent={ErrorElement}>
+            <Suspense fallback={<Loading />}>
+              {noResults ? (
+                <div className="text-3xl text-tomato">No users found</div>
+              ) : (
+                <SimpleGrid columns={{sm: 2, md: 3}}>
+                  {searchResults.map(user => (
+                    <UserCard key={user.id} user={user} />
+                  ))}
+                </SimpleGrid>
+              )}
+            </Suspense>
+          </ErrorBoundary>
         )}
       </div>
     </div>

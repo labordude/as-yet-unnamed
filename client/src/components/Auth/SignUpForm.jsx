@@ -64,18 +64,18 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
   const navigate = useNavigate();
   const navigation = useNavigation();
   const submit = useSubmit();
-  // function handleSubmit(values) {
-  //   fetch(`api/signup`, {
-  //     method: "POST",
-  //     headers: {"Content-Type": "application/json"},
-  //     body: JSON.stringify(values),
-  //   })
-  //     .then(response => response.json())
-  //     .then(newUser => {
-  //       console.log(newUser);
-  //       // navigate('/editformpageything')
-  //     });
-  // }
+  function handleSubmit(values) {
+    fetch(`api/signup`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(values),
+    })
+      .then(response => response.json())
+      .then(newUser => {
+        onLogin(newUser);
+        navigate("../profile");
+      });
+  }
   // Pass the useFormik() hook initial form values, a validate function that will be called when
   // form values change or fields are blurred, and a submit function that will
   // be called when the form is submitted
@@ -91,7 +91,7 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
     validationSchema: ProfileSchema,
     onSubmit: async values => {
       console.log(values);
-      submit(values, {method: "post"});
+      handleSubmit(values);
     },
   });
   return (

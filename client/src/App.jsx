@@ -5,10 +5,12 @@ import {Grid, GridItem} from "@chakra-ui/react";
 import Login from "./pages/login";
 import NewestGames from "./components/newest-games";
 import NewestReviews from "./components/newest-reviews";
+import SignUpForm from "./components/Auth/SignUpForm";
 import "./index.css";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [showSignup, setShowSignup] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     //check for a current session
@@ -29,13 +31,16 @@ function App() {
     }
   }, []);
   function onLogout(loggedOut) {
-    setUser(loggedOut);
-    navigate("/home");
+    setUser(null);
+    navigate("../");
+  }
+  function toggleSignup() {
+    setShowSignup(prev => !prev);
   }
   return (
     <>
       <main>
-        <Header user={user} onLogout={onLogout} />
+        <Header user={user} onLogout={onLogout} toggleSignup={toggleSignup} />
         {/* <div className="px-4">
           {!user ? (
             <Login onLogin={setUser} />
@@ -57,8 +62,10 @@ function App() {
         {/* </div> */}
         {user != null ? (
           <Outlet context={[user, setUser]} />
+        ) : !showSignup ? (
+          <Login onLogin={setUser} showSignup={showSignup} />
         ) : (
-          <Login onLogin={setUser} />
+          <SignUpForm onLogin={setUser} />
         )}
       </main>
     </>

@@ -1,4 +1,10 @@
-import React, {useState, useEffect, useMemo, useTransition} from "react";
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useTransition,
+  Suspense,
+} from "react";
 import {getGames, searchGames, getAllGames} from "../features/ui/helpers";
 import GameCard from "../components/game-card";
 import AddGameModal from "../features/games/add-game-modal";
@@ -11,11 +17,16 @@ import {
   InputGroup,
   InputRightElement,
   Box,
+  Flex
 } from "@chakra-ui/react";
+import {ErrorBoundary} from "react-error-boundary";
 // import ReactPaginate from "react-paginate";
 // Components needed: Search, GameCard
 import Search from "../components/Search";
 import AddGame from "../features/games/add-game-form";
+import Loading from "./loading";
+import ErrorElement from "./error";
+import GameSearch from "../features/ui/game-search";
 import * as Yup from "yup";
 
 export default function Games() {
@@ -29,6 +40,7 @@ export default function Games() {
   const [isPending, startTransition] = useTransition();
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [noResults, setNoResults] = useState(false);
   useEffect(() => {
     getGames(currentPage).then(data => {
       setGamesList(data.games);
@@ -48,8 +60,15 @@ export default function Games() {
     // setSearchQuery(search.toLowerCase());
 
     if (search.length > 2) {
-      console.log(searchResults);
-      searchGames(search.toLowerCase()).then(games => setSearchResults(games));
+      searchGames(search.toLowerCase()).then(games => {
+        if (games.message) {
+          setNoResults(prev => !prev);
+          setSearchResults("");
+        } else {
+          setNoResults(prev => !prev);
+          setSearchResults(games);
+        }
+      });
     } else {
       setSearchResults("");
     }
@@ -58,9 +77,11 @@ export default function Games() {
   function toggleShowInputs() {
     setShowInputs(prev => !prev);
   }
-
+  function fixSearchResults() {
+    setSearchResults("");
+  }
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-smokey">
       {showInputs && (
         <AddGameModal
           isOpen={showInputs}
@@ -69,21 +90,49 @@ export default function Games() {
         />
       )}
       <div>
-        <Button onClick={toggleShowInputs}>
-          {showInputs ? "Hide Inputs" : "Show Inputs"}
-        </Button>
-        <Box>
-          <InputGroup
-            mt={4}
-            width={{base: "90%", md: "md"}}
-            textAlign={"center"}>
-            <Search search={searchQuery} handleSearch={handleSearch} />
-          </InputGroup>
-        </Box>
+        <Flex>
+          <Box>
+          <Button 
+            onClick={toggleShowInputs} 
+            onMouseEnter={(e) => e.target.style.backgroundColor = "#4346EF"}
+            onMouseLeave={(e) => e.target.style.backgroundColor = "#6366F1"}
+            style={{
+              marginTop:"20px",
+              backgroundColor:"#6366F1",
+              paddingRight:"20px",
+              paddingLeft:"20px",
+              boxShadow:"2px 2px 8px rgba(0, 0, 0, 1)"
+            }}>
+            {showInputs ? "Hide Inputs" : "Show Inputs"}
+          </Button>
+          </Box>
+          <Box style={{marginLeft:"50px"}}>
+            <InputGroup
+              mt={4}
+              width={{base: "90%", md: "md"}}
+              style={{
+                marginTop:"20px", 
+                borderWidth:"2px", 
+                borderRadius:"8px",
+                marginBottom:"10px",
+              }}
+              textAlign={"center"}>
+              <Search search={searchQuery} handleSearch={handleSearch} />
+            </InputGroup>
+          </Box>
+        </Flex>
       </div>
       <div className="my-4">
         <div className="mx-auto join w-1/3 grid grid-cols-2">
           <Button
+            onMouseEnter={(e) => e.target.style.backgroundColor = "#101814"}
+            onMouseLeave={(e) => e.target.style.backgroundColor = "#1E2D24"}
+            style={{
+              backgroundColor:"#1E2D24", 
+              color:"white", 
+              borderWidth: "2px",
+              marginBottom: "20px"
+              }}
             className={
               hasPrev
                 ? "join-item btn btn-outline"
@@ -93,6 +142,14 @@ export default function Games() {
             Previous page
           </Button>
           <button
+            onMouseEnter={(e) => e.target.style.backgroundColor = "#101814"}
+            onMouseLeave={(e) => e.target.style.backgroundColor = "#1E2D24"}
+            style={{
+              backgroundColor:"#1E2D24", 
+              color:"white", 
+              borderWidth: "2px",
+              marginBottom: "20px"
+            }}
             className={
               hasNext
                 ? "join-item btn btn-outline"
@@ -102,26 +159,51 @@ export default function Games() {
             Next
           </button>
         </div>
-
         {isPending ? (
-          <div className="text-center text-4xl">
-            Loading...
-            <span className="loading loading-bars loading-lg"></span>
-          </div>
+          <Loading />
         ) : !searchResults ||
           searchResults.length < 2 ||
           searchResults == "" ? (
-          <SimpleGrid columns={{sm: 2, md: 3}}>
-            {gamesList.map(game => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </SimpleGrid>
+          <>
+            <div className="mx-auto join w-1/3 grid grid-cols-2">
+              <Button
+                className={
+                  hasPrev
+                    ? "join-item btn btn-outline"
+                    : "join-item btn btn-outline btn-disabled"
+                }
+                onClick={() => setCurrentPage(current => current - 1)}>
+                Previous page
+              </Button>
+              <button
+                className={
+                  hasNext
+                    ? "join-item btn btn-outline"
+                    : "join-item btn btn-outline btn-disabled"
+                }
+                onClick={() => setCurrentPage(current => current + 1)}>
+                Next
+              </button>
+            </div>
+
+            <>
+              <SimpleGrid columns={{sm: 2, md: 3}}>
+                {gamesList.map(game => (
+                  <GameCard key={game.id} game={game} />
+                ))}
+              </SimpleGrid>
+            </>
+          </>
         ) : (
-          <SimpleGrid columns={{sm: 2, md: 3}}>
-            {searchResults.map(game => (
-              <GameCard key={game.id} game={game} />
-            ))}
-          </SimpleGrid>
+          <ErrorBoundary FallbackComponent={ErrorElement}>
+            <Suspense fallback={<Loading />}>
+              {noResults ? (
+                <div className="text-3xl text-tomato">No games found</div>
+              ) : (
+                <GameSearch results={searchResults} />
+              )}
+            </Suspense>
+          </ErrorBoundary>
         )}
       </div>
     </div>
