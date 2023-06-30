@@ -40,7 +40,7 @@ function App() {
   }
   return (
     <>
-      <main>
+      <main className="bg-smokey">
         <Header user={user} onLogout={onLogout} toggleSignup={toggleSignup} />
         {/* <div className="px-4">
           {!user ? (
