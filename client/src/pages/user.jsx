@@ -91,7 +91,7 @@ export default function User() {
 
 
   return (
-    <div className='bg-smokey' style={{backgroundColor:"#334139", paddingBottom:"60.8vh"}}>
+    <div className='bg-smokey' style={{backgroundColor:"#334139", paddingBottom:"60.8vh", paddingTop:"50px"}}>
       <Container centerContent maxW="600px">
       <SimpleGrid className="my-4 flex" columns={[2]} spacing="20px">
       <Box display='flex' bg='#1E2D24' height='400px' width='300px' alignItems='center'>
