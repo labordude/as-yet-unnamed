@@ -1,9 +1,14 @@
-import React from "react";
-
+import React, {useState, useEffect} from "react";
+import {likeComment, unlikeComment} from "../ui/helpers";
 import {Container, Box, Icon, VStack, StackDivider} from "@chakra-ui/react";
 import {BiSolidDownArrowSquare, BiSolidUpArrowSquare} from "react-icons/bi";
 import {ChatIcon} from "@chakra-ui/icons";
 export default function Comment({comment}) {
+  const [commentData, setCommentData] = useState([]);
+
+  useEffect(() => {
+    setCommentData(comment);
+  }, []);
   function formatDate(dateString) {
     let inputDate = Date.parse(dateString);
     const date = new Date(inputDate);
@@ -24,6 +29,18 @@ export default function Comment({comment}) {
 
   const randomIndex = Math.floor(Math.random() * colors.length);
   const randomColor = colors[randomIndex];
+  function handleLikeComment() {
+    likeComment(comment.id).then(moreLikes => {
+      console.log(moreLikes);
+      setCommentData(moreLikes);
+    });
+  }
+  function handleUnlikeComment() {
+    unlikeComment(comment.id).then(lessLikes => {
+      console.log(lessLikes);
+      setCommentData(lessLikes);
+    });
+  }
   return (
     <>
       <div className="flex flex-col ml-8 justify-center w-[95%] mt-4">
@@ -38,11 +55,23 @@ export default function Comment({comment}) {
 
         <div className="flex my-auto gap-4">
           <div>
-            <Icon as={BiSolidUpArrowSquare} h={6} w={6} color={"white"} />
+            <Icon
+              as={BiSolidUpArrowSquare}
+              h={6}
+              w={6}
+              color={"white"}
+              onClick={handleLikeComment}
+            />
           </div>
-          <div className="text-lightgray">{comment.likes}</div>
+          <div className="text-lightgray">{commentData.likes}</div>
           <div>
-            <Icon as={BiSolidDownArrowSquare} h={6} w={6} color={"white"} />
+            <Icon
+              as={BiSolidDownArrowSquare}
+              h={6}
+              w={6}
+              color={"white"}
+              onClick={handleUnlikeComment}
+            />
           </div>
           {/* <div className="text-md flex ml-4 my-auto">
             <ChatIcon className="mr-2" color={"white"} />

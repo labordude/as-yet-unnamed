@@ -233,3 +233,63 @@ export async function getThreadComments(id) {
     })
     .catch(error => setErrors(error));
 }
+
+// post a thread comment
+export async function addThreadComments(id, values) {
+  return fetch(`/api/thread_comments/${id}`, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(values),
+  })
+    .then(response => response.json())
+
+    .catch(error => setErrors(error));
+}
+
+// like a comment
+export async function likeComment(id) {
+  return fetch(`/api/like_comment/${id}`, {
+    method: "PATCH",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({}),
+  })
+    .then(response => response.json())
+
+    .catch(error => setErrors(error));
+}
+
+// unlike a comment
+export async function unlikeComment(id) {
+  return fetch(`/api/unlike_comment/${id}`, {
+    method: "PATCH",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({}),
+  })
+    .then(response => response.json())
+
+    .catch(error => setErrors(error));
+}
+
+// like a comment
+export async function likeThread(id) {
+  return fetch(`/api/like_thread/${id}`, {
+    method: "PATCH",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({}),
+  })
+    .then(response => response.json())
+
+    .catch(error => setErrors(error));
+}
+
+// unlike a comment
+export async function unlikeThread(id) {
+  return fetch(`/api/unlike_thread/${id}`, {
+    method: "PATCH",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({}),
+  })
+    .then(response => response.json())
+
+    .catch(error => setErrors(error));
+}
