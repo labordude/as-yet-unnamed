@@ -14,6 +14,7 @@ function App() {
   const navigate = useNavigate();
   useEffect(() => {
     //check for a current session
+    console.log(user);
     if (user == null) {
       fetch("/api/@me")
         .then(response => {

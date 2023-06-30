@@ -17,18 +17,7 @@ export default function Comment({comment}) {
       date.getHours() + ":" + date.getMinutes() + ", " + date.toDateString()
     );
   }
-  const colors = [
-    "primary",
-    "secondary",
-    "accent",
-    "info",
-    "success",
-    "warning",
-    "error",
-  ];
 
-  const randomIndex = Math.floor(Math.random() * colors.length);
-  const randomColor = colors[randomIndex];
   function handleLikeComment() {
     likeComment(comment.id).then(moreLikes => {
       console.log(moreLikes);
@@ -41,9 +30,21 @@ export default function Comment({comment}) {
       setCommentData(lessLikes);
     });
   }
+  const colors = [
+    "primary",
+    "secondary",
+    "accent",
+    "info",
+    "success",
+    "warning",
+    "error",
+  ];
+
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  const randomColor = colors[Math.ceil(Math.random() * colors.length)];
   return (
     <>
-      <div className="flex flex-col ml-8 justify-center w-[95%] mt-4">
+      <div className="flex flex-col ml-8 justify-center w-[95%]">
         <span className="text-sm text-playstation_blue">
           Started on {formatDate(comment.created_at)}
         </span>

@@ -1,6 +1,11 @@
 import React, {useState, useEffect} from "react";
 import {useLoaderData, useNavigation, useOutletContext} from "react-router-dom";
-import {getThreadComments, addThreadComments} from "../features/ui/helpers";
+import {
+  getThreadComments,
+  addThreadComments,
+  likeThread,
+  unlikeThread,
+} from "../features/ui/helpers";
 import {Container, Divider, Icon, Image, Textarea} from "@chakra-ui/react";
 import {BiSolidDownArrowSquare, BiSolidUpArrowSquare} from "react-icons/bi";
 import Comment from "../features/threads/discussion-card";
@@ -38,15 +43,31 @@ export default function Thread() {
     "warning",
     "error",
   ];
+
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  const randomColor = colors[Math.ceil(Math.random() * colors.length)];
+  console.log(randomColor);
   useEffect(() => {
     setCommentData(comments);
     setCommentList(comments.comments);
-  },[]);
+  }, []);
 
   function handleSubmit(values) {
     addThreadComments(comments.id, values).then(newComment => {
       console.log(newComment);
       setCommentList([newComment, ...commentList]);
+    });
+  }
+  function handleLikeThread() {
+    likeThread(commentData.id).then(moreLikes => {
+      console.log(moreLikes);
+      setCommentData(moreLikes);
+    });
+  }
+  function handleUnlikeThread() {
+    unlikeThread(commentData.id).then(lessLikes => {
+      console.log(lessLikes);
+      setCommentData(lessLikes);
     });
   }
   const formik = useFormik({
@@ -60,16 +81,26 @@ export default function Thread() {
   });
   return (
     <>
-      <div className="w-full mx-auto border-2 bg-charcoal">
-        <div className="w-[80%] mx-auto flex h-full mt-4  my-auto">
-          <div className="flex h-full bg-lightgray w-2/3 my-auto">
+      <div className="w-full h-fit mx-auto bg-charcoal">
+        <div className="w-[80%] mx-auto flex h-full mt-1  my-auto">
+          <div className="flex h-full w-2/3 my-auto">
             <div className="w-12 h-[100%]  justify-center items-center flex flex-col my-auto ml-4">
               <div>
-                <Icon as={BiSolidUpArrowSquare} h={6} w={6} />
+                <Icon
+                  as={BiSolidUpArrowSquare}
+                  h={6}
+                  w={6}
+                  onClick={handleLikeThread}
+                />
               </div>
-              <div className="">{comments.likes}</div>
+              <div className="">{commentData.likes}</div>
               <div>
-                <Icon as={BiSolidDownArrowSquare} h={6} w={6} />
+                <Icon
+                  as={BiSolidDownArrowSquare}
+                  h={6}
+                  w={6}
+                  onClick={handleUnlikeThread}
+                />
               </div>
             </div>
             <div className="flex flex-col ml-8 justify-center w-full">
@@ -83,12 +114,11 @@ export default function Thread() {
                 {"  "} {`${comments.comments.length}`} comments
               </div>
             </div>
-            <Divider />
           </div>
           <div className="flex flex-col h-full bg-charcoal w-1/3 items-baseline justify-start align-top pt-2">
-            <div className="bg-white justify-center items-center mx-auto my-auto align-middle">
+            <div className=" justify-center items-center mx-auto my-auto align-middle">
               <Image
-                src={`/images/${comments.community}.svg`}
+                src={`/images/${comments.community}.png`}
                 h={14}
                 className="mx-auto my-auto"
                 borderRadius={4}
@@ -110,15 +140,14 @@ export default function Thread() {
           </div>
         </div>
       </div>
-      <div className="w-full mx-auto border-2 bg-charcoal">
+      <div className="w-full h-screen overflow-auto mx-auto bg-charcoal">
         <div className="w-[80%] mx-auto flex h-full my-auto">
           <div className="flex flex-col flex-wrap h-full  w-2/3 my-auto">
             {commentList.map(comment => (
-              <Comment key={comment.id} comment={comment} />
+              <Comment key={comment.id} comment={comment}/>
             ))}
           </div>
-          <div className="flex flex-col h-full bg-charcoal w-1/3 items-baseline justify-start align-top pt-2">
-            <div className="bg-white justify-center items-center mx-auto my-auto align-middle bg-charcoal"></div>
+          <div className="flex flex-col bg-charcoal w-1/3 items-baseline justify-start align-top pt-2">
             <div className="stats shadow p-0 bg-charcoal mx-auto">
               {" "}
               <form
@@ -126,7 +155,7 @@ export default function Thread() {
                 method="post"
                 style={{
                   backgroundColor: "#1E2D24",
-                  boxShadow: "2px 5px 8px rgba(0, 0, 0, 1)",
+                  boxShadow: "2px 2px 2px rgba(0, 0, 0, 1)",
                   marginBottom: "10px",
                 }}
                 className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">

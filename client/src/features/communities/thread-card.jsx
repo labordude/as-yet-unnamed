@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import {Link, useLoaderData, useParams} from "react-router-dom";
 import {Container, Box, Icon, VStack, StackDivider} from "@chakra-ui/react";
 import {BiSolidDownArrowSquare, BiSolidUpArrowSquare} from "react-icons/bi";
+import {ChatIcon} from "@chakra-ui/icons";
 import {likeThread, unlikeThread} from "../ui/helpers";
 export default function Thread({thread}) {
   const [threadData, setThreadData] = useState([]);
@@ -62,6 +63,10 @@ export default function Thread({thread}) {
           <span className="text-sm text-playstation_blue">
             Started on {formatDate(thread.created_at)}
           </span>
+          <div className="text-white">
+            <ChatIcon className="mr-2" />
+            {thread.comments.length} comments
+          </div>
         </div>
       </Link>
     </div>

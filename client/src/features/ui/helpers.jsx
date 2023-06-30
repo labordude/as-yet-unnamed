@@ -293,3 +293,15 @@ export async function unlikeThread(id) {
 
     .catch(error => setErrors(error));
 }
+
+
+// community name
+export async function getCommunityName(id) {
+  return await fetch(`/api/community_names/${id}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}

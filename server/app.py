@@ -108,7 +108,8 @@ class Login(Resource):
         if user:
             if user.authenticate(password):
                 session["user_id"] = user.id
-                login_user(user)
+
+                login_user(user, remember=True)
 
                 return user_schema.dump(user), 200
 
@@ -868,6 +869,15 @@ class UnlikeThreads(Resource):
             return thread_schema.dump(thread), 201
 
 
+class CommunityNames(Resource):
+    def get(self, id):
+        community = Community.query.filter(Community.id == id).first()
+        if not community:
+            return ({"error": "community not found"}), 404
+        return {"message": community.name}, 200
+
+
+api.add_resource(CommunityNames, "/api/community_names/<int:id>")
 api.add_resource(Threads, "/api/threads")
 api.add_resource(ThreadByID, "/api/threads/<int:id>")
 api.add_resource(ThreadsByCommunity, "/api/community_threads/<int:id>")
