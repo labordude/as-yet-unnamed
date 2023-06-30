@@ -10,25 +10,35 @@ export default function Login({onLogin}) {
   }
 
   return (
-    <div>
+    <div >
       {showLoginForm ? (
-        <div className="flex flex-col justify-center items-center my-4">
+        <div className="flex flex-col justify-center items-center " style={{backgroundColor:"#334139", paddingBottom:"60.8vh"}} >
           <LoginForm onLogin={onLogin} />
           <Divider className="my-4" />
           <p>
             Need an account? &nbsp;
-            <Button color="secondary" onClick={() => setShowLoginForm(false)}>
+            <Button 
+              onMouseEnter={(e) => e.target.style.backgroundColor = "#4346EF"}
+              onMouseLeave={(e) => e.target.style.backgroundColor = "#6366F1"}
+              style={{backgroundColor:"#6366F1", color:"white", width:"125px"}} 
+              onClick={() => setShowLoginForm(false)}>
               Sign Up
             </Button>
           </p>
         </div>
       ) : (
-        <div className="flex flex-col justify-center items-center my-4">
+        <div 
+          style={{ paddingBottom: "20vh"}}
+          className="flex flex-col justify-center items-center bg-smokey">
           <SignUpForm onLogin={onLogin} toggleLoginForm={toggleLoginForm} />
           <Divider className="my-4" />
           <p>
             Already have an account? &nbsp;
-            <Button color="secondary" onClick={() => setShowLoginForm(true)}>
+            <Button 
+              onMouseEnter={(e) => e.target.style.backgroundColor = "#4346EF"}
+              onMouseLeave={(e) => e.target.style.backgroundColor = "#6366F1"}
+              style={{backgroundColor:"#6366F1", color:"white", paddingLeft:"30px", paddingRight:"30px"}} 
+              onClick={() => setShowLoginForm(true)}>
               Log In
             </Button>
           </p>

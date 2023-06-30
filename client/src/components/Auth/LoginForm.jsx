@@ -48,7 +48,8 @@ export default function LoginForm({onLogin}) {
   return (
     <form
       onSubmit={event => handleSubmit(event)}
-      className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">
+      style={{marginTop: "50px", marginBottom: "50px", boxShadow:"3px 5px 8px rgba(0, 0, 0, 1)"}}
+      className="w-full max-w-sm mx-auto bg-charcoal p-8 rounded-md shadow-md">
       <div className="mb-4">
         <label
           htmlFor="username"
@@ -59,6 +60,10 @@ export default function LoginForm({onLogin}) {
           id="username"
           name="username"
           type="text"
+          style={{
+            borderWidth:"2px", 
+            borderRadius:"8px",
+          }}
           onChange={handleChange}
           value={formData.username}
           autoComplete="username"
@@ -78,13 +83,27 @@ export default function LoginForm({onLogin}) {
             placeholder="Enter password"
             value={formData.password}
             onChange={handleChange}
+            style={{
+              borderWidth:"2px", 
+              borderRadius:"8px",
+            }}
             name="password"
             id="password"
             autoComplete="current-password"
           />
           <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? "Hide" : "Show"}
+            <Button 
+              // h="1.75rem" 
+              size="md" 
+              onMouseEnter={(e) => e.target.style.backgroundColor = "#4346EF"}
+              onMouseLeave={(e) => e.target.style.backgroundColor = "#6366F1"}
+              style={{
+                backgroundColor:"#6366F1", 
+                color:"white",
+                borderWidth:"2px",
+              }} 
+              onClick={handleClick}>
+                {show ? "Hide" : "Show"}
             </Button>
           </InputRightElement>
         </InputGroup>
@@ -92,7 +111,7 @@ export default function LoginForm({onLogin}) {
 
       <div className="flex justify-around">
         <button
-          className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300"
+          className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300"
           type="submit">
           Login
         </button>

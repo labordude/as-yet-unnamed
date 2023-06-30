@@ -143,9 +143,6 @@ export default function Header({onLogout, user, toggleSignup}) {
                 </li>
               </b>
               <b>
-                <li>
-                  <a style={{color: "#1E2D24"}}>Settings</a>
-                </li>
               </b>
               <b>
                 <li onClick={handleLogoutClick} style={{color: "#1E2D24"}}>

@@ -99,7 +99,8 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
       <form
         onSubmit={formik.handleSubmit}
         method="post"
-        className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">
+        style={{marginTop: "50px", marginBottom: "50px", boxShadow:"3px 5px 8px rgba(0, 0, 0, 1)"}}
+        className="w-full max-w-sm mx-auto bg-charcoal p-8 rounded-md shadow-md">
         <div className="mb-2">
           <label
             htmlFor="firstName"
@@ -110,6 +111,11 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
             id="name"
             name="name"
             type="text"
+            style={{
+              borderWidth:"2px", 
+              borderRadius:"8px",
+              marginBottom:"10px",
+            }}
             onChange={formik.handleChange}
             value={formik.values.name}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
@@ -126,6 +132,11 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
             id="email"
             name="email"
             type="email"
+            style={{
+              borderWidth:"2px", 
+              borderRadius:"8px",
+              marginBottom:"10px",
+            }}
             onChange={formik.handleChange}
             value={formik.values.email}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
@@ -142,6 +153,11 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
             id="username"
             name="username"
             type="text"
+            style={{
+              borderWidth:"2px", 
+              borderRadius:"8px",
+              marginBottom:"10px",
+            }}
             onChange={formik.handleChange}
             value={formik.values.username}
             autoComplete="username"
@@ -162,12 +178,22 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
               placeholder="Enter password"
               value={formik.values.password}
               onChange={formik.handleChange}
+              style={{
+                borderWidth:"2px", 
+                borderRadius:"8px",
+                marginBottom:"10px",
+              }}
               name="password"
               id="password"
               autoComplete="current-password"
             />
             <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={handleClick}>
+              <Button 
+                size="md" 
+                onMouseEnter={(e) => e.target.style.backgroundColor = "#4346EF"}
+                onMouseLeave={(e) => e.target.style.backgroundColor = "#6366F1"}
+                style={{backgroundColor:"#6366F1", borderWidth:"2px", color:"white"}}
+                onClick={handleClick}>
                 {show ? "Hide" : "Show"}
               </Button>
             </InputRightElement>
@@ -184,13 +210,19 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
             id="pfp_image"
             name="pfp_image"
             type="file"
+            style={{
+              borderWidth:"2px", 
+              borderRadius:"8px",
+              marginBottom:"10px",
+              color:"white",
+            }}
             onChange={event =>
               formik.setFieldValue(
                 "pfp_image",
                 URL.createObjectURL(event.currentTarget.files[0]),
               )
             }
-            className="block w-full cursor-pointer bg-gray-50 border border-gray-300 text-gray-900 focus:outline-none focus:border-transparent text-sm rounded-lg file:mr-4 file:py-2 file:px-4 file:bg-slate-600 file:text-white file:rounded-md"
+            className="block w-full cursor-pointer bg-gray-50 border border-gray-300 text-white focus:outline-none focus:border-transparent text-sm rounded-lg file:mr-4 file:py-2 file:px-4 file:bg-playstation_blue file:text-white file:rounded-md"
           />
           {formik.errors.pfp_image ? (
             <div>{formik.errors.pfp_image}</div>
@@ -206,6 +238,11 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
             name="bio"
             value={formik.values.bio}
             onChange={formik.handleChange}
+            style={{
+              borderWidth:"2px", 
+              borderRadius:"8px",
+              marginBottom:"10px",
+            }}
             placeholder="Tell us about yourself"
             size="sm"
           />
@@ -213,8 +250,9 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
         </div>
         <div className="flex justify-around">
           <button
-            className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300"
+            className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300"
             type="submit"
+            style={{marginTop:"10px"}}
             disabled={navigation.state === "submitting"}>
             {navigation.state === "submitting" && <Spinner />}
             Save
@@ -222,7 +260,8 @@ export default function SignUpForm({onLogin, toggleLoginForm}) {
           <button
             type="button"
             onClick={toggleLoginForm}
-            className="w-[125px] bg-indigo-500 text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">
+            style={{marginTop:"10px"}}
+            className="w-[125px] bg-tomato text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_red transition duration-300">
             Cancel
           </button>
         </div>
