@@ -12,7 +12,7 @@ export default function Login({onLogin}) {
   return (
     <div >
       {showLoginForm ? (
-        <div className="flex flex-col justify-center items-center " style={{backgroundColor:"#334139", paddingBottom:"60.8vh"}} >
+        <div className="flex flex-col justify-center items-center " style={{backgroundColor:"#334139", paddingBottom:"54.5vh"}} >
           <LoginForm onLogin={onLogin} />
           <Divider className="my-4" />
           <p>
@@ -28,7 +28,7 @@ export default function Login({onLogin}) {
         </div>
       ) : (
         <div 
-          style={{ paddingBottom: "20vh"}}
+          style={{ paddingBottom: "19.1vh"}}
           className="flex flex-col justify-center items-center bg-smokey">
           <SignUpForm onLogin={onLogin} toggleLoginForm={toggleLoginForm} />
           <Divider className="my-4" />

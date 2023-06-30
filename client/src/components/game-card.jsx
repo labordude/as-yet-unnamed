@@ -11,12 +11,12 @@ function GameCard({game}) {
           marginLeft:"10px",
           marginRight:"10px",
         }}>
-        <figure className="px-0 pt-10 object-contain" >
+        <figure className="px-0 pt-7 object-contain" >
           <Image
             src={game.background_image}
             alt={game.title}
             // boxSize="300px"
-            maxwidth={300}
+            maxWidth="200px"
             objectFit="align"
             maxHeight={375}
             border='2px' 
