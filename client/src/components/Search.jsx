@@ -10,7 +10,7 @@ export default function Search({handleSearch}) {
     <Input
       placeholder="Search..."
       onChange={event => handleChange(event)}
-      style={{color: "#1E2D24"}}
+      style={{color: 'white'}}
       name="search"
     />
   );

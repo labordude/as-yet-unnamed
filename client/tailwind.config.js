@@ -15,6 +15,7 @@ export default {
       tomato: "#FE654F",
       darker_red: "#FE3D20",
       charcoal: "#1E2D24",
+      dark_charcoal: "#101814",
       smokey: "#334139",
     },
     extend: {},

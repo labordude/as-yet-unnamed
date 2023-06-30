@@ -27,15 +27,12 @@ export default function AddGameModal({ isOpen, onOpen, onClose }) {
           closeOnOverlayClick={false}
         >
           <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Add Game</ModalHeader>
+          <ModalContent style={{backgroundColor:"#334139"}}>
+            <ModalHeader style={{fontSize:"30px", fontWeight:"bold", marginLeft:"180px"}}>Add Game</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
                 <AddGame onClose={onClose}/>
             </ModalBody>
-            <ModalFooter>
-              {/* <Button onClick={onClose}>Cancel</Button> */}
-            </ModalFooter>
           </ModalContent>
         </Modal>
       </>
