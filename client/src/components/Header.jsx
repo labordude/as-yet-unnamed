@@ -44,21 +44,21 @@ export default function Header({onLogout, user, toggleSignup}) {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
             <b>
               <li>
-                <Link to="/games" className="text-white">
+                <Link to="/games" className="text-charcoal">
                   Games
                 </Link>
               </li>
             </b>
             <b>
               <li>
-                <Link to="/communities" className="text-white">
+                <Link to="/communities" className="text-charcoal">
                   Communities
                 </Link>
               </li>
             </b>
             <b>
               <li>
-                <Link to="/social" className="text-white">
+                <Link to="/social" className="text-charcoal">
                   Social
                 </Link>
               </li>
