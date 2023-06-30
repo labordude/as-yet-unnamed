@@ -41,11 +41,11 @@ const EditUserSchema = Yup.object().shape({
 //     return {error: "Error creating a new user."};
 //   }
 // };
-export default function EditUser({user, toggleForm}) {
+export default function EditUser({currentUser, toggleForm}) {
   const [userData, setUserData] = useState();
   const navigate = useNavigate();
   const navigation = useNavigation();
-  const [setUser] = useOutletContext();
+  const [user, setUser] = useOutletContext();
 
   // useEffect(() => {
   //   setUserData(newUser);
@@ -69,8 +69,10 @@ export default function EditUser({user, toggleForm}) {
   function handleSubmit(id, values) {
     updateUser(id, values)
       .then(toggleForm())
-      .then(last => {
-        navigate("../profile");
+      .then(updated => {
+        console.log(updated);
+        setUser(updated);
+        // navigate("../profile");
       });
   }
   const formik = useFormik({

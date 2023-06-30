@@ -19,7 +19,7 @@ const GameSchema = Yup.object().shape({
     .min(1, "Too short")
     .required("Game must have a description"),
 });
-export default function GameEdit({game, toggleShowEdit}) {
+export default function GameEdit({game, toggleShowEdit, handleGameUpdate}) {
   const {title, release_date, background_image, platform, description} = game;
   const navigate = useNavigate();
   const formik = useFormik({
@@ -42,9 +42,10 @@ export default function GameEdit({game, toggleShowEdit}) {
   }
 
   function handleSubmit(values) {
-    updateGame(game.id, values).then(data => {
+    updateGame(game.id, values).then(updated => {
       toggleShowEdit();
-      navigate(`/games/${data.id}`);
+      handleGameUpdate(updated);
+      // navigate(`/games/${data.id}`);
     });
   }
   return (
@@ -52,17 +53,26 @@ export default function GameEdit({game, toggleShowEdit}) {
       <form
         onSubmit={formik.handleSubmit}
         method="post"
-        style={{backgroundColor:"#1E2D24", boxShadow:"2px 5px 8px rgba(0, 0, 0, 1)", marginBottom:"10px"}}
+        style={{
+          backgroundColor: "#1E2D24",
+          boxShadow: "2px 5px 8px rgba(0, 0, 0, 1)",
+          marginBottom: "10px",
+        }}
         className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">
         <div className="flex justify-end place-items-end">
-          <Button size="sm" backgroundColor="#FE654F" _hover={{backgroundColor:"#FE3D20"}} transition=".2s" onClick={handleDelete}>
+          <Button
+            size="sm"
+            backgroundColor="#FE654F"
+            _hover={{backgroundColor: "#FE3D20"}}
+            transition=".2s"
+            onClick={handleDelete}>
             Delete Game
           </Button>
         </div>
-        <div className="mb-2" style={{paddingBottom:"10px"}}>
+        <div className="mb-2" style={{paddingBottom: "10px"}}>
           <label
             htmlFor="title"
-            style={{color: 'white'}}
+            style={{color: "white"}}
             className="block text-gray-700 text-sm font-bold mb-2">
             Name
           </label>
@@ -77,10 +87,10 @@ export default function GameEdit({game, toggleShowEdit}) {
           />
           {formik.errors.title ? <div>{formik.errors.title}</div> : null}
         </div>
-        <div className="mb-2" style={{paddingBottom:"10px"}}>
+        <div className="mb-2" style={{paddingBottom: "10px"}}>
           <label
             htmlFor="description"
-            style={{color: 'white'}}
+            style={{color: "white"}}
             className="block text-gray-700 text-sm font-bold mb-2">
             Description
           </label>
@@ -111,10 +121,10 @@ export default function GameEdit({game, toggleShowEdit}) {
           />
           {formik.errors.email ? <div>{formik.errors.email}</div> : null}
         </div> */}
-        <div className="mb-2" style={{paddingBottom:"10px"}}>
+        <div className="mb-2" style={{paddingBottom: "10px"}}>
           <label
             htmlFor="release_date"
-            style={{color: 'white'}}
+            style={{color: "white"}}
             className="block text-gray-700 text-sm font-bold mb-2">
             Release Date
           </label>
@@ -131,10 +141,10 @@ export default function GameEdit({game, toggleShowEdit}) {
             <div>{formik.errors.release_date}</div>
           ) : null}
         </div>
-        <div className="mb-2" style={{paddingBottom:"20px"}}>
+        <div className="mb-2" style={{paddingBottom: "20px"}}>
           <label
             htmlFor="background_image"
-            style={{color: 'white'}}
+            style={{color: "white"}}
             className="block text-gray-700 text-sm font-bold mb-2">
             Image
           </label>
@@ -142,7 +152,12 @@ export default function GameEdit({game, toggleShowEdit}) {
             id="background_image"
             name="background_image"
             type="file"
-            style={{backgroundColor:"#1E2D24", color:"white", borderRadius: "8px", borderWidth: "2px"}}
+            style={{
+              backgroundColor: "#1E2D24",
+              color: "white",
+              borderRadius: "8px",
+              borderWidth: "2px",
+            }}
             onChange={event =>
               formik.setFieldValue(
                 "background_image",

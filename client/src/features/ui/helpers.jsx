@@ -222,3 +222,14 @@ export async function getCommunityThreads(id) {
     })
     .catch(error => setErrors(error));
 }
+
+// thread by ID
+export async function getThreadComments(id) {
+  return await fetch(`/api/threads/${id}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .catch(error => setErrors(error));
+}

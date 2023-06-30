@@ -26,7 +26,7 @@ const validationSchema = Yup.object().shape({
   platform: Yup.string().required("Platform is required"),
   rating: Yup.number().label("rating").min(0).max(100).required(""),
 });
-export default function AddGame({onClose}) {
+export default function AddGame({onClose, addNewGame}) {
   function postGame(values) {
     const platformArray = values.platform
       .split(",")
@@ -51,11 +51,10 @@ export default function AddGame({onClose}) {
           throw new Error("Failed to post game");
         }
       })
-      .then(() => {
-        console.log(updatedValues);
+      .then(newGame => {
         console.log("game posted");
+        addNewGame(newGame);
         onClose();
-        return redirect("/");
       })
       .catch(error => {
         console.error(error);

@@ -55,7 +55,9 @@ export default function Games() {
   //     setAllGames(data.games);
   //   });
   // }, []);
-
+  function addNewGame(game) {
+    setGamesList([game, ...gamesList]);
+  }
   function handleSearch(search) {
     // setSearchQuery(search.toLowerCase());
 
@@ -87,6 +89,7 @@ export default function Games() {
           isOpen={showInputs}
           onOpen={toggleShowInputs}
           onClose={toggleShowInputs}
+          addNewGame={addNewGame}
         />
       )}
       <div>
