@@ -4,6 +4,7 @@ import {
   useLoaderData,
   useOutletContext,
   useParams,
+  useFetcher,
 } from "react-router-dom";
 import {getUserByID, followUser, unFollowUser} from "../features/ui/helpers";
 import {Container, Button, Image, Box, SimpleGrid} from "@chakra-ui/react";
@@ -27,10 +28,13 @@ export default function User() {
   const [currentUserData, setCurrentUserData] = useState();
   // const {current_user} = useLoaderData();
   const [following, setFollowing] = useState(false);
+  const [followerCount, setFollowerCount] = useState()
+  const fetcher = useFetcher()
 
   useEffect(() => {
     // setCurrentUserData(user);
     setUserData(user_loader);
+    setFollowerCount(user_loader.followers.length)
     if (
       (user.followed &&
         user.followed.length > 0 &&
@@ -50,20 +54,40 @@ export default function User() {
   //   console.log(currentUserData);
   // console.log(current_user)
 
+  // function getFollowers(id) {
+  //   return fetch(`/api/users/${id}/followers`)
+  //   .then(response => {
+  //     if (response.ok) {
+  //       return response.json()
+  //     }
+  //   })
+  // }
+
+
   function toggleFollow() {
-    setFollowing(prev => !prev);
-    if (following === false) {
-      followUser(user_loader.username).then(followed => setUserData(followed));
+    if (following === true) {
+      unFollowUser(user_loader.username)
+      .then(followed => setUserData(followed))
+      .then(setFollowerCount(followerCount => followerCount - 1))
+      setFollowing(prev => !prev)
+      // .then(followerCount + 1);
       // current_user.username.followed.append(user_loader.username)
       // currentUserData.followed.append(user_loader)
-    } else if (following === true) {
-      unFollowUser(user_loader.username).then(followed =>
-        setUserData(followed),
-      );
+    } else if (following === false) {
+      followUser(user_loader.username)
+      .then(followed => setUserData(followed))
+      .then(setFollowerCount(followerCount => followerCount + 1))
+      setFollowing(prev => !prev)
+      // .then(followerCount - 1)
       // current_user.username.followed.remove(user_loader.username)
       // currentUserData.followed.remove(user_loader)
     }
   }
+
+  
+  // if (fetcher.formData) {
+  //   user_loader.followers = fetcher.formData.get('user_loader.followers.length')
+  // }
 
   return (
     <Container p="0" mx="auto">
@@ -82,8 +106,9 @@ export default function User() {
           <div className="text-bold text-2xl text-center">
             {user_loader.username || "username would go here"}
           </div>
-          <div>Followers: {user_loader.followers}</div>
-          <div>Following: {user_loader.followed}</div>
+          {/* <div>Followers: {user_loader.followers.length}</div> */}
+          <div>Followers: {followerCount}</div>
+          <div>Following: {user_loader.followed.length}</div>
         </Container>
         <Container>
           <Container>
