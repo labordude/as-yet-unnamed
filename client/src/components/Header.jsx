@@ -71,7 +71,7 @@ export default function Header({onLogout, user, toggleSignup}) {
           GameXperience
         </Link>
       </div>
-      <div className="navbar-center hidden lg:flex">
+      <div className="navbar-center hidden lg:flex ">
         <ul className="menu menu-horizontal px-1">
           {user ? (
             <>
@@ -141,6 +141,8 @@ export default function Header({onLogout, user, toggleSignup}) {
                   </Link>
                   {/* <span className="badge">New</span> */}
                 </li>
+              </b>
+              <b>
               </b>
               <b>
                 <li onClick={handleLogoutClick} style={{color: "#1E2D24"}}>

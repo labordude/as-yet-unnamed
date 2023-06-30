@@ -7,7 +7,7 @@ import {
   useFetcher,
 } from "react-router-dom";
 import {getUserByID, followUser, unFollowUser} from "../features/ui/helpers";
-import {Container, Button, Image, Box, SimpleGrid} from "@chakra-ui/react";
+import {Container, Button, Image, Text, Box, SimpleGrid} from "@chakra-ui/react";
 // import GameCard from "../components/game-card"
 // import ReviewCard from '../components/review-card';
 import UserReviewCard from "../components/user-review-card";
@@ -89,9 +89,12 @@ export default function User() {
   //   user_loader.followers = fetcher.formData.get('user_loader.followers.length')
   // }
 
+
   return (
-    <Container className="bg-smokey" p="0" mx="auto">
-      <Container className="my-4 flex bg-charcoal">
+    <div className='bg-smokey' style={{backgroundColor:"#FE654F", paddingBottom:"60.8vh"}}>
+      <Container centerContent maxW="600px">
+      <SimpleGrid className="my-4 flex" columns={[2]} spacing="20px">
+      <Box display='flex' bg='#334139' height='400px' width='300px' alignItems='center'>
         <Container className="flex flex-col px-0 items-center">
           <Image
             src={
@@ -100,16 +103,20 @@ export default function User() {
                 : "https://placekitten.com/250/250"
             }
             alt="Pfp Image"
-            boxSize="250px"
+            boxSize="200px"
+            objectFit='cover'
             borderRadius="full"
           />
-          <div className="text-bold text-2xl text-center font-bold">
+          <div className="text-bold text-2xl text-center">
             {user_loader.username.toUpperCase() || "username would go here"}
           </div>
           <div><b>Followers:</b> {user_loader.followers}</div>
           <div><b>Following:</b> {user_loader.followed}</div>
         </Container>
-        <Container>
+        </Box>
+        <Container centerContent>
+        <Box display='flex' bg='#334139' height='400px' width='300px' alignItems='center'>
+        <Container >
           <Container>
             <p><b>Name:</b> {user_loader.name}</p>
             <p><b>Bio:</b> {user_loader.bio}</p>
@@ -120,7 +127,8 @@ export default function User() {
             <p><b>Total Games:</b> {user_loader.reviews.length}</p>
             <p><b>Total Ratings:</b> {user_loader.reviews.length} </p>
           </Container>
-          <Container className="mt-8">
+        
+          <Container className="mt-8" conterCenter>
             <Button
               colorScheme={
                 (user_loader.followers &&
@@ -139,12 +147,14 @@ export default function User() {
                 : "Follow"}
             </Button>
           </Container>
+          </Container>
+          </Box>
         </Container>
-      </Container>
+        </SimpleGrid>
 
       <Container className="flex flex-col">
-        <Container>
-          <h2 className="text-center text-2xl font-bold">Games</h2>
+        <Container centerContent>
+        <Text className="text-center font-bold " fontSize={50}>Games</Text>
           {user_loader.games && user_loader.games.length > 0 ? (
             <SimpleGrid columns={[3, null, 4]} spacing="40px" className="mt-4">
               {user_loader.games.slice(0, 4).map(game => (
@@ -163,20 +173,21 @@ export default function User() {
           )}
         </Container>
 
-        <Container className="mt-10">
-          <h2 className="text-center text-2xl font-bold">Recent Activity</h2>
+        <Container className="mt-10" centerContent>
+        <Text className="text-center font-bold " fontSize={50}>Recent Reviews</Text>
           {user_loader.reviews && user_loader.reviews.length > 0 ? (
-            <div>
+            <Container centerContent maxW='1000px'>
               {user_loader.reviews.slice(0, 5).map(review => (
-                <UserReviewCard key={review.id} review={review} />
+                <UserReviewCard centerContent key={review.id} review={review} />
                 // <p>{review.body}</p>
               ))}
-            </div>
+            </Container>
           ) : (
             <p>"No reviews yet"</p>
           )}
         </Container>
       </Container>
     </Container>
+    </div>
   );
 }

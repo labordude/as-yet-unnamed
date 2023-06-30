@@ -93,9 +93,9 @@ export default function EditUser({currentUser, toggleForm}) {
     <>
       <form
         onSubmit={formik.handleSubmit}
-        className="w-full max-w-sm mx-auto bg-white p-8 rounded-md shadow-md">
+        className="">
         <div className="flex justify-end place-items-end">
-          <Button size="sm" colorScheme="red" onClick={handleDelete}>
+          <Button centerContent size="sm" colorScheme="red" onClick={handleDelete}>
             Delete Profile
           </Button>
         </div>
