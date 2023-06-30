@@ -32,15 +32,21 @@ export default function Communities() {
   }
 
   return (
-    <div id="community_page">
+    <div style={{backgroundColor:"#334139"}}>
+    <div id="community_page" style={{paddingTop:"50px", paddingBottom:"36.4vh"}}>
       {communities.map(community => (
-        <Link
-          to={`/communities/${community.id}`}
-          key={community.id}
-          name={community.name}>
+        <Link 
+          style={{
+            marginRight: "10px",
+            marginLeft: "10px",
+            marginBottom: "20px",
+          }}
+          to={`/communities/${community.id}`} 
+          key={community.id}>
           <CommunityCard key={community.id} community={community} />
         </Link>
       ))}
+    </div>
     </div>
   );
 }
