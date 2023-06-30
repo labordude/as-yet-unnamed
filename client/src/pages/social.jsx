@@ -43,20 +43,26 @@ export default function Social() {
     }
   }
   return (
-    <Box className=" max-width bg-smokey items-center " maxW='1500px'maxH='full'>
-      <div className='bg-smokey'>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-smokey">
+      <div>
         <Box>
           <InputGroup
             mt={4}
             width={{base: "90%", md: "md"}}
+            style={{
+              marginTop:"20px", 
+              borderWidth:"2px", 
+              borderRadius:"8px",
+              marginBottom:"10px",
+            }}
             textAlign={"center"}>
             <Search handleSearch={handleSearch} />
           </InputGroup>
         </Box>
       </div>
       <div className="my-4">
-      <div className="mx-auto join w-1/3 grid grid-cols-2">
-          <Button
+        <div className="mx-auto join w-1/3 grid grid-cols-2">
+          <button
             onMouseEnter={(e) => e.target.style.backgroundColor = "#101814"}
             onMouseLeave={(e) => e.target.style.backgroundColor = "#1E2D24"}
             style={{
@@ -72,7 +78,7 @@ export default function Social() {
             }
             onClick={() => setCurrentPage(current => current - 1)}>
             Previous page
-          </Button>
+          </button>
           <button
             onMouseEnter={(e) => e.target.style.backgroundColor = "#101814"}
             onMouseLeave={(e) => e.target.style.backgroundColor = "#1E2D24"}
@@ -81,7 +87,7 @@ export default function Social() {
               color:"white", 
               borderWidth: "2px",
               marginBottom: "20px"
-            }}
+              }}
             className={
               hasNext
                 ? "join-item btn btn-outline"
@@ -105,7 +111,7 @@ export default function Social() {
               ))}
             </SimpleGrid>
           ) : (
-            <div>No users found</div>
+            <div style={{color:"#FE654F"}}>No users found</div>
           )
         ) : (
           <ErrorBoundary FallbackComponent={ErrorElement}>
@@ -123,7 +129,7 @@ export default function Social() {
           </ErrorBoundary>
         )}
       </div>
-    </Box>
+    </div>
   );
 }
 

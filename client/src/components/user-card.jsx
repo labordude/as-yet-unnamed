@@ -23,7 +23,14 @@ function UserCard({user}) {
             <h2 className="card-title">{user.username}</h2>
             <div className="card-actions">
                 <Link to={`/users/${user.id}`}>
-                <Button colorScheme="blue">View Profile</Button>
+                <Button 
+                    onMouseEnter={(e) => e.target.style.backgroundColor = "#4346EF"}
+                    onMouseLeave={(e) => e.target.style.backgroundColor = "#6366F1"}
+                    style={{
+                        backgroundColor:"#6366F1", 
+                        color:"white", 
+                        marginTop:"10px"
+                    }}>View Profile</Button>
                 </Link>
             </div>
             </div>

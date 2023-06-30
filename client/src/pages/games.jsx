@@ -164,7 +164,6 @@ export default function Games() {
         ) : !searchResults ||
           searchResults.length < 2 ||
           searchResults == "" ? (
-          <>
             <>
               <SimpleGrid columns={{sm: 2, md: 3}}>
                 {gamesList.map(game => (
@@ -172,7 +171,6 @@ export default function Games() {
                 ))}
               </SimpleGrid>
             </>
-          </>
         ) : (
           <ErrorBoundary FallbackComponent={ErrorElement}>
             <Suspense fallback={<Loading />}>

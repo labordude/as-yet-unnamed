@@ -183,3 +183,156 @@ export default function Profile({}) {
     </Container>
   );
 }
+
+
+// return (
+//   <div>
+//   {/* turn to simplegrid and grid data and format where it is center all */}
+//     <Container maxW='650px' centerContent>
+//     <SimpleGrid className="my-4 flex" columns={[2]} spacing="20px">
+//     {/* pfp and followers and follwing + Name */}
+//     <Box display='flex' bg='tomato' height='400px' alignItems='center'>
+//       <Container className="flex flex-col px-0 items-center">
+//         <Image
+//           src={
+//             currentUser.pfp_image
+//               ? currentUser.pfp_image
+//               : "https://placekitten.com/250/250"
+//           }
+//           alt="Pfp Image"
+//           boxSize="200px"
+//           objectFit='cover'
+//           borderRadius="full"
+//         />{" "}
+//         <div className="text-bold text-2xl text-center">
+//           {!showForm ? (
+//             <Button 
+//             onClick={toggleForm}
+//             as='button'
+//             height='24px'
+//             lineHeight='1.2'
+//             transition='all 0.2s cubic-bezier(.08,.52,.52,1)'
+//             border='1px'
+//             px='8px'
+//             borderRadius='2px'
+//             fontSize='14px'
+//             fontWeight='semibold'
+//             bg='#f5f6f7'
+//             borderColor='#ccd0d5'
+//             color='#4b4f56'
+//             _hover={{ bg: '#ebedf0' }}
+//             _active={{
+//               bg: '#dddfe2',
+//               transform: 'scale(0.98)',
+//               borderColor: '#bec3c9',
+//             }}
+//             _focus={{
+//               boxShadow:
+//                 '0 0 1px 2px rgba(88, 144, 255, .75), 0 1px 1px rgba(0, 0, 0, .15)',
+//             }}
+//             >Edit User</Button>
+//           ) : (
+//             <Button onClick={toggleForm}>Cancel Edit</Button>
+//           )}
+//         </div>
+
+
+//         <div className="text-bold text-2xl text-center">
+//           <b>{currentUser.username.toUpperCase() || "username would go here"} </b>
+//         </div>
+
+
+//         <div> <b>Followers: </b> {currentUser.followers}</div>
+
+
+//         <div> <b>Following: </b> {currentUser.followed}</div>
+        
+//       </Container>
+//       </Box>
+//       <Box display='flex' bg='tomato' height='400px' alignItems='center'>
+//       {!showForm ? (
+//         <Container>
+//           <Container>
+//             <p> <b>Name:</b> {currentUser.name}</p>
+//             <p> <b>Bio:</b> {currentUser.bio}</p>
+//             <p> <b>Communities:</b> </p>
+//           </Container>
+//           <Container className="mt-8">
+//             <p> <b>Total Reviews:</b> {currentUser.reviews.length}</p>
+//             <p> <b>Total Games:</b> {currentUser.reviews.length}</p>
+//             <p> <b>Total Ratings:</b> {currentUser.reviews.length}</p>
+//           </Container>
+//         </Container>
+//       ) : (
+//         <EditUser user={currentUser} toggleForm={toggleForm} />
+//       )}
+//       </Box>
+//     </SimpleGrid>
+//     </Container>
+
+//     <Container className="flex-col">
+//       <div>
+//         <h2 className="text-center text-2xl font-bold">Games</h2>
+//         {currentUser.games && currentUser.games.length > 0 ? (
+//           <SimpleGrid columns={[3, null, 4]} spacing="40px" className="mt-4">
+//             {currentUser.games.slice(0, 4).map(game => (
+//               // <GameCard key={game.id} game={game} />
+//               <div className="flex justify-center items-center" key={game.id}>
+//                 <Image
+//                   boxSize="100px"
+//                   key={game.id}
+//                   src={game.background_image}
+//                 />
+//               </div>
+//             ))}
+//           </SimpleGrid>
+//         ) : (
+//           <p>"No games yet"</p>
+//         )}
+//       </div>
+//       {/* <Container className="mt-10 ">
+//         <h2 className="text-center text-2xl font-bold">
+//           Highest Rated Games
+//         </h2>
+//         {user.reviews && user.reviews.length > 0 ? (
+//           <SimpleGrid columns={[3, null, 4]} spacing="40px" className="mt-4">
+//             {Array.from(user.reviews)
+//               .sort(function (a, b) {
+//                 return b.rating - a.rating;
+//               })
+//               .slice(0, 4)
+//               .map(review => (
+//                 // <GameCard key={game.id} game={game} />
+//                 <div
+//                   className="flex flex-col items-center"
+//                   key={review.game_id}>
+//                   <Image
+//                     boxSize="100px"
+//                     key={review.game_id}
+//                     src={user.games[0].background_image}
+//                   />
+//                   <span className="text-center">Rating:{review.rating}</span>
+//                 </div>
+//               ))}
+//           </SimpleGrid>
+//         ) : (
+//           <p>"No games yet"</p>
+//         )}
+//       </Container> */}
+//       <Container className="mt-10">
+//         <h2 className="text-center text-2xl font-bold">Recent Reviews</h2>
+//         {currentUser.reviews && currentUser.reviews.length > 0 ? (
+//           <div>
+//             {currentUser.reviews.slice(0, 5).map(review => (
+//               <UserReviewCard key={review.id} review={review} />
+//               // <p>{review.body}</p>
+//             ))}
+//           </div>
+//         ) : (
+//           <p>"No reviews yet"</p>
+//         )}
+//       </Container>
+//     </Container>
+//   </div>
+// );
+// }
