@@ -713,6 +713,7 @@ class SearchGames(Resource):
 
 class SearchUsers(Resource):
     def get(self, search):
+        print(search)
         users = User.query.filter(
             or_(
                 User.username.like(f"%{search}%"),
@@ -720,6 +721,7 @@ class SearchUsers(Resource):
             )
         ).all()
         if users:
+            print(users_login_schema.dump(users))
             return users_login_schema.dump(users), 200
         return {"message": "no users found"}
 

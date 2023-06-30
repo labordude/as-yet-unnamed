@@ -190,7 +190,6 @@ export default function Profile({}) {
     <div className="bg-smokey" style={{minHeight: "100vh"}}>
       <Container
         maxW="600px"
-        centerContent
         style={{paddingTop: "70px", paddingBottom: "40px"}}>
         <SimpleGrid className="my-4 flex" columns={[2]} spacing="20px">
           {/* pfp and followers and follwing + Name */}
@@ -320,13 +319,17 @@ export default function Profile({}) {
                 </Container>
               </Container>
             ) : (
-              <EditUser user={currentUser} toggleForm={toggleForm} />
+              <EditUser
+                user={currentUser}
+                toggleForm={toggleForm}
+                className="z-10"
+              />
             )}
           </Box>
         </SimpleGrid>
       </Container>
 
-      <Container centerContent maxW="1000px">
+      <Container maxW="1000px" mt={6}>
         <div>
           <Text className="text-center font-bold " fontSize={50}>
             Games
@@ -361,13 +364,17 @@ export default function Profile({}) {
           <div className="overflow-x-auto">
             <table className="table">
               <tbody>
-                {/* row 1 */}{" "}
+                {/* row 1 */}
                 {user.comments && user.comments.length > 0 ? (
                   user.comments.slice(0, 4).map(comment => (
-                    <tr>
-                      <Link to={`../threads/${comment.thread_id}`}>
-                        <td>{comment.description}</td>
-                      </Link>
+                    <tr key={comment.id}>
+                      <td key={comment.id}>
+                        <Link
+                          to={`../threads/${comment.thread_id}`}
+                          key={comment.id}>
+                          {comment.description}
+                        </Link>
+                      </td>
                     </tr>
                   ))
                 ) : (
@@ -377,14 +384,14 @@ export default function Profile({}) {
             </table>
           </div>
         </div>
-        <Container centerContent maxW="1000px">
+        <Container maxW="1000px">
           <Text className="text-center font-bold " fontSize={50}>
             Recent Reviews
           </Text>
           {currentUser.reviews && currentUser.reviews.length > 0 ? (
-            <Container centerContent maxW="1000px">
+            <Container maxW="1000px">
               {currentUser.reviews.slice(0, 5).map(review => (
-                <UserReviewCard centerContent key={review.id} review={review} />
+                <UserReviewCard key={review.id} review={review} />
                 // <p>{review.body}</p>
               ))}
             </Container>

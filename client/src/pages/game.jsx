@@ -84,7 +84,7 @@ export default function Game() {
                   marginBottom: "10px",
                   boxShadow: "2px 2px 8px rgba(0, 0, 0, 1)",
                 }}
-                className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300">
+                className="w-[150px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300">
                 Edit Game
               </button>
             )}
@@ -143,12 +143,13 @@ export default function Game() {
               <button
                 onClick={toggled}
                 type="button"
+                w="150px"
                 style={{
                   marginTop: "10px",
                   marginBottom: "20px",
                   boxShadow: "2px 2px 8px rgba(0, 0, 0, 1)",
                 }}
-                className="w-[125px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300">
+                className="w-[150px] bg-playstation_blue text-white text-sm font-bold py-2 px-4 rounded-md hover:bg-darker_blue transition duration-300">
                 Add Review
               </button>
             </div>
