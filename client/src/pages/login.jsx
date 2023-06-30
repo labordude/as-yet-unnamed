@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {Divider, Button} from "@chakra-ui/react";
 import LoginForm from "../components/Auth/LoginForm";
 import SignUpForm from "../components/Auth/SignUpForm";
@@ -8,6 +8,7 @@ export default function Login({onLogin}) {
   function toggleLoginForm() {
     setShowLoginForm(prevShowLoginForm => !prevShowLoginForm);
   }
+
   return (
     <div>
       {showLoginForm ? (

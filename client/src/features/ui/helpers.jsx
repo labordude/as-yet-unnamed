@@ -100,7 +100,7 @@ export async function getUserByID(id) {
 }
 
 export async function getCurrentUser() {
-  return fetch(`/api/check_session`)
+  return fetch(`/api/@me`)
     .then(response => {
       if (response.ok) {
         return response.json();

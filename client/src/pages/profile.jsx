@@ -48,7 +48,7 @@ export default function Profile({}) {
   const [showForm, setShowForm] = useState(false);
   useEffect(() => {
     //check for a current session
-    fetch("/api/check_session")
+    fetch("/api/@me")
       .then(response => {
         if (response.ok) {
           response.json().then(user => {

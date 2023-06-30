@@ -7,6 +7,7 @@ import {
   useActionData,
   useSubmit,
   redirect,
+  useOutletContext,
 } from "react-router-dom";
 import {useFormik} from "formik";
 import * as Yup from "yup";
@@ -44,6 +45,7 @@ export default function EditUser({user, toggleForm}) {
   const [userData, setUserData] = useState();
   const navigate = useNavigate();
   const navigation = useNavigation();
+  const [setUser] = useOutletContext();
 
   // useEffect(() => {
   //   setUserData(newUser);
@@ -57,7 +59,8 @@ export default function EditUser({user, toggleForm}) {
         headers: {"Content-Type": "application/json"},
       })
         .then(response => {
-          return navigate("../home");
+          setUser(null);
+          return navigate("../");
         })
         .catch(error => console.log(error));
     });
@@ -76,8 +79,8 @@ export default function EditUser({user, toggleForm}) {
       username: user.username,
 
       email: user.email,
-      bio: user.bio,
-      pfp_image: user.pfp_image,
+      bio: user.bio || "",
+      pfp_image: user.pfp_image || "",
     },
     validationSchema: EditUserSchema,
     onSubmit: async values => {
@@ -200,4 +203,3 @@ export default function EditUser({user, toggleForm}) {
     </>
   );
 }
-

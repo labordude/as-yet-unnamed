@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import {Link, redirect} from "react-router-dom";
 import {getCommunities} from "../features/ui/helpers";
 // need to add header photo to autoload
-export default function Header({onLogout, user}) {
+export default function Header({onLogout, user, toggleSignup}) {
   function handleLogoutClick() {
     // POST fetch to dispatch
     fetch(`/api/logout`, {
@@ -43,19 +43,25 @@ export default function Header({onLogout, user}) {
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
             <b>
-            <li>
-              <Link to="/games" style={{color:"#1E2D24"}}>Games</Link>
-            </li>
+              <li>
+                <Link to="/games" className="text-white">
+                  Games
+                </Link>
+              </li>
             </b>
             <b>
-            <li>
-              <Link to="/communities" style={{color:"#1E2D24"}}>Communities</Link>
-            </li>
+              <li>
+                <Link to="/communities" className="text-white">
+                  Communities
+                </Link>
+              </li>
             </b>
             <b>
-            <li>
-              <Link to="/social" style={{color:"#1E2D24"}}>Social</Link>
-            </li>
+              <li>
+                <Link to="/social" className="text-white">
+                  Social
+                </Link>
+              </li>
             </b>
           </ul>
         </div>
@@ -88,12 +94,12 @@ export default function Header({onLogout, user}) {
           ) : null}
           {!user ? (
             <>
-              <li>
+              <li onClick={toggleSignup}>
                 <Link to="/" className="text-xl text-white">
                   Login
                 </Link>
               </li>
-              <li>
+              <li onClick={toggleSignup}>
                 <Link to="/signup" className="text-xl text-white">
                   Signup
                 </Link>
