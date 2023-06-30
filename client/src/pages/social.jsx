@@ -43,12 +43,18 @@ export default function Social() {
     }
   }
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-smokey">
       <div>
         <Box>
           <InputGroup
             mt={4}
             width={{base: "90%", md: "md"}}
+            style={{
+              marginTop:"20px", 
+              borderWidth:"2px", 
+              borderRadius:"8px",
+              marginBottom:"10px",
+            }}
             textAlign={"center"}>
             <Search handleSearch={handleSearch} />
           </InputGroup>
@@ -57,6 +63,14 @@ export default function Social() {
       <div className="my-4">
         <div className="mx-auto join w-1/3 grid grid-cols-2">
           <button
+            onMouseEnter={(e) => e.target.style.backgroundColor = "#101814"}
+            onMouseLeave={(e) => e.target.style.backgroundColor = "#1E2D24"}
+            style={{
+              backgroundColor:"#1E2D24", 
+              color:"white", 
+              borderWidth: "2px",
+              marginBottom: "20px"
+              }}
             className={
               hasPrev
                 ? "join-item btn btn-outline"
@@ -66,6 +80,14 @@ export default function Social() {
             Previous page
           </button>
           <button
+            onMouseEnter={(e) => e.target.style.backgroundColor = "#101814"}
+            onMouseLeave={(e) => e.target.style.backgroundColor = "#1E2D24"}
+            style={{
+              backgroundColor:"#1E2D24", 
+              color:"white", 
+              borderWidth: "2px",
+              marginBottom: "20px"
+              }}
             className={
               hasNext
                 ? "join-item btn btn-outline"
@@ -89,7 +111,7 @@ export default function Social() {
               ))}
             </SimpleGrid>
           ) : (
-            <div>No users found</div>
+            <div style={{color:"#FE654F"}}>No users found</div>
           )
         ) : (
           <ErrorBoundary FallbackComponent={ErrorElement}>
