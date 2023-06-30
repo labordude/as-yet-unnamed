@@ -101,7 +101,8 @@ export default function Games() {
               backgroundColor:"#6366F1",
               paddingRight:"20px",
               paddingLeft:"20px",
-              boxShadow:"2px 2px 8px rgba(0, 0, 0, 1)"
+              boxShadow:"2px 2px 8px rgba(0, 0, 0, 1)",
+              color:"white"
             }}>
             {showInputs ? "Hide Inputs" : "Show Inputs"}
           </Button>

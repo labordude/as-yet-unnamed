@@ -92,6 +92,7 @@ export default function AddGame({onClose}) {
                     paddingLeft: "20px",
                     paddingTop: "5px",
                     paddingBottom: "5px",
+                    borderRadius: "8px",
                   }}
                 />
               </div>
@@ -109,6 +110,7 @@ export default function AddGame({onClose}) {
                     paddingLeft: "20px",
                     paddingTop: "5px",
                     paddingBottom: "5px",
+                    borderRadius: "8px",
                   }}
                 />
               </div>
@@ -126,6 +128,7 @@ export default function AddGame({onClose}) {
                     paddingLeft: "20px",
                     paddingTop: "5px",
                     paddingBottom: "5px",
+                    borderRadius: "8px",
                   }}
                 />
               </div>
@@ -143,6 +146,7 @@ export default function AddGame({onClose}) {
                     paddingLeft: "20px",
                     paddingTop: "5px",
                     paddingBottom: "5px",
+                    borderRadius: "8px",
                   }}
                 />
               </div>
@@ -162,6 +166,7 @@ export default function AddGame({onClose}) {
                     paddingLeft: "20px",
                     paddingTop: "5px",
                     paddingBottom: "5px",
+                    borderRadius: "8px",
                   }}
                 />
               </div>
@@ -179,6 +184,7 @@ export default function AddGame({onClose}) {
                     paddingLeft: "20px",
                     paddingTop: "5px",
                     paddingBottom: "5px",
+                    borderRadius: "8px",
                   }}
                 />
               </div>
