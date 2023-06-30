@@ -192,7 +192,7 @@ return (
     <Container maxW="600px" centerContent>
     <SimpleGrid className="my-4 flex" columns={[2]} spacing="20px">
     {/* pfp and followers and follwing + Name */}
-    <Box display='flex' bg='tomato' height='400px' width='300px' alignItems='center'>
+    <Box display='flex' bg='#FE654F' height='400px' width='300px' alignItems='center'>
       <Container className="flex flex-col px-0 items-center">
         <Image
           src={
@@ -250,7 +250,7 @@ return (
         
       </Container>
       </Box>
-      <Box display='flex' bg='tomato' height='400px' alignItems='center'>
+      <Box display='flex' bg='#FE654F' height='400px' alignItems='center'>
       {!showForm ? (
         <Container>
           <Container>
@@ -326,7 +326,7 @@ return (
           <p>"No games yet"</p>
         )}
       </Container> */}
-      <Container centerContent maxW='1000px' >
+      <Container centerContent maxW='1000px'>
       <Text className="text-center font-bold " fontSize={50}>Recent Reviews</Text>
         {currentUser.reviews && currentUser.reviews.length > 0 ? (
           <Container centerContent maxW='1000px'>

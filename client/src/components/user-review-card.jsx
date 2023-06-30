@@ -1,5 +1,5 @@
 import React from "react";
-import {Image, Icon} from "@chakra-ui/react";
+import {Image, Icon, Container} from "@chakra-ui/react";
 import {FaHeart, FaRegComments} from "react-icons/fa";
 
 export default function UserReviewCard({review}) {
@@ -15,7 +15,7 @@ export default function UserReviewCard({review}) {
         <div className="justify-start align-top items-start">
           <Image w="250px" src={review.game.background_image} />
         </div>
-        <div className="flex flex-col ml-2 pb-4">
+        <Container className="flex flex-col ml-2 pb-4">
           {/* <div className="text-sm font-bold">{review.user.username}</div> */}
           <div className="text-sm font-bold">{review.rating} / 10</div>
           <div className="text-sm">{review.body}</div>
@@ -23,7 +23,7 @@ export default function UserReviewCard({review}) {
             <Icon as={FaHeart} />
             Likes <Icon as={FaRegComments} />2 See full review
           </div>
-        </div>
+        </Container>
       </div>
     </div>
   );

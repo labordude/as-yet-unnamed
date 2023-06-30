@@ -71,7 +71,7 @@ export default function Header({onLogout, user, toggleSignup}) {
           GameXperience
         </Link>
       </div>
-      <div className="navbar-center hidden lg:flex">
+      <div className="navbar-center hidden lg:flex ">
         <ul className="menu menu-horizontal px-1">
           {user ? (
             <>
