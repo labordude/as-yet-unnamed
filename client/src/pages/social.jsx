@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useTransition, Suspense} from "react";
 import {getUsers, searchGames, searchUsers} from "../features/ui/helpers";
-import {Container, Image, Box, InputGroup, SimpleGrid} from "@chakra-ui/react";
+import {Container, Image, Button,  Box, InputGroup, SimpleGrid} from "@chakra-ui/react";
 import Search from "../components/Search";
 import UserCard from "../components/user-card";
 import {ErrorBoundary} from "react-error-boundary";
@@ -43,8 +43,8 @@ export default function Social() {
     }
   }
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <div>
+    <Box className=" max-width bg-smokey items-center " maxW='1500px'maxH='full'>
+      <div className='bg-smokey'>
         <Box>
           <InputGroup
             mt={4}
@@ -55,8 +55,16 @@ export default function Social() {
         </Box>
       </div>
       <div className="my-4">
-        <div className="mx-auto join w-1/3 grid grid-cols-2">
-          <button
+      <div className="mx-auto join w-1/3 grid grid-cols-2">
+          <Button
+            onMouseEnter={(e) => e.target.style.backgroundColor = "#101814"}
+            onMouseLeave={(e) => e.target.style.backgroundColor = "#1E2D24"}
+            style={{
+              backgroundColor:"#1E2D24", 
+              color:"white", 
+              borderWidth: "2px",
+              marginBottom: "20px"
+              }}
             className={
               hasPrev
                 ? "join-item btn btn-outline"
@@ -64,8 +72,16 @@ export default function Social() {
             }
             onClick={() => setCurrentPage(current => current - 1)}>
             Previous page
-          </button>
+          </Button>
           <button
+            onMouseEnter={(e) => e.target.style.backgroundColor = "#101814"}
+            onMouseLeave={(e) => e.target.style.backgroundColor = "#1E2D24"}
+            style={{
+              backgroundColor:"#1E2D24", 
+              color:"white", 
+              borderWidth: "2px",
+              marginBottom: "20px"
+            }}
             className={
               hasNext
                 ? "join-item btn btn-outline"
@@ -75,7 +91,7 @@ export default function Social() {
             Next
           </button>
         </div>
-
+        
         {isPending ? (
           <div className="text-center text-4xl">
             Loading...
@@ -107,6 +123,6 @@ export default function Social() {
           </ErrorBoundary>
         )}
       </div>
-    </div>
+    </Box>
   );
 }

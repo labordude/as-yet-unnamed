@@ -66,8 +66,8 @@ export default function User() {
   }
 
   return (
-    <Container p="0" mx="auto">
-      <Container className="my-4 flex">
+    <Container className="bg-smokey" p="0" mx="auto">
+      <Container className="my-4 flex bg-charcoal">
         <Container className="flex flex-col px-0 items-center">
           <Image
             src={
@@ -79,22 +79,22 @@ export default function User() {
             boxSize="250px"
             borderRadius="full"
           />
-          <div className="text-bold text-2xl text-center">
-            {user_loader.username || "username would go here"}
+          <div className="text-bold text-2xl text-center font-bold">
+            {user_loader.username.toUpperCase() || "username would go here"}
           </div>
-          <div>Followers: {user_loader.followers}</div>
-          <div>Following: {user_loader.followed}</div>
+          <div><b>Followers:</b> {user_loader.followers}</div>
+          <div><b>Following:</b> {user_loader.followed}</div>
         </Container>
         <Container>
           <Container>
-            <p>Name: {user_loader.name}</p>
-            <p>Bio: {user_loader.bio}</p>
-            <p>Communities: </p>
+            <p><b>Name:</b> {user_loader.name}</p>
+            <p><b>Bio:</b> {user_loader.bio}</p>
+            <p><b>Communities:</b> </p>
           </Container>
           <Container className="mt-8">
-            <p>Total Reviews: {user_loader.reviews.length}</p>
-            <p>Total Games: {user_loader.reviews.length}</p>
-            <p>Total Ratings: {user_loader.reviews.length} </p>
+            <p><b>Total Reviews:</b> {user_loader.reviews.length}</p>
+            <p><b>Total Games:</b> {user_loader.reviews.length}</p>
+            <p><b>Total Ratings:</b> {user_loader.reviews.length} </p>
           </Container>
           <Container className="mt-8">
             <Button

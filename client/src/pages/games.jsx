@@ -165,27 +165,6 @@ export default function Games() {
           searchResults.length < 2 ||
           searchResults == "" ? (
           <>
-            <div className="mx-auto join w-1/3 grid grid-cols-2">
-              <Button
-                className={
-                  hasPrev
-                    ? "join-item btn btn-outline"
-                    : "join-item btn btn-outline btn-disabled"
-                }
-                onClick={() => setCurrentPage(current => current - 1)}>
-                Previous page
-              </Button>
-              <button
-                className={
-                  hasNext
-                    ? "join-item btn btn-outline"
-                    : "join-item btn btn-outline btn-disabled"
-                }
-                onClick={() => setCurrentPage(current => current + 1)}>
-                Next
-              </button>
-            </div>
-
             <>
               <SimpleGrid columns={{sm: 2, md: 3}}>
                 {gamesList.map(game => (
