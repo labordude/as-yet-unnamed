@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useTransition, Suspense} from "react";
 import {getUsers, searchGames, searchUsers} from "../features/ui/helpers";
-import {Container, Image, Box, InputGroup, SimpleGrid} from "@chakra-ui/react";
+import {Container, Image, Button,  Box, InputGroup, SimpleGrid} from "@chakra-ui/react";
 import Search from "../components/Search";
 import UserCard from "../components/user-card";
 import {ErrorBoundary} from "react-error-boundary";
@@ -97,7 +97,7 @@ export default function Social() {
             Next
           </button>
         </div>
-
+        
         {isPending ? (
           <div className="text-center text-4xl">
             Loading...
@@ -132,3 +132,5 @@ export default function Social() {
     </div>
   );
 }
+
+// Background Styling now 
