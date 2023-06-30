@@ -14,6 +14,7 @@ from flask_restful import Resource
 
 
 # from flask_paginate import Pagination
+from sqlalchemy import or_
 from sqlalchemy.exc import IntegrityError
 from config import db, api, app, login
 from models import (
@@ -43,7 +44,7 @@ from models import (
     Thread,
     Comment,
     user_login_schema,
-    users__loginschema,
+    users_login_schema,
 )
 
 from datetime import timezone, timedelta, datetime
@@ -119,16 +120,19 @@ class Login(Resource):
 class Logout(Resource):
     def delete(self):
         if session.get("user_id"):
+            user = User.query.filter(User.id == session["user_id"]).first()
             session["user_id"] = None
+            logout_user()
             return {"message": "logged out"}, 204
 
         return {"error": "401 unauthorized"}, 401
 
     def post(self):
         if session.get("user_id"):
+            user = User.query.filter(User.id == session["user_id"]).first()
             session["user_id"] = None
-
-            return {"message": "logged out"}, 200
+            logout_user()
+            return {"message": "logged out"}, 204
 
         return {"error": "401 unauthorized"}, 401
 
@@ -290,7 +294,9 @@ class Signup(Resource):
         name = data.get("name")
         email = data.get("email")
         bio = data.get("bio")
-        user_exists = User.query.filter_by(email=email).first is not None
+        user_exists = User.query.filter(
+            or_(User.email == email, User.username == username)
+        ).first()
         if user_exists:
             return jsonify({"error": "User already exists"}, 409)
         new_user = User(
@@ -308,6 +314,7 @@ class Signup(Resource):
         except IntegrityError:
             return ({"error": "Unprocessable entry"}, 422)
         session["user_id"] = new_user.id
+        login_user(new_user)
         return user_schema.dump(new_user), 201
 
 
@@ -701,12 +708,13 @@ class SearchGames(Resource):
         if games:
             return games_schema.dump(games), 200
         return {"message": "no games found"}
-    
+
+
 class SearchUsers(Resource):
     def get(self, search):
-        users = User.query.filter(User.uesrname.like(f"%{search}%")).all()
+        users = User.query.filter(User.username.like(f"%{search}%")).all()
         if users:
-            return users_schema.dump(users), 200
+            return users_login_schema.dump(users), 200
         return {"message": "no users found"}
 
 
@@ -771,7 +779,9 @@ api.add_resource(Logout, "/api/logout", endpoint="logout")
 api.add_resource(CommunityUsersByID, "/api/community_users/<int:id>")
 api.add_resource(CommunityGamesByID, "/api/community_games/<int:id>")
 api.add_resource(SearchGames, "/api/search/<string:search>", endpoint="search")
-api.add_resource(SearchUsers, "/api/search_users/<string:search>", endpoint="search_users")
+api.add_resource(
+    SearchUsers, "/api/search_users/<string:search>", endpoint="search_users"
+)
 # api.add_resource(CurrentUser, "/api/current_user")
 
 if __name__ == "__main__":

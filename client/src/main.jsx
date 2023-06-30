@@ -47,14 +47,14 @@ const router = createBrowserRouter([
         errorElement: <div>Whoops!</div>,
       },
       {
-        path: "/signup",
-        element: <SignUpForm />,
+        path: "login",
+        element: <Login />,
         errorElement: <div>Whoops!</div>,
-        action: SignUpAction,
       },
       {
-        path: "/login",
-        element: <Login />,
+        path: "signup",
+        element: <SignUpForm />,
+        action: SignUpAction,
         errorElement: <div>Whoops!</div>,
       },
       {
