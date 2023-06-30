@@ -20,12 +20,15 @@ export default function Game() {
   const [toggle, setToggle] = useState(false);
   const [communities, setCommunities] = useState([]);
   const [showEdit, setShowEdit] = useState(false);
+  const [reviews, setReviews] = useState([]);
   const {game_platforms} = game_loader;
+
   function toggleShowEdit() {
     setShowEdit(prevShowEdit => !prevShowEdit);
   }
   useEffect(() => {
     setGameData(game_loader);
+    setReviews(game_loader.reviews);
   }, []);
   function toggled() {
     setToggle(prev => !prev);
@@ -33,9 +36,12 @@ export default function Game() {
   function handleGameUpdate(game) {
     setGameData(game);
   }
+  function handleNewReview(newReview) {
+    setReviews([newReview, ...reviews]);
+  }
   return (
-    <Box bg="#334139" style={{minHeight:"100vh"}}>
-      <Container centerContent style={{paddingTop:"2vh"}}>
+    <Box bg="#334139" style={{minHeight: "100vh"}}>
+      <Container centerContent style={{paddingTop: "2vh"}}>
         <Container className="my-4 flex">
           <Container boxSize="250px" className="flex flex-col">
             <Image
@@ -128,6 +134,7 @@ export default function Game() {
                 isOpen={toggle}
                 onOpen={toggled}
                 onClose={toggled}
+                handleNewReview={handleNewReview}
               />
             )}
             <div>
@@ -144,13 +151,14 @@ export default function Game() {
               </button>
             </div>
           </Flex>
-          {game_loader.reviews && game_loader.reviews.length > 0 ? (
+          {reviews && reviews.length > 0 ? (
             <div>
-              {game_loader.reviews.map(review => (
+              {reviews.map(review => (
                 <ReviewCardDetailed
                   key={review.id}
                   review={review}
                   game={game_loader}
+                  handleNewReview={handleNewReview}
                 />
               ))}
             </div>
