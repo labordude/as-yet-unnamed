@@ -91,10 +91,10 @@ export default function User() {
 
 
   return (
-    <div className='bg-smokey' style={{backgroundColor:"#FE654F", paddingBottom:"60.8vh"}}>
+    <div className='bg-smokey' style={{backgroundColor:"#334139", paddingBottom:"60.8vh"}}>
       <Container centerContent maxW="600px">
       <SimpleGrid className="my-4 flex" columns={[2]} spacing="20px">
-      <Box display='flex' bg='#334139' height='400px' width='300px' alignItems='center'>
+      <Box display='flex' bg='#1E2D24' height='400px' width='300px' alignItems='center'>
         <Container className="flex flex-col px-0 items-center">
           <Image
             src={
@@ -107,7 +107,7 @@ export default function User() {
             objectFit='cover'
             borderRadius="full"
           />
-          <div className="text-bold text-2xl text-center">
+          <div className="text-bold text-2xl text-center" style={{paddingTop:"20px"}}>
             {user_loader.username.toUpperCase() || "username would go here"}
           </div>
           <div><b>Followers:</b> {user_loader.followers}</div>
@@ -115,7 +115,7 @@ export default function User() {
         </Container>
         </Box>
         <Container centerContent>
-        <Box display='flex' bg='#334139' height='400px' width='300px' alignItems='center'>
+        <Box display='flex' bg='#1E2D24' height='400px' width='300px' alignItems='center'>
         <Container >
           <Container>
             <p><b>Name:</b> {user_loader.name}</p>
