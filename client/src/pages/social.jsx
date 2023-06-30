@@ -126,3 +126,5 @@ export default function Social() {
     </Box>
   );
 }
+
+// Background Styling now 
